@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Dashboard</h1>
+
+<p>You are logged in.</p>
+
+{% if appointments %}
+    <ul>
+        {% for appointment in appointments %}
+            <li>
+                {{ appointment.scheduled_at }} - {{ appointment.status }}
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No appointments yet.</p>
+{% endif %}
+{% endblock %}

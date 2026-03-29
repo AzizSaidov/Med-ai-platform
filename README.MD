@@ -1,24 +1,30 @@
 # MedTech AI Platform 🏥🤖
 
-Современная медицинская платформа с интеграцией ИИ для анализа симптомов и управления показателями здоровья.
+Educational Django project focused on building a medical platform with AI integration for symptom analysis and health management.
 
-## 🚀 Функционал
-- **Bento Grid Dashboard:** Персонализированный интерфейс для пациентов и врачей.
-- **AI Symptom Checker:** Интеллектуальный помощник на базе ИИ.
-- **Управление ролями:** Четкое разделение на Пациентов, Врачей и Администраторов.
-- **Геолокация:** Интеграция с Google Maps для поиска клиник.
-- **Безопасность:** Регистрация через Email с подтверждением и хранение данных в PostgreSQL.
+## 🎓 Project Type
+This is a learning project created to practice Django, backend development, and system design.
 
-## 🛠 Стек технологий
-- **Backend:** Django 5.2, Python 3.12
-- **Database:** PostgreSQL
-- **Tools:** python-dotenv (Environment variables)
-- **Frontend:** HTML5, CSS3 (Bento Grid layout), JavaScript
 
-## 📦 Установка и запуск
-1. Клонировать репозиторий: `git clone <link>`
-2. Создать окружение: `python -m venv .venv`
-3. Установить зависимости: `pip install -r requirements.txt`
-4. Настроить `.env` файл (см. `.env.example`)
-5. Выполнить миграции: `python manage.py migrate`
-6. Запустить сервер: `python manage.py runserver`
+## 🚧 Status
+In development (early stage)
+
+## 🚀 Features
+- Bento Grid Dashboard: Personalized interface for patients and doctors
+- AI Symptom Checker (planned)
+- Role-based system: Patients, Doctors, Admins
+- Email verification system
+- Doctor profiles and appointment system
+- PostgreSQL database integration
+
+## 🛠 Tech Stack
+- Backend: Django 5.2, Python 3.12
+- Database: PostgreSQL
+- Tools: python-dotenv (environment variables)
+- Frontend: HTML5, CSS3, JavaScript
+
+## 📦 Installation & Setup
+1. Clone the repository:
+   ```bash
+   git clone <your-repo-link>
+   cd your-repo
