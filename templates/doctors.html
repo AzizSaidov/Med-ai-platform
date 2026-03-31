@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Doctors | Med Tech{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+<link rel="stylesheet" href="{% static 'css/doctors.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="section doctors-page">
+    <div class="container">
+        <div class="doctors-hero">
+            <div class="doctors-heading">
+                <span class="section-kicker" data-page-i18n="kicker">Doctors map</span>
+                <h1 class="section-title" data-page-i18n="title">Find doctors and clinics on the map</h1>
+                <p class="section-subtitle" data-page-i18n="text">
+                    Explore available specialists, clinic points, and healthcare locations through a clean interactive map with role-aware actions.
+                </p>
+            </div>
+
+            <div class="doctors-stat-card">
+                <div class="doctors-stat-card__icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        <circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="2"/>
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                <span class="doctors-stat-card__label" data-page-i18n="available_label">Available profiles</span>
+                <strong id="doctors-total" class="doctors-stat-card__num">{{ doctors_count }}</strong>
+                <small id="doctors-total-label" data-page-i18n="available_text">Doctors with map data</small>
+            </div>
+        </div>
+
+        {% if request.user.is_doctor or request.user.is_superuser %}
+            <div class="page-note" style="margin-bottom: 24px;">
+                {% if doctor_profile %}
+                    <span data-page-i18n="note_has_profile">Your doctor tools are active. Use the public map to review how profiles look to patients, then open your private profile workspace when you need to edit details.</span>
+                    <div class="action-row" style="margin-top: 14px;">
+                        <a href="{% url 'my_doctor_profile' %}" class="btn btn-primary btn-sm" data-page-i18n="btn_open_profile">Open my doctor profile</a>
+                    </div>
+                {% else %}
+                    <span data-page-i18n="note_no_profile">You can create a doctor profile whenever you are ready. Until then, the public map still helps you review the patient-facing experience.</span>
+                    <div class="action-row" style="margin-top: 14px;">
+                        <a href="{% url 'doctor_create' %}" class="btn btn-primary btn-sm" data-page-i18n="btn_create_profile">Create doctor profile</a>
+                    </div>
+                {% endif %}
+            </div>
+        {% endif %}
+
+        <div class="doctors-toolbar">
+            <div class="toolbar-group toolbar-search">
+                <label class="toolbar-label" for="doctor-search" data-page-i18n="search_label">Search</label>
+                <div class="toolbar-input-wrap">
+                    <input
+                        id="doctor-search"
+                        class="toolbar-input"
+                        type="text"
+                        placeholder="Search doctors, specialization, address..."
+                        data-page-i18n-placeholder="search_placeholder"
+                    >
+                </div>
+            </div>
+
+            <div class="toolbar-group">
+                <label class="toolbar-label" for="specialization-filter" data-page-i18n="specialization_label">Specialization</label>
+                <select id="specialization-filter" class="toolbar-select">
+                    <option value="all" data-page-i18n="all_specializations">All specializations</option>
+                </select>
+            </div>
+
+            <div class="toolbar-group">
+                <label class="toolbar-label" for="status-filter" data-page-i18n="status_label">Status</label>
+                <select id="status-filter" class="toolbar-select">
+                    <option value="all" data-page-i18n="all_statuses">All statuses</option>
+                    <option value="online" data-page-i18n="status_online">Online</option>
+                    <option value="busy" data-page-i18n="status_busy">Busy</option>
+                    <option value="offline" data-page-i18n="status_offline">Offline</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="doctors-layout">
+            <div class="map-card">
+                <div class="map-card__head">
+                    <div class="map-card__head-info">
+                        <div class="map-card__head-icon">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" stroke="currentColor" stroke-width="2"/>
+                                <circle cx="12" cy="10" r="3" stroke="currentColor" stroke-width="2"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h2 data-page-i18n="map_title">Live doctors map</h2>
+                            <p data-page-i18n="map_text">Tap a marker to see doctor information and the most relevant action for your role.</p>
+                        </div>
+                    </div>
+                    <span class="status-badge status-badge--success">
+                        <span class="status-badge__dot"></span>
+                        Live
+                    </span>
+                </div>
+                <div id="map"></div>
+            </div>
+
+            <aside class="doctors-sidebar">
+                <div class="doctors-sidebar__head">
+                    <div>
+                        <h2 data-page-i18n="list_title">Doctor list</h2>
+                        <p data-page-i18n="list_text">Browse available specialists and jump into booking or profile management quickly.</p>
+                    </div>
+                    <div class="results-badge">
+                        <strong id="results-count">{{ doctors_count }}</strong>
+                        <small data-page-i18n="results_label">results</small>
+                    </div>
+                </div>
+                <div id="doctor-list" class="doctor-list"></div>
+            </aside>
+        </div>
+    </div>
+</section>
+
+{{ doctors_json|json_script:"doctors-data" }}
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+<script src="{% static 'js/doctors.js' %}"></script>
+{% endblock %}

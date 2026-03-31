@@ -1,0 +1,139 @@
+.ai-page {
+    padding-top: 12px;
+}
+
+.ai-hero {
+    position: relative;
+    overflow: hidden;
+    background:
+        radial-gradient(circle at 14% 18%, rgba(56, 189, 248, 0.16), transparent 24%),
+        radial-gradient(circle at 86% 26%, rgba(8, 145, 178, 0.14), transparent 26%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0.54));
+}
+
+html[data-theme="dark"] .ai-hero {
+    background:
+        radial-gradient(circle at 14% 18%, rgba(56, 189, 248, 0.12), transparent 24%),
+        radial-gradient(circle at 86% 26%, rgba(34, 211, 238, 0.1), transparent 26%),
+        linear-gradient(180deg, rgba(11, 21, 34, 0.82), rgba(11, 21, 34, 0.68));
+}
+
+.ai-hero::after {
+    content: "";
+    position: absolute;
+    inset: auto -60px -80px auto;
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(56, 189, 248, 0.18), transparent 68%);
+    pointer-events: none;
+    filter: blur(6px);
+}
+
+.ai-stat-card {
+    position: relative;
+    overflow: hidden;
+}
+
+.ai-stat-card::before {
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 -28px;
+    width: 3px;
+    background: linear-gradient(180deg, var(--primary), var(--accent));
+    opacity: 0.9;
+}
+
+.ai-thread-card {
+    padding: 24px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.78), rgba(255, 255, 255, 0.58));
+}
+
+html[data-theme="dark"] .ai-thread-card {
+    background: linear-gradient(180deg, rgba(12, 24, 39, 0.88), rgba(12, 24, 39, 0.7));
+}
+
+.chat-thread {
+    padding: 4px;
+}
+
+.chat-bubble {
+    position: relative;
+}
+
+.chat-bubble--assistant {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(240, 248, 255, 0.92));
+    border-color: rgba(3, 105, 161, 0.12);
+}
+
+html[data-theme="dark"] .chat-bubble--assistant {
+    background: linear-gradient(180deg, rgba(18, 32, 49, 0.96), rgba(14, 24, 37, 0.92));
+}
+
+.chat-bubble--assistant::before,
+.chat-bubble--user::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    border-radius: 999px;
+}
+
+.chat-bubble--assistant::before {
+    left: 0;
+    background: linear-gradient(180deg, var(--primary), var(--accent));
+}
+
+.chat-bubble--user::before {
+    right: 0;
+    background: linear-gradient(180deg, rgba(8, 145, 178, 0.5), rgba(3, 105, 161, 0.85));
+}
+
+.ai-sidebar {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.82), rgba(248, 251, 255, 0.68));
+}
+
+html[data-theme="dark"] .ai-sidebar {
+    background: linear-gradient(180deg, rgba(10, 20, 32, 0.9), rgba(13, 26, 41, 0.76));
+}
+
+.ai-provider-note {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.84), rgba(240, 248, 255, 0.72));
+}
+
+html[data-theme="dark"] .ai-provider-note {
+    background: linear-gradient(180deg, rgba(18, 32, 49, 0.92), rgba(12, 24, 37, 0.82));
+}
+
+.ai-compose-form label {
+    margin-bottom: 10px;
+}
+
+.ai-compose-form textarea {
+    min-height: 132px;
+    padding: 16px 18px;
+    border-radius: 22px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(246, 249, 252, 0.92));
+}
+
+html[data-theme="dark"] .ai-compose-form textarea {
+    background: linear-gradient(180deg, rgba(18, 32, 49, 0.96), rgba(12, 24, 37, 0.92));
+}
+
+.ai-compose-form button,
+.ai-sidebar form + form .btn {
+    min-height: 48px;
+    border-radius: 18px;
+}
+
+@media (max-width: 760px) {
+    .ai-thread-card,
+    .ai-sidebar {
+        padding: 22px;
+    }
+
+    .ai-compose-form textarea {
+        min-height: 116px;
+    }
+}

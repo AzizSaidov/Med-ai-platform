@@ -1,0 +1,144 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Med Tech | Appointments{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/appointments.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="appointments-page">
+    <div class="container">
+        <div class="appointments-hero reveal-ap delay-1">
+            <div class="appointments-hero-copy">
+                <span class="appointments-kicker">
+                    {% if request.user.is_doctor %}<span data-page-i18n="kicker_doctor">Appointment workspace</span>{% else %}<span data-page-i18n="kicker">Appointments</span>{% endif %}
+                </span>
+                <h1 class="appointments-title">
+                    {% if request.user.is_doctor %}
+                        <span data-page-i18n="title_doctor">Related appointments, ready for review.</span>
+                    {% else %}
+                        <span data-page-i18n="title">Your appointments, all in one place.</span>
+                    {% endif %}
+                </h1>
+                <p class="appointments-text">
+                    {% if request.user.is_doctor %}
+                        <span data-page-i18n="text_doctor">Review appointments linked to your doctor profile, update details when needed, and keep patient communication clear.</span>
+                    {% else %}
+                        <span data-page-i18n="text">View upcoming visits, completed appointments, and important details in a calmer and more organized interface.</span>
+                    {% endif %}
+                </p>
+            </div>
+
+            <div class="appointments-summary">
+                <div class="summary-card">
+                    <span class="summary-label" data-page-i18n="summary_total">Total</span>
+                    <strong>{{ total_appointments }}</strong>
+                </div>
+                <div class="summary-card">
+                    <span class="summary-label" data-page-i18n="summary_upcoming">Upcoming</span>
+                    <strong>{{ upcoming_appointments }}</strong>
+                </div>
+            </div>
+        </div>
+
+        {% if appointments %}
+            <div class="appointments-shell reveal-ap delay-2">
+                <div class="appointments-table-wrap">
+                    <div class="appointments-table-head">
+                        <h2 data-page-i18n="list_title">Appointment list</h2>
+                        <p data-page-i18n="list_text">Track status, doctors, dates, and visit notes with actions shown only when they make sense for your role.</p>
+                    </div>
+
+                    <div class="appointments-list">
+                        {% for appointment in appointments %}
+                            <article class="appointment-card">
+                                <div class="appointment-main">
+                                    <div class="appointment-date">
+                                        <span class="date-day">{{ appointment.scheduled_at|date:"d" }}</span>
+                                        <span class="date-meta">{{ appointment.scheduled_at|date:"M Y" }}</span>
+                                        <span class="date-time">{{ appointment.scheduled_at|date:"H:i" }}</span>
+                                    </div>
+
+                                    <div class="appointment-info">
+                                        <div class="appointment-top">
+                                            <div>
+                                                <h3>{{ appointment.doctor_name }}</h3>
+                                                {% if request.user.is_doctor or request.user.is_superuser %}
+                                                    <p class="text-muted"><span data-page-i18n="patient_label">Patient</span>: {{ appointment.patient_name }}</p>
+                                                {% endif %}
+                                            </div>
+
+                                            <span class="status-{{ appointment.status }}">
+                                                {{ appointment.get_status_display }}
+                                            </span>
+                                        </div>
+
+                                        <div class="appointment-meta">
+                                            <div class="meta-item">
+                                                <span class="meta-label" data-page-i18n="specialization_label">Specialization</span>
+                                                <span class="meta-value">{{ appointment.doctor.specialization }}</span>
+                                            </div>
+
+                                            {% if appointment.doctor.address %}
+                                                <div class="meta-item">
+                                                    <span class="meta-label" data-page-i18n="address_label">Address</span>
+                                                    <span class="meta-value">{{ appointment.doctor.address }}</span>
+                                                </div>
+                                            {% endif %}
+                                        </div>
+
+                                        <div class="appointment-notes">
+                                            <span class="meta-label" data-page-i18n="notes_label">Notes</span>
+                                            {% if appointment.notes %}
+                                                <p>{{ appointment.notes }}</p>
+                                            {% else %}
+                                                <p class="empty-note" data-page-i18n="notes_empty">No additional notes for this appointment.</p>
+                                            {% endif %}
+                                        </div>
+
+                                        <div class="appointment-actions">
+                                            <a href="{% url 'appointment_detail' appointment.pk %}" class="btn btn-primary btn-sm" data-page-i18n="btn_view">View details</a>
+                                            {% if request.user.is_superuser or appointment.doctor.user == request.user %}
+                                                <a href="{% url 'appointment_edit' appointment.pk %}" class="btn btn-secondary btn-sm" data-page-i18n="btn_edit">Edit</a>
+                                            {% endif %}
+                                            {% if appointment.status != 'cancelled' %}
+                                                <a href="{% url 'appointment_delete' appointment.pk %}" class="btn btn-outline btn-sm" data-page-i18n="btn_cancel">Cancel appointment</a>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </article>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="empty-state reveal-ap delay-2">
+                <div class="empty-icon">AP</div>
+                <h2 data-page-i18n="empty_title">No appointments yet.</h2>
+                <p>
+                    {% if request.user.is_doctor %}
+                        <span data-page-i18n="empty_text_doctor">Appointments connected to your doctor profile will appear here as soon as patients start booking.</span>
+                    {% else %}
+                        <span data-page-i18n="empty_text">You do not have any booked appointments right now. Start by exploring doctors and booking your first visit.</span>
+                    {% endif %}
+                </p>
+                <div class="empty-actions">
+                    {% if request.user.is_doctor %}
+                        <a href="{% url 'my_doctor_profile' %}" class="btn btn-primary" data-page-i18n="btn_open_profile">Open doctor profile</a>
+                    {% else %}
+                        <a href="{% url 'doctors_map' %}" class="btn btn-primary" data-page-i18n="btn_find_doctors">Find doctors</a>
+                    {% endif %}
+                    <a href="{% url 'ai_chat' %}" class="btn btn-outline" data-page-i18n="btn_open_ai">Open AI Assistant</a>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/appointments.js' %}"></script>
+{% endblock %}

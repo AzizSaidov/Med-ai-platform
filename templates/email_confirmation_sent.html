@@ -1,16 +1,52 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
 {% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Med Tech | Email Confirmation{% endblock %}
+
 {% block content %}
-<h1>Email confirmation sent</h1>
-<p>Please check your email and click the verification link to activate your account.</p>
-<p><a href="{% url 'login' %}">Back to login</a></p>
+<link rel="stylesheet" href="{% static 'css/email_confirmation_sent.css' %}">
+
+<section class="auth-page">
+    <div class="container">
+        <div class="confirm-shell reveal-confirm delay-1">
+            <div class="confirm-icon-wrap">
+                <div class="confirm-icon">✉</div>
+            </div>
+
+            <span class="confirm-kicker" data-page-i18n="kicker">Confirmation Sent</span>
+
+            <h1 class="confirm-title" data-page-i18n="title">
+                We sent a confirmation email to your inbox.
+            </h1>
+
+            <p class="confirm-text" data-page-i18n="text">
+                Please check your email and click the verification link to activate your account.
+            </p>
+
+            <div class="confirm-points">
+                <div class="confirm-point">
+                    <strong data-page-i18n="point1_title">Check your inbox</strong>
+                    <p data-page-i18n="point1_text">Open your email and find the verification message from Med Tech.</p>
+                </div>
+
+                <div class="confirm-point">
+                    <strong data-page-i18n="point2_title">Check spam folder</strong>
+                    <p data-page-i18n="point2_text">If the message is not in your inbox, check spam or junk folders too.</p>
+                </div>
+
+                <div class="confirm-point">
+                    <strong data-page-i18n="point3_title">Click the link</strong>
+                    <p data-page-i18n="point3_text">Use the verification link in the email to activate your account.</p>
+                </div>
+            </div>
+
+            <div class="confirm-actions">
+                <a href="{% url 'login' %}" class="btn btn-primary" data-page-i18n="btn_login">Back to login</a>
+                <a href="{% url 'dashboard' %}" class="btn btn-outline" data-page-i18n="btn_home">Go to home</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="{% static 'js/email_confirmation_sent.js' %}"></script>
 {% endblock %}
-</body>
-</html>

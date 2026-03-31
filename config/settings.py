@@ -42,8 +42,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'django_filters',
+    'crispy_forms',
+    'crispy_bootstrap5',
     'core.apps.CoreConfig',
 ]
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -147,3 +154,15 @@ EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+OPENAI_API_KEY = os.getenv('OPENAI_API_KEY', '')
+OPENAI_MODEL = os.getenv('OPENAI_MODEL', 'gpt-5-mini')
+OPENAI_MAX_CHAT_HISTORY = int(os.getenv('OPENAI_MAX_CHAT_HISTORY', '18'))
+
+XAI_API_KEY = os.getenv('XAI_API_KEY', '')
+XAI_MODEL = os.getenv('XAI_MODEL', 'grok-4-1-fast-reasoning')
+
+GEMINI_API_KEY = os.getenv('GEMINI_API_KEY', '')
+GEMINI_MODEL = os.getenv('GEMINI_MODEL', 'gemini-2.5-flash')
+
+AI_PROVIDER_ORDER = [item.strip() for item in os.getenv('AI_PROVIDER_ORDER', 'openai,xai,gemini').split(',') if item.strip()]

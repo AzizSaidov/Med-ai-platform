@@ -1,19 +1,183 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Med Tech | Dashboard{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+{% endblock %}
 
 {% block content %}
-<h1>Dashboard</h1>
+<section class="hero section">
+    <div class="container">
+        <div class="hero__grid">
+            <div class="hero__copy dashboard-reveal dashboard-reveal--copy">
+                <span class="section-kicker" data-page-i18n="hero_kicker">Medical dashboard</span>
+                <h1 class="hero__title" data-page-i18n="hero_title">Your health,<br>fully in control.</h1>
+                <p class="hero__text" data-page-i18n="hero_text">
+                    One place for doctors, appointments, and AI-powered guidance. Built to feel clear, modern, and presentation-ready.
+                </p>
+                <div class="hero__actions">
+                    {% if request.user.is_doctor or request.user.is_superuser %}
+                        <a href="{% url 'my_doctor_profile' %}" class="btn btn-primary btn-lg" data-page-i18n="{% if user.has_doctor_profile %}hero_btn_profile{% else %}hero_btn_create{% endif %}">
+                            {% if user.has_doctor_profile %}My doctor profile{% else %}Create doctor profile{% endif %}
+                        </a>
+                        <a href="{% url 'appointments' %}" class="btn btn-secondary btn-lg" data-page-i18n="hero_btn_appointments">Appointments</a>
+                    {% else %}
+                        <a href="{% url 'doctors_map' %}" class="btn btn-primary btn-lg" data-page-i18n="hero_btn_doctors">Find a doctor</a>
+                        <a href="{% url 'appointments' %}" class="btn btn-secondary btn-lg" data-page-i18n="hero_btn_appointments">My appointments</a>
+                    {% endif %}
+                </div>
+                <div class="hero__stats">
+                    <div class="hero__stat">
+                        <span class="hero__stat-num" data-countup="{{ upcoming_count }}">{{ upcoming_count }}</span>
+                        <span class="hero__stat-label" data-page-i18n="stat_upcoming">Upcoming</span>
+                    </div>
+                    <div class="hero__stat-divider"></div>
+                    <div class="hero__stat">
+                        <span class="hero__stat-num" data-countup="{{ appointments|length }}">{{ appointments|length }}</span>
+                        <span class="hero__stat-label" data-page-i18n="stat_records">Records</span>
+                    </div>
+                    <div class="hero__stat-divider"></div>
+                    <div class="hero__stat">
+                        <span class="hero__stat-num">24/7</span>
+                        <span class="hero__stat-label" data-page-i18n="stat_ai">AI support</span>
+                    </div>
+                </div>
+            </div>
 
-<p>You are logged in.</p>
+            <div class="hero__panel dashboard-reveal dashboard-reveal--panel">
+                <div class="panel-card">
+                    <div class="panel-card__header">
+                        <div>
+                            <p class="panel-card__label" data-page-i18n="summary_label">Today overview</p>
+                            <h2 class="panel-card__title" data-page-i18n="summary_title">Your workspace</h2>
+                        </div>
+                        <span class="status-badge status-badge--success">
+                            <span class="status-badge__dot"></span>
+                            <span data-page-i18n="summary_status">Ready</span>
+                        </span>
+                    </div>
 
-{% if appointments %}
-    <ul>
-        {% for appointment in appointments %}
-            <li>
-                {{ appointment.scheduled_at }} - {{ appointment.status }}
-            </li>
-        {% endfor %}
-    </ul>
-{% else %}
-    <p>No appointments yet.</p>
-{% endif %}
+                    <div class="panel-items">
+                        <a href="{% url 'doctors_map' %}" class="panel-item">
+                            <div class="panel-item__icon panel-item__icon--blue">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="2"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                            </div>
+                            <div class="panel-item__body">
+                                <strong data-page-i18n="summary_item_1_title">Doctors</strong>
+                                <p data-page-i18n="summary_item_1_text">Search specialists, clinics, and locations.</p>
+                            </div>
+                            <svg class="panel-item__arrow" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </a>
+
+                        <a href="{% url 'appointments' %}" class="panel-item">
+                            <div class="panel-item__icon panel-item__icon--teal">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" stroke-width="2"/><path d="M16 2v4M8 2v4M3 10h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
+                            </div>
+                            <div class="panel-item__body">
+                                <strong data-page-i18n="summary_item_2_title">Appointments</strong>
+                                <p data-page-i18n="summary_item_2_text">Check bookings and upcoming visits.</p>
+                            </div>
+                            <svg class="panel-item__arrow" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </a>
+
+                        <a href="{% url 'ai_chat' %}" class="panel-item">
+                            <div class="panel-item__icon panel-item__icon--violet">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2a10 10 0 1 0 10 10H12V2z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M12 2a10 10 0 0 1 10 10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/></svg>
+                            </div>
+                            <div class="panel-item__body">
+                                <strong data-page-i18n="summary_item_3_title">AI Assistant</strong>
+                                <p data-page-i18n="summary_item_3_text">Get fast support and guidance.</p>
+                            </div>
+                            <svg class="panel-item__arrow" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </a>
+
+                        {% if request.user.is_doctor or request.user.is_superuser %}
+                            <a href="{% url 'my_doctor_profile' %}" class="panel-item">
+                                <div class="panel-item__icon panel-item__icon--blue">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5zm0 2c-4.4 0-8 1.79-8 4v2h16v-2c0-2.21-3.6-4-8-4z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                </div>
+                                <div class="panel-item__body">
+                                    <strong data-page-i18n="{% if user.has_doctor_profile %}summary_item_4_title{% else %}summary_item_4_create_title{% endif %}">
+                                        {% if user.has_doctor_profile %}Doctor profile{% else %}Create profile{% endif %}
+                                    </strong>
+                                    <p data-page-i18n="summary_item_4_text">Manage profile details and patient-facing presentation.</p>
+                                </div>
+                                <svg class="panel-item__arrow" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="services section">
+    <div class="container">
+        <div class="services__grid">
+            <a href="{% url 'doctors_map' %}" class="service-card service-card--featured dashboard-reveal dashboard-reveal--card">
+                <div class="service-card__top">
+                    <div class="service-card__icon service-card__icon--blue">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="2"/></svg>
+                    </div>
+                    <span class="service-card__num">01</span>
+                </div>
+                <span class="service-card__tag" data-page-i18n="card_1_tag">Doctors</span>
+                <h3 data-page-i18n="card_1_title">Find the right specialist</h3>
+                <p data-page-i18n="card_1_text">Use the doctor map and profile details to find the best match for your needs.</p>
+                <div class="service-card__cta">
+                    <span data-page-i18n="card_cta">Open</span>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+            </a>
+
+            <a href="{% url 'appointments' %}" class="service-card dashboard-reveal dashboard-reveal--card">
+                <div class="service-card__top">
+                    <div class="service-card__icon service-card__icon--teal">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" stroke-width="2"/><path d="M16 2v4M8 2v4M3 10h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                    </div>
+                    <span class="service-card__num">02</span>
+                </div>
+                <span class="service-card__tag" data-page-i18n="card_2_tag">Appointments</span>
+                <h3 data-page-i18n="card_2_title">Keep visits organized</h3>
+                <p data-page-i18n="card_2_text">Track bookings, dates, status updates, and preparation notes in one clear interface.</p>
+                <div class="service-card__cta">
+                    <span data-page-i18n="card_cta">Open</span>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+            </a>
+
+            <a href="{% url 'ai_chat' %}" class="service-card dashboard-reveal dashboard-reveal--card">
+                <div class="service-card__top">
+                    <div class="service-card__icon service-card__icon--violet">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 2a10 10 0 1 0 10 10H12V2z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/></svg>
+                    </div>
+                    <span class="service-card__num">03</span>
+                </div>
+                <span class="service-card__tag" data-page-i18n="card_3_tag">AI Support</span>
+                <h3 data-page-i18n="card_3_title">AI-powered medical guidance</h3>
+                <p data-page-i18n="card_3_text">Ask about symptoms, visit preparation, or care steps in a saved conversation.</p>
+                <div class="service-card__cta">
+                    <span data-page-i18n="card_cta">Open</span>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+            </a>
+
+            <div class="service-note dashboard-reveal dashboard-reveal--note">
+                <div class="service-note__icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                </div>
+                <span class="service-note__label" data-page-i18n="note_label">Why this dashboard</span>
+                <h3 data-page-i18n="note_title">Less noise.<br>Clearer care.</h3>
+                <p data-page-i18n="note_text">Built around the flows patients and doctors actually use, with calm navigation between the key pages.</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/dashboard.js' %}"></script>
 {% endblock %}

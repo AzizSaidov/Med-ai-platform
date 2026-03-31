@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Med Tech | Book Appointment{% endblock %}
+
+{% block content %}
+<section class="portal-page">
+    <div class="container">
+        <div class="portal-grid portal-grid--two">
+            <div class="portal-stack">
+                <div class="portal-hero">
+                    <div class="portal-hero__content">
+                        <span class="section-kicker" data-page-i18n="book_kicker">Booking flow</span>
+                        <h1><span data-page-i18n="book_title_prefix">Book a visit with</span> {{ doctor.display_name }}.</h1>
+                        <p data-page-i18n="book_text">Complete the form below to schedule a visit while keeping the existing booking flow simple and dependable.</p>
+                    </div>
+                    <div class="portal-stat-grid">
+                        <div class="portal-stat-card">
+                            <span class="portal-stat-card__label" data-page-i18n="common_specialization">Specialization</span>
+                            <span class="portal-stat-card__value">{{ doctor.specialization }}</span>
+                        </div>
+                        {% if doctor.consultation_fee %}
+                            <div class="portal-stat-card">
+                                <span class="portal-stat-card__label" data-page-i18n="doctor_detail_fee">Consultation fee</span>
+                                <span class="portal-stat-card__value">${{ doctor.consultation_fee }}</span>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="portal-card">
+                    <div class="portal-card__header">
+                        <div>
+                            <h2 data-page-i18n="book_card_title">Appointment request</h2>
+                            <p data-page-i18n="book_card_text">Choose a future date and add any useful notes for the doctor.</p>
+                        </div>
+                    </div>
+
+                    <form method="post" class="chat-form">
+                        {% csrf_token %}
+                        {{ form|crispy }}
+                        <div class="action-row">
+                            <button type="submit" class="btn btn-primary" data-page-i18n="book_btn_confirm">Confirm booking</button>
+                            <a href="{% url 'doctors_map' %}" class="btn btn-secondary" data-page-i18n="book_btn_back">Back to doctors</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <aside class="portal-sidebar-card">
+                <h3 data-page-i18n="book_sidebar_title">Doctor snapshot</h3>
+                <p data-page-i18n="book_sidebar_text">Use this summary to confirm you are booking the right specialist before submitting the appointment.</p>
+                <div class="panel-list" style="margin-top: 18px;">
+                    <div class="panel-item">
+                        <strong>{{ doctor.display_name }}</strong>
+                        <p class="text-muted">{{ doctor.specialization }}</p>
+                    </div>
+                    <div class="panel-item">
+                        <strong data-page-i18n="common_status">Status</strong>
+                        <p class="text-muted">{{ doctor.get_status_display }}</p>
+                    </div>
+                    {% if doctor.address %}
+                        <div class="panel-item">
+                            <strong data-page-i18n="common_address">Address</strong>
+                            <p class="text-muted">{{ doctor.address }}</p>
+                        </div>
+                    {% endif %}
+                    {% if doctor.bio %}
+                        <div class="panel-item">
+                            <strong data-page-i18n="book_about_doctor">About this doctor</strong>
+                            <p class="text-muted">{{ doctor.bio }}</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </aside>
+        </div>
+    </div>
+</section>
+{% endblock %}

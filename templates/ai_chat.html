@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Med Tech | AI Assistant{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/ai_chat.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="portal-page ai-page">
+    <div class="container">
+        <div class="portal-stack">
+            <div class="portal-hero ai-hero">
+                <div class="portal-hero__content">
+                    <span class="section-kicker" data-page-i18n="kicker">AI Assistant</span>
+                    <h1 data-page-i18n="title">Your medical support conversation, with real history.</h1>
+                    <p data-page-i18n="text">Ask health-related questions, get structured guidance, and keep the conversation in one saved session tied to your account.</p>
+                </div>
+
+                <div class="portal-stat-grid">
+                    <div class="portal-stat-card ai-stat-card">
+                        <span class="portal-stat-card__label" data-page-i18n="messages_stored">Messages stored</span>
+                        <span class="portal-stat-card__value">{{ chat_messages|length }}</span>
+                    </div>
+                    <div class="portal-stat-card ai-stat-card">
+                        <span class="portal-stat-card__label" data-page-i18n="session_started">Session started</span>
+                        <span class="portal-stat-card__value">{{ session.started_at|date:"d M" }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chat-layout">
+                <div class="portal-card ai-thread-card">
+                    <div class="portal-card__header">
+                        <div>
+                            <h2 data-page-i18n="conversation_title">Conversation</h2>
+                            <p data-page-i18n="conversation_text">The assistant uses a real AI backend and keeps the discussion history inside your existing AIChatSession.</p>
+                        </div>
+                    </div>
+
+                    <div class="chat-thread">
+                        {% if chat_messages %}
+                            {% for message in chat_messages %}
+                                <article class="chat-bubble chat-bubble--{{ message.role }}">
+                                    <div class="chat-bubble__meta">
+                                        <span>{% if message.role == 'user' %}You{% else %}AI Assistant{% endif %}</span>
+                                        <span>{{ forloop.counter }}</span>
+                                    </div>
+                                    <div class="chat-bubble__content">{{ message.content }}</div>
+                                </article>
+                            {% endfor %}
+                        {% else %}
+                            <div class="empty-card">
+                                <div class="empty-card__icon">AI</div>
+                                <h3 data-page-i18n="empty_title">No messages yet</h3>
+                                <p data-page-i18n="empty_text">Start the first conversation with a symptom question, appointment preparation request, or general care topic.</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <aside class="portal-sidebar-card ai-sidebar">
+                    <h3 data-page-i18n="ask_title">Ask the assistant</h3>
+                    <p data-page-i18n="ask_text">Use the assistant for general information and next-step guidance, not as a replacement for an in-person medical diagnosis.</p>
+
+                    {% if available_ai_providers %}
+                        <div class="page-note ai-provider-note">
+                            <strong data-page-i18n="providers_title">Available providers</strong><br>
+                            {{ available_ai_providers|join:", " }}
+                        </div>
+                    {% endif %}
+
+                    <form method="post" class="chat-form ai-compose-form" style="margin-top: 18px;">
+                        {% csrf_token %}
+                        {{ form }}
+                        <button type="submit" class="btn btn-primary" data-page-i18n="send_button">Send message</button>
+                    </form>
+
+                    <form method="post" style="margin-top: 14px;">
+                        {% csrf_token %}
+                        <input type="hidden" name="action" value="clear">
+                        <button type="submit" class="btn btn-outline" style="width: 100%;" data-page-i18n="clear_button">Clear conversation</button>
+                    </form>
+
+                    <div class="chat-sidebar-note" data-page-i18n="warning_note">
+                        For urgent symptoms such as chest pain, breathing difficulty, heavy bleeding, stroke signs, or seizures, seek emergency care immediately.
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/ai_chat.js' %}"></script>
+{% endblock %}

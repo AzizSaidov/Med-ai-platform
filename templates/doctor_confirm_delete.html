@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}Med Tech | Delete Doctor Profile{% endblock %}
+
+{% block content %}
+<section class="portal-page">
+    <div class="container" style="max-width: 820px;">
+        <div class="portal-card">
+            <div class="portal-card__header">
+                <div>
+                    <span class="section-kicker" data-page-i18n="doctor_delete_kicker">Profile removal</span>
+                    <h2 data-page-i18n="doctor_delete_title">Delete this doctor profile?</h2>
+                    <p data-page-i18n="doctor_delete_text">This removes the doctor profile itself, so make sure you really want to take it out of the management flow.</p>
+                </div>
+            </div>
+
+            <div class="detail-grid">
+                <div class="detail-item">
+                    <span class="detail-item__label" data-page-i18n="common_doctor">Doctor</span>
+                    <div class="detail-item__value">{{ object.display_name }}</div>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-item__label" data-page-i18n="common_specialization">Specialization</span>
+                    <div class="detail-item__value">{{ object.specialization }}</div>
+                </div>
+            </div>
+
+            <form method="post" style="margin-top: 24px;">
+                {% csrf_token %}
+                <div class="action-row">
+                    <button type="submit" class="btn btn-danger" data-page-i18n="doctor_delete_confirm">Yes, delete profile</button>
+                    <a href="{% url 'doctor_detail' object.pk %}" class="btn btn-secondary" data-page-i18n="doctor_delete_keep">Keep profile</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}

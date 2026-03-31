@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Med Tech | Doctor Profile Form{% endblock %}
+
+{% block content %}
+<section class="portal-page">
+    <div class="container" style="max-width: 960px;">
+        <div class="portal-stack">
+            <div class="portal-hero">
+                <div class="portal-hero__content">
+                    <span class="section-kicker" data-page-i18n="doctor_form_kicker">Doctor setup</span>
+                    <h1>{% if object %}<span data-page-i18n="doctor_form_title_edit">Update your doctor profile</span>{% else %}<span data-page-i18n="doctor_form_title_create">Create your doctor profile</span>{% endif %}</h1>
+                    <p data-page-i18n="doctor_form_text">Keep the doctor-facing workspace polished with consistent profile details, public map data, and presentation-ready information.</p>
+                </div>
+                <div class="portal-stat-grid">
+                    <div class="portal-stat-card">
+                        <span class="portal-stat-card__label" data-page-i18n="doctor_form_workflow">Workflow</span>
+                        <span class="portal-stat-card__value">{% if object %}<span data-page-i18n="common_edit">Edit</span>{% else %}<span data-page-i18n="common_create">Create</span>{% endif %}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="portal-card">
+                <div class="portal-card__header">
+                    <div>
+                        <h2>{% if object %}<span data-page-i18n="doctor_form_card_title_edit">Doctor profile details</span>{% else %}<span data-page-i18n="doctor_form_card_title_create">Professional profile details</span>{% endif %}</h2>
+                        <p data-page-i18n="doctor_form_card_text">This form stays inside the existing CRUD flow while matching the rest of the Med Tech UI more closely.</p>
+                    </div>
+                </div>
+
+                <form method="post" enctype="multipart/form-data" class="chat-form">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    <div class="action-row">
+                        <button type="submit" class="btn btn-primary">{% if object %}<span data-page-i18n="common_save_changes">Save changes</span>{% else %}<span data-page-i18n="doctor_form_submit_create">Create profile</span>{% endif %}</button>
+                        <a href="{% if object %}{% url 'doctor_detail' object.pk %}{% else %}{% url 'doctor_list' %}{% endif %}" class="btn btn-secondary" data-page-i18n="common_cancel">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

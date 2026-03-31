@@ -1,0 +1,156 @@
+.auth-page {
+    padding: 56px 0 36px;
+}
+
+.confirm-shell {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 38px;
+    border-radius: 32px;
+    border: 1px solid var(--border);
+    background:
+        radial-gradient(circle at top left, rgba(125, 211, 252, 0.16), transparent 30%),
+        radial-gradient(circle at bottom right, rgba(79, 140, 255, 0.12), transparent 28%),
+        var(--surface);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    box-shadow: var(--shadow);
+    text-align: center;
+}
+
+.confirm-icon-wrap {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 18px;
+}
+
+.confirm-icon {
+    width: 82px;
+    height: 82px;
+    border-radius: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--primary), #76a9ff);
+    color: #fff;
+    font-size: 2rem;
+    font-weight: 800;
+    box-shadow:
+        0 16px 36px rgba(79, 140, 255, 0.28),
+        inset 0 1px 0 rgba(255,255,255,0.24);
+}
+
+.confirm-kicker {
+    display: inline-flex;
+    align-items: center;
+    min-height: 38px;
+    padding: 0 14px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.58);
+    border: 1px solid var(--border);
+    color: var(--primary);
+    font-size: 0.92rem;
+    font-weight: 700;
+    box-shadow: var(--shadow-soft);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+.confirm-title {
+    margin-top: 18px;
+    font-size: clamp(2.1rem, 4vw, 3.4rem);
+    line-height: 1.06;
+    letter-spacing: -0.05em;
+    font-weight: 800;
+}
+
+.confirm-text {
+    max-width: 640px;
+    margin: 18px auto 0;
+    color: var(--text-muted);
+    font-size: 1.04rem;
+    line-height: 1.82;
+}
+
+.confirm-points {
+    display: grid;
+    gap: 14px;
+    margin-top: 28px;
+    text-align: left;
+}
+
+.confirm-point {
+    padding: 18px 20px;
+    border-radius: 22px;
+    background: rgba(255,255,255,0.56);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-soft);
+}
+
+html[data-theme="dark"] .confirm-point {
+    background: rgba(24, 34, 48, 0.62);
+}
+
+.confirm-point strong {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 1rem;
+    line-height: 1.35;
+}
+
+.confirm-point p {
+    color: var(--text-muted);
+    line-height: 1.68;
+    font-size: 0.95rem;
+}
+
+.confirm-actions {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 28px;
+}
+
+.reveal-confirm {
+    opacity: 0;
+    transform: translateY(24px);
+    animation: confirmRise 0.8s ease forwards;
+}
+
+.reveal-confirm.delay-1 {
+    animation-delay: 0.08s;
+}
+
+@keyframes confirmRise {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 640px) {
+    .auth-page {
+        padding-top: 36px;
+    }
+
+    .confirm-shell {
+        padding: 24px;
+    }
+
+    .confirm-title {
+        font-size: 2rem;
+    }
+
+    .confirm-actions .btn {
+        width: 100%;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .reveal-confirm {
+        opacity: 1;
+        transform: none;
+        animation: none;
+    }
+}

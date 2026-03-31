@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+
+{% block title %}Med Tech | Doctor Profile{% endblock %}
+
+{% block content %}
+<section class="portal-page">
+    <div class="container">
+        <div class="portal-stack">
+            <div class="portal-hero">
+                <div class="portal-hero__content">
+                    <span class="section-kicker" data-page-i18n="doctor_detail_kicker">Doctor profile</span>
+                    <h1>{{ doctor.display_name }}</h1>
+                    <p data-page-i18n="doctor_detail_text">Manage your professional information, map visibility, and presentation details from one consistent workspace.</p>
+                    <div class="portal-hero__actions">
+                        <a href="{% url 'doctor_edit' doctor.pk %}" class="btn btn-primary" data-page-i18n="doctor_detail_btn_edit">Edit profile</a>
+                        <a href="{% url 'doctor_delete' doctor.pk %}" class="btn btn-outline" data-page-i18n="doctor_detail_btn_delete">Delete profile</a>
+                        <a href="{% url 'doctor_list' %}" class="btn btn-secondary" data-page-i18n="doctor_detail_btn_back">Back to profiles</a>
+                    </div>
+                </div>
+
+                <div class="portal-stat-grid">
+                    <div class="portal-stat-card">
+                        <span class="portal-stat-card__label" data-page-i18n="common_status">Status</span>
+                        <span class="portal-stat-card__value">{{ doctor.get_status_display }}</span>
+                    </div>
+                    <div class="portal-stat-card">
+                        <span class="portal-stat-card__label" data-page-i18n="common_experience">Experience</span>
+                        <span class="portal-stat-card__value">{{ doctor.experience }}y</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="portal-card">
+                <div class="portal-card__header">
+                    <div>
+                        <h2 data-page-i18n="doctor_detail_card_title">Professional details</h2>
+                        <p data-page-i18n="doctor_detail_card_text">These details power the public doctors experience and keep your management flow aligned with the rest of the product.</p>
+                    </div>
+                    <span class="status-{{ doctor.status }}">{{ doctor.get_status_display }}</span>
+                </div>
+
+                <div class="detail-grid">
+                    <div class="detail-item">
+                        <span class="detail-item__label" data-page-i18n="common_name">Name</span>
+                        <div class="detail-item__value">{{ doctor.display_name }}</div>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-item__label" data-page-i18n="common_specialization">Specialization</span>
+                        <div class="detail-item__value">{{ doctor.specialization }}</div>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-item__label" data-page-i18n="common_experience">Experience</span>
+                        <div class="detail-item__value">{{ doctor.experience }} <span data-page-i18n="doctor_detail_years">years</span></div>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-item__label" data-page-i18n="doctor_detail_rating">Rating</span>
+                        <div class="detail-item__value">{{ doctor.rating }}</div>
+                    </div>
+                    {% if doctor.consultation_fee %}
+                        <div class="detail-item">
+                            <span class="detail-item__label" data-page-i18n="doctor_detail_fee">Consultation fee</span>
+                            <div class="detail-item__value">${{ doctor.consultation_fee }}</div>
+                        </div>
+                    {% endif %}
+                    {% if doctor.phone %}
+                        <div class="detail-item">
+                            <span class="detail-item__label" data-page-i18n="common_phone">Phone</span>
+                            <div class="detail-item__value">{{ doctor.phone }}</div>
+                        </div>
+                    {% endif %}
+                    {% if doctor.address %}
+                        <div class="detail-item">
+                            <span class="detail-item__label" data-page-i18n="common_address">Address</span>
+                            <div class="detail-item__value">{{ doctor.address }}</div>
+                        </div>
+                    {% endif %}
+                    {% if doctor.latitude and doctor.longitude %}
+                        <div class="detail-item">
+                            <span class="detail-item__label" data-page-i18n="doctor_detail_coordinates">Map coordinates</span>
+                            <div class="detail-item__value">{{ doctor.latitude }}, {{ doctor.longitude }}</div>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="detail-rich" style="margin-top: 16px;">
+                    <strong data-page-i18n="doctor_detail_bio">Biography</strong><br>
+                    {% if doctor.bio %}
+                        {{ doctor.bio }}
+                    {% else %}
+                        <span data-page-i18n="doctor_detail_bio_empty">Add a concise bio to make your profile feel more complete on the public doctors page.</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

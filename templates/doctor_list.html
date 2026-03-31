@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+
+{% block title %}Med Tech | Doctor Profiles{% endblock %}
+
+{% block content %}
+<section class="portal-page">
+    <div class="container">
+        <div class="portal-stack">
+            <div class="portal-hero">
+                <div class="portal-hero__content">
+                    <span class="section-kicker" data-page-i18n="doctor_list_kicker">Doctor management</span>
+                    <h1>
+                        {% if request.user.is_superuser %}
+                            <span data-page-i18n="doctor_list_title_admin">Review and manage doctor profiles across the platform.</span>
+                        {% else %}
+                            <span data-page-i18n="doctor_list_title_doctor">Keep your doctor profile complete and ready for patients.</span>
+                        {% endif %}
+                    </h1>
+                    <p>
+                        {% if request.user.is_superuser %}
+                            <span data-page-i18n="doctor_list_text_admin">This directory stays hidden from patients and gives administrators a clean overview of every doctor workspace.</span>
+                        {% else %}
+                            <span data-page-i18n="doctor_list_text_doctor">This management area stays focused on your own doctor profile so the workflow feels simple and professional.</span>
+                        {% endif %}
+                    </p>
+                    <div class="portal-hero__actions">
+                        {% if can_create_doctor_profile %}
+                            <a href="{% url 'doctor_create' %}" class="btn btn-primary" data-page-i18n="doctor_list_btn_create">Create doctor profile</a>
+                        {% endif %}
+                        <a href="{% url 'doctors_map' %}" class="btn btn-secondary" data-page-i18n="doctor_list_btn_public">Open public doctors page</a>
+                    </div>
+                </div>
+
+                <div class="portal-stat-grid">
+                    <div class="portal-stat-card">
+                        <span class="portal-stat-card__label" data-page-i18n="doctor_list_stat_profiles">Profiles in view</span>
+                        <span class="portal-stat-card__value">{{ doctors|length }}</span>
+                    </div>
+                    <div class="portal-stat-card">
+                        <span class="portal-stat-card__label" data-page-i18n="doctor_list_stat_role">Role</span>
+                        <span class="portal-stat-card__value">
+                            {% if request.user.is_superuser %}
+                                <span data-page-i18n="role_admin">Admin</span>
+                            {% else %}
+                                <span data-page-i18n="role_doctor">Doctor</span>
+                            {% endif %}
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="portal-card">
+                <div class="portal-card__header">
+                    <div>
+                        <h2 data-page-i18n="doctor_list_cards_title">Doctor profiles</h2>
+                        <p data-page-i18n="doctor_list_cards_text">Each card gives quick access to detail, edit, and delete actions without exposing that UI to patients.</p>
+                    </div>
+                </div>
+
+                {% if doctors %}
+                    <div class="panel-list">
+                        {% for doctor in doctors %}
+                            <article class="profile-card">
+                                <div class="profile-card__top">
+                                    <div class="profile-card__person">
+                                        {% if doctor.photo %}
+                                            <img src="{{ doctor.photo.url }}" alt="{{ doctor.display_name }}" class="profile-avatar">
+                                        {% else %}
+                                            <div class="profile-avatar--placeholder">{{ doctor.user.display_name|slice:":1"|upper }}</div>
+                                        {% endif %}
+                                        <div>
+                                            <h3>{{ doctor.display_name }}</h3>
+                                            <p>{{ doctor.specialization }}</p>
+                                        </div>
+                                    </div>
+                                    <span class="status-{{ doctor.status }}">{{ doctor.get_status_display }}</span>
+                                </div>
+
+                                <div class="chip-row">
+                                    <span class="chip">{{ doctor.experience }} <span data-page-i18n="doctor_list_years_experience">years experience</span></span>
+                                    {% if doctor.consultation_fee %}
+                                        <span class="chip">${{ doctor.consultation_fee }} <span data-page-i18n="doctor_list_consultation">consultation</span></span>
+                                    {% endif %}
+                                    {% if doctor.phone %}
+                                        <span class="chip">{{ doctor.phone }}</span>
+                                    {% endif %}
+                                </div>
+
+                                {% if doctor.bio %}
+                                    <div class="detail-rich">{{ doctor.bio }}</div>
+                                {% endif %}
+
+                                <div class="profile-actions">
+                                    <a href="{% url 'doctor_detail' doctor.pk %}" class="btn btn-primary btn-sm" data-page-i18n="doctor_list_btn_open">Open profile</a>
+                                    <a href="{% url 'doctor_edit' doctor.pk %}" class="btn btn-secondary btn-sm" data-page-i18n="doctor_list_btn_edit">Edit</a>
+                                    <a href="{% url 'doctor_delete' doctor.pk %}" class="btn btn-outline btn-sm" data-page-i18n="doctor_list_btn_delete">Delete</a>
+                                </div>
+                            </article>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="empty-card">
+                        <div class="empty-card__icon">DR</div>
+                        <h3 data-page-i18n="doctor_list_empty_title">No doctor profile yet</h3>
+                        <p data-page-i18n="doctor_list_empty_text">Create a doctor profile to unlock profile management, appointment context, and a cleaner doctor-side workflow.</p>
+                        {% if can_create_doctor_profile %}
+                            <div class="action-row">
+                                <a href="{% url 'doctor_create' %}" class="btn btn-primary" data-page-i18n="doctor_list_btn_create">Create doctor profile</a>
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

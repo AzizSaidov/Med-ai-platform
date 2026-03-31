@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block title %}Med Tech | Appointment Details{% endblock %}
+
+{% block content %}
+<section class="portal-page">
+    <div class="container">
+        <div class="portal-stack">
+            <div class="portal-hero">
+                <div class="portal-hero__content">
+                    <span class="section-kicker" data-page-i18n="appointment_detail_kicker">Appointment details</span>
+                    <h1 data-page-i18n="appointment_detail_title">Everything important about this visit, in one clear view.</h1>
+                    <p data-page-i18n="appointment_detail_text">Review the current status, doctor information, timing, and notes without exposing actions that do not belong to your role.</p>
+                    <div class="portal-hero__actions">
+                        {% if can_edit_appointment %}
+                            <a href="{% url 'appointment_edit' appointment.pk %}" class="btn btn-primary" data-page-i18n="appointment_detail_btn_edit">Edit appointment</a>
+                        {% endif %}
+                        {% if can_cancel_appointment and appointment.status != 'cancelled' %}
+                            <a href="{% url 'appointment_delete' appointment.pk %}" class="btn btn-outline" data-page-i18n="appointment_detail_btn_cancel">Cancel appointment</a>
+                        {% endif %}
+                        <a href="{% url 'appointments' %}" class="btn btn-secondary" data-page-i18n="appointment_detail_btn_back">Back to appointments</a>
+                    </div>
+                </div>
+
+                <div class="portal-stat-grid">
+                    <div class="portal-stat-card">
+                        <span class="portal-stat-card__label" data-page-i18n="common_status">Status</span>
+                        <span class="portal-stat-card__value">{{ appointment.get_status_display }}</span>
+                    </div>
+                    <div class="portal-stat-card">
+                        <span class="portal-stat-card__label" data-page-i18n="appointment_detail_scheduled_for">Scheduled for</span>
+                        <span class="portal-stat-card__value">{{ appointment.scheduled_at|date:"d M" }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="portal-card">
+                <div class="portal-card__header">
+                    <div>
+                        <h2 data-page-i18n="appointment_detail_card_title">Visit summary</h2>
+                        <p data-page-i18n="appointment_detail_card_text">Useful context for patients, doctors, and administrators.</p>
+                    </div>
+                    <span class="status-{{ appointment.status }}">{{ appointment.get_status_display }}</span>
+                </div>
+
+                <div class="detail-grid">
+                    <div class="detail-item">
+                        <span class="detail-item__label" data-page-i18n="common_doctor">Doctor</span>
+                        <div class="detail-item__value">{{ appointment.doctor_name }}</div>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-item__label" data-page-i18n="common_patient">Patient</span>
+                        <div class="detail-item__value">{{ appointment.patient_name }}</div>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-item__label" data-page-i18n="common_specialization">Specialization</span>
+                        <div class="detail-item__value">{{ appointment.doctor.specialization }}</div>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-item__label" data-page-i18n="common_date_time">Date and time</span>
+                        <div class="detail-item__value">{{ appointment.scheduled_at|date:"d M Y, H:i" }}</div>
+                    </div>
+                </div>
+
+                {% if appointment.doctor.address %}
+                    <div class="detail-rich" style="margin-top: 16px;">
+                        <strong data-page-i18n="common_address">Address</strong><br>
+                        {{ appointment.doctor.address }}
+                    </div>
+                {% endif %}
+
+                <div class="detail-rich" style="margin-top: 16px;">
+                    <strong data-page-i18n="common_notes">Notes</strong><br>
+                    {% if appointment.notes %}
+                        {{ appointment.notes }}
+                    {% else %}
+                        <span data-page-i18n="appointment_detail_notes_empty">No additional notes were added for this appointment.</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

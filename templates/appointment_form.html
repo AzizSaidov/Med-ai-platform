@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Med Tech | Edit Appointment{% endblock %}
+
+{% block content %}
+<section class="portal-page">
+    <div class="container" style="max-width: 880px;">
+        <div class="portal-stack">
+            <div class="portal-hero">
+                <div class="portal-hero__content">
+                    <span class="section-kicker" data-page-i18n="appointment_form_kicker">Appointment update</span>
+                    <h1 data-page-i18n="appointment_form_title">Adjust timing, notes, and appointment status with care.</h1>
+                    <p data-page-i18n="appointment_form_text">This form stays limited to doctor and admin actions so patient-facing controls remain clean and safe.</p>
+                </div>
+                <div class="portal-stat-grid">
+                    <div class="portal-stat-card">
+                        <span class="portal-stat-card__label" data-page-i18n="common_doctor">Doctor</span>
+                        <span class="portal-stat-card__value">{{ object.doctor_name }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="portal-card">
+                <div class="portal-card__header">
+                    <div>
+                        <h2 data-page-i18n="appointment_form_card_title">Edit appointment</h2>
+                        <p data-page-i18n="appointment_form_card_text">Update the booking details without breaking the existing appointment flow.</p>
+                    </div>
+                </div>
+
+                <form method="post" class="chat-form">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    <div class="action-row">
+                        <button type="submit" class="btn btn-primary" data-page-i18n="common_save_changes">Save changes</button>
+                        <a href="{% url 'appointment_detail' object.pk %}" class="btn btn-secondary" data-page-i18n="appointment_form_btn_back">Back to details</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

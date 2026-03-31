@@ -1,16 +1,125 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Med Tech | Register{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/register.css' %}">
+{% endblock %}
 
 {% block content %}
-<h1>Register</h1>
+<section class="auth-page">
+    <div class="container">
+        <div class="auth-shell">
+            <div class="auth-info reveal-auth delay-1">
+                <span class="auth-kicker" data-page-i18n="kicker">Create your account</span>
 
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Create account</button>
-</form>
+                <h1 class="auth-title" data-page-i18n="title">
+                    Join Med Tech and access modern healthcare tools.
+                </h1>
 
-<p>
-    Already have an account?
-    <a href="{% url 'login' %}">Login</a>
-</p>
+                <p class="auth-text" data-page-i18n="text">
+                    Register once to use AI guidance, doctor search, appointment booking, and a cleaner digital healthcare experience.
+                </p>
+
+                <div class="auth-points">
+                    <div class="auth-point">
+                        <div class="auth-point-icon">AI</div>
+                        <div>
+                            <strong data-page-i18n="point1_title">Smart assistance</strong>
+                            <p data-page-i18n="point1_text">Get quick help and simple explanations through the AI assistant.</p>
+                        </div>
+                    </div>
+
+                    <div class="auth-point">
+                        <div class="auth-point-icon">MD</div>
+                        <div>
+                            <strong data-page-i18n="point2_title">Doctor discovery</strong>
+                            <p data-page-i18n="point2_text">Search doctors and clinics in a calmer and more modern interface.</p>
+                        </div>
+                    </div>
+
+                    <div class="auth-point">
+                        <div class="auth-point-icon">AP</div>
+                        <div>
+                            <strong data-page-i18n="point3_title">Easy booking</strong>
+                            <p data-page-i18n="point3_text">Keep appointments and healthcare steps in one organized place.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="auth-card reveal-auth delay-2">
+                <div class="auth-card-top">
+                    <h2 data-page-i18n="form_title">Register</h2>
+                    <p data-page-i18n="form_text">
+                        Fill in your details to create a new account.
+                    </p>
+                </div>
+
+                <form method="post" class="auth-form" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    {% if form.non_field_errors %}
+                        <div class="non-field-wrap">
+                            <ul class="non-field-errors">
+                                {% for error in form.non_field_errors %}
+                                    <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    {% endif %}
+
+                    {% for field in form %}
+                        <div class="form-group">
+                        <label for="{{ field.id_for_label }}">
+                            {% if field.name == 'username' %}
+                                <span data-page-i18n="username">Username</span>
+                            {% elif field.name == 'email' %}
+                                <span data-page-i18n="email">Email</span>
+                            {% elif field.name == 'phone' %}
+                                <span data-page-i18n="phone">Phone</span>
+                            {% elif field.name == 'avatar' %}
+                                <span data-page-i18n="avatar">Avatar</span>
+                            {% elif field.name == 'password' %}
+                                <span data-page-i18n="password1">Password</span>
+                            {% elif field.name == 'password_confirm' %}
+                                <span data-page-i18n="password2">Confirm password</span>
+                            {% elif field.name == 'first_name' %}
+                                <span data-page-i18n="first_name">First name</span>
+                            {% elif field.name == 'last_name' %}
+                                <span data-page-i18n="last_name">Last name</span>
+                            {% else %}
+                                {{ field.label }}
+                            {% endif %}
+                        </label>
+                            {{ field }}
+
+                            {% if field.help_text %}
+                                <small class="field-help">{{ field.help_text|safe }}</small>
+                            {% endif %}
+
+                            {% if field.errors %}
+                                <ul class="field-errors">
+                                    {% for error in field.errors %}
+                                        <li>{{ error }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+
+                    <button type="submit" class="auth-submit" data-page-i18n="submit">Create account</button>
+                </form>
+
+                <div class="auth-bottom">
+                    <span data-page-i18n="bottom_text">Already have an account?</span>
+                    <a href="{% url 'login' %}" class="auth-link" data-page-i18n="login_link">Login</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="{% static 'js/register.js' %}"></script>
 {% endblock %}
