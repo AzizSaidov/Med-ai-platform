@@ -22,7 +22,14 @@
             last_name: "Last name",
             submit: "Create account",
             bottom_text: "Already have an account?",
-            login_link: "Login"
+            login_link: "Login",
+            first_name_placeholder: "Enter your first name",
+            last_name_placeholder: "Enter your last name",
+            username_placeholder: "Enter your username",
+            email_placeholder: "Enter your email",
+            phone_placeholder: "Enter your phone number",
+            password_placeholder: "Enter password",
+            password_confirm_placeholder: "Confirm password",
         },
         ru: {
             kicker: "Создайте аккаунт",
@@ -46,27 +53,44 @@
             last_name: "Фамилия",
             submit: "Создать аккаунт",
             bottom_text: "Уже есть аккаунт?",
-            login_link: "Войти"
-        }
+            login_link: "Войти",
+            first_name_placeholder: "Введите имя",
+            last_name_placeholder: "Введите фамилию",
+            username_placeholder: "Введите имя пользователя",
+            email_placeholder: "Введите email",
+            phone_placeholder: "Введите номер телефона",
+            password_placeholder: "Введите пароль",
+            password_confirm_placeholder: "Подтвердите пароль",
+        },
     };
 
     function applyRegisterLanguage() {
-        const lang = document.documentElement.getAttribute('data-lang') || 'en';
+        const lang = document.documentElement.getAttribute("data-lang") || "en";
         const dict = pageTranslations[lang] || pageTranslations.en;
 
-        document.querySelectorAll('[data-page-i18n]').forEach(el => {
-            const key = el.getAttribute('data-page-i18n');
+        document.querySelectorAll("[data-page-i18n]").forEach((el) => {
+            const key = el.getAttribute("data-page-i18n");
             if (dict[key]) {
                 el.textContent = dict[key];
             }
         });
+
+        const placeholders = {
+            id_first_name: dict.first_name_placeholder,
+            id_last_name: dict.last_name_placeholder,
+            id_username: dict.username_placeholder,
+            id_email: dict.email_placeholder,
+            id_phone: dict.phone_placeholder,
+            id_password: dict.password_placeholder,
+            id_password_confirm: dict.password_confirm_placeholder,
+        };
+
+        Object.entries(placeholders).forEach(([id, value]) => {
+            const field = document.getElementById(id);
+            if (field) field.placeholder = value;
+        });
     }
 
-    document.addEventListener('DOMContentLoaded', applyRegisterLanguage);
-
-    document.querySelectorAll('[data-lang-btn]').forEach(btn => {
-        btn.addEventListener('click', () => {
-            setTimeout(applyRegisterLanguage, 0);
-        });
-    });
+    document.addEventListener("DOMContentLoaded", applyRegisterLanguage);
+    document.addEventListener("app:languageChanged", applyRegisterLanguage);
 })();

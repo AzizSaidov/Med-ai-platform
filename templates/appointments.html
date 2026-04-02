@@ -13,17 +13,27 @@
         <div class="appointments-hero reveal-ap delay-1">
             <div class="appointments-hero-copy">
                 <span class="appointments-kicker">
-                    {% if request.user.is_doctor %}<span data-page-i18n="kicker_doctor">Appointment workspace</span>{% else %}<span data-page-i18n="kicker">Appointments</span>{% endif %}
+                    {% if request.user.is_superuser %}
+                        <span data-page-i18n="kicker_admin">Platform appointments</span>
+                    {% elif request.user.is_doctor %}
+                        <span data-page-i18n="kicker_doctor">Appointment workspace</span>
+                    {% else %}
+                        <span data-page-i18n="kicker">Appointments</span>
+                    {% endif %}
                 </span>
                 <h1 class="appointments-title">
-                    {% if request.user.is_doctor %}
+                    {% if request.user.is_superuser %}
+                        <span data-page-i18n="title_admin">All appointments across the platform, ready for control.</span>
+                    {% elif request.user.is_doctor %}
                         <span data-page-i18n="title_doctor">Related appointments, ready for review.</span>
                     {% else %}
                         <span data-page-i18n="title">Your appointments, all in one place.</span>
                     {% endif %}
                 </h1>
                 <p class="appointments-text">
-                    {% if request.user.is_doctor %}
+                    {% if request.user.is_superuser %}
+                        <span data-page-i18n="text_admin">Review appointments from every doctor, monitor patient flow, and keep platform scheduling under control.</span>
+                    {% elif request.user.is_doctor %}
                         <span data-page-i18n="text_doctor">Review appointments linked to your doctor profile, update details when needed, and keep patient communication clear.</span>
                     {% else %}
                         <span data-page-i18n="text">View upcoming visits, completed appointments, and important details in a calmer and more organized interface.</span>
@@ -57,8 +67,8 @@
                                 <div class="appointment-main">
                                     <div class="appointment-date">
                                         <span class="date-day">{{ appointment.scheduled_at|date:"d" }}</span>
-                                        <span class="date-meta">{{ appointment.scheduled_at|date:"M Y" }}</span>
-                                        <span class="date-time">{{ appointment.scheduled_at|date:"H:i" }}</span>
+                                        <span class="date-meta" data-local-date="{{ appointment.scheduled_at|date:'c' }}" data-local-format="month-year">{{ appointment.scheduled_at|date:"M Y" }}</span>
+                                        <span class="date-time" data-local-date="{{ appointment.scheduled_at|date:'c' }}" data-local-format="time">{{ appointment.scheduled_at|date:"H:i" }}</span>
                                     </div>
 
                                     <div class="appointment-info">
@@ -71,7 +81,7 @@
                                             </div>
 
                                             <span class="status-{{ appointment.status }}">
-                                                {{ appointment.get_status_display }}
+                                                <span data-status="{{ appointment.status }}">{{ appointment.get_status_display }}</span>
                                             </span>
                                         </div>
 
@@ -119,14 +129,18 @@
                 <div class="empty-icon">AP</div>
                 <h2 data-page-i18n="empty_title">No appointments yet.</h2>
                 <p>
-                    {% if request.user.is_doctor %}
+                    {% if request.user.is_superuser %}
+                        <span data-page-i18n="empty_text_admin">There are no active appointments on the platform yet. New bookings from patients and doctors will appear here for control.</span>
+                    {% elif request.user.is_doctor %}
                         <span data-page-i18n="empty_text_doctor">Appointments connected to your doctor profile will appear here as soon as patients start booking.</span>
                     {% else %}
                         <span data-page-i18n="empty_text">You do not have any booked appointments right now. Start by exploring doctors and booking your first visit.</span>
                     {% endif %}
                 </p>
                 <div class="empty-actions">
-                    {% if request.user.is_doctor %}
+                    {% if request.user.is_superuser %}
+                        <a href="{% url 'doctor_list' %}" class="btn btn-primary" data-page-i18n="btn_open_profiles">Open doctor profiles</a>
+                    {% elif request.user.is_doctor %}
                         <a href="{% url 'my_doctor_profile' %}" class="btn btn-primary" data-page-i18n="btn_open_profile">Open doctor profile</a>
                     {% else %}
                         <a href="{% url 'doctors_map' %}" class="btn btn-primary" data-page-i18n="btn_find_doctors">Find doctors</a>

@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}403 | Med Tech{% endblock %}
+
+{% block content %}
+<section class="portal-page">
+    <div class="container portal-stack">
+        <div class="portal-hero motion-reveal error-hero">
+            <div class="portal-hero__content">
+                <span class="eyebrow-pill" data-page-i18n="error_403_kicker">Access denied</span>
+                <h1 data-page-i18n="error_403_title">This area is not available for your account.</h1>
+                <p data-page-i18n="error_403_text">
+                    The page exists, but your current role does not have permission to open it. Return to a safe section of Med Tech and continue from there.
+                </p>
+                <div class="portal-hero__actions">
+                    <a href="{% if user.is_authenticated %}{% url 'dashboard' %}{% else %}{% url 'login' %}{% endif %}" class="btn btn-primary" data-page-i18n="error_btn_home">Go to dashboard</a>
+                    <a href="{% url 'doctors_map' %}" class="btn btn-secondary" data-page-i18n="error_btn_doctors">Browse doctors</a>
+                </div>
+            </div>
+            <div class="portal-stat-grid">
+                <div class="portal-stat-card">
+                    <span class="portal-stat-card__label" data-page-i18n="error_code_label">Error code</span>
+                    <span class="portal-stat-card__value">403</span>
+                </div>
+                <div class="portal-stat-card">
+                    <span class="portal-stat-card__label" data-page-i18n="error_tip_label">Tip</span>
+                    <span class="portal-stat-card__value error-tip" data-page-i18n="error_403_tip">Try a page that matches your role.</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

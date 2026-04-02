@@ -8,5 +8,8 @@ urlpatterns = [
     path('', include('core.urls')),
 ]
 
+handler403 = "core.views.custom_permission_denied"
+handler404 = "core.views.custom_page_not_found"
+
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

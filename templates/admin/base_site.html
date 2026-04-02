@@ -1,0 +1,33 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block title %}{% if subtitle %}{{ subtitle }} | {% endif %}{{ title }} | Med Tech Админка{% endblock %}
+
+{% block extrastyle %}
+{{ block.super }}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/admin.css' %}">
+{% endblock %}
+
+{% block branding %}
+<div class="medtech-admin-brand">
+    <div class="medtech-admin-brand__mark" aria-hidden="true">
+        <svg width="18" height="18" viewBox="0 0 22 22" fill="none">
+            <path d="M11 2v18M2 11h18M6 6l10 10M16 6L6 16" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+        </svg>
+    </div>
+    <div class="medtech-admin-brand__copy">
+        <span class="medtech-admin-brand__title">Med Tech Админка</span>
+        <span class="medtech-admin-brand__subtitle">Управление врачами, записями, AI и Telegram</span>
+    </div>
+</div>
+{% endblock %}
+
+{% block usertools %}
+{{ block.super }}
+{% if has_permission %}
+<a href="/" class="medtech-admin-link">Открыть сайт</a>
+{% endif %}
+{% endblock %}

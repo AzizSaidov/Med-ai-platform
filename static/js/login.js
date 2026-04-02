@@ -20,16 +20,18 @@
             forgot: "Forgot password?",
             submit: "Sign in",
             bottom_text: "Don't have an account?",
-            register_link: "Register"
+            register_link: "Register",
+            username_placeholder: "Enter your username",
+            password_placeholder: "Enter your password",
         },
         ru: {
             kicker: "С возвращением",
-            title: "Войдите и продолжайте свой путь в Med Tech.",
+            title: "Войдите и продолжите свой путь в Med Tech.",
             text: "Откройте поиск врачей, ИИ-помощника и инструменты записи через одну чистую и удобную платформу.",
             point1_title: "Быстрая помощь",
-            point1_text: "Используйте ИИ-помощника для быстрых подсказок и более понятных шагов.",
+            point1_text: "Используйте ИИ-помощника для быстрых подсказок и более понятных следующих шагов.",
             point2_title: "Доступ к врачам",
-            point2_text: "Ищите специалистов и клиники через удобный интерфейс.",
+            point2_text: "Ищите специалистов и клиники через спокойный и удобный интерфейс.",
             point3_title: "Записи",
             point3_text: "Держите визиты и запись на приём в одном месте.",
             stat_doctors: "Специалистов",
@@ -42,18 +44,27 @@
             forgot: "Забыли пароль?",
             submit: "Войти",
             bottom_text: "Нет аккаунта?",
-            register_link: "Зарегистрироваться"
-        }
+            register_link: "Зарегистрироваться",
+            username_placeholder: "Введите имя пользователя",
+            password_placeholder: "Введите пароль",
+        },
     };
 
     function applyLoginLanguage() {
         const lang = document.documentElement.getAttribute("data-lang") || "en";
         const dict = pageTranslations[lang] || pageTranslations.en;
 
-        document.querySelectorAll("[data-page-i18n]").forEach(el => {
+        document.querySelectorAll("[data-page-i18n]").forEach((el) => {
             const key = el.getAttribute("data-page-i18n");
-            if (dict[key]) el.textContent = dict[key];
+            if (dict[key]) {
+                el.textContent = dict[key];
+            }
         });
+
+        const username = document.getElementById("id_username");
+        const password = document.getElementById("id_password");
+        if (username) username.placeholder = dict.username_placeholder;
+        if (password) password.placeholder = dict.password_placeholder;
     }
 
     document.addEventListener("DOMContentLoaded", applyLoginLanguage);

@@ -11,6 +11,7 @@ from .views import (
     DoctorListView,
     DoctorUpdateView,
     ai_chat,
+    about_page,
     book_appointment,
     confirm_email,
     dashboard,
@@ -20,8 +21,9 @@ from .views import (
     logout_view,
     my_doctor_profile,
     register,
+    telegram_bot_redirect,
+    telegram_connect,
 )
-
 
 
 urlpatterns = [
@@ -35,7 +37,10 @@ urlpatterns = [
     path('email-confirmation-sent/', email_confirmation_sent, name='email_confirmation_sent'),
 
     path('doctors/', doctors_map, name='doctors_map'),
+    path('about/', about_page, name='about'),
     path('chat/', ai_chat, name='ai_chat'),
+    path('telegram/', telegram_bot_redirect, name='telegram_bot'),
+    path('telegram/connect/', telegram_connect, name='telegram_connect'),
     path('book/<int:doctor_id>/', book_appointment, name='book_appointment'),
     path('doctor-profile/me/', my_doctor_profile, name='my_doctor_profile'),
 

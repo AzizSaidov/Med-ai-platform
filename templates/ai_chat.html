@@ -25,26 +25,49 @@
                     </div>
                     <div class="portal-stat-card ai-stat-card">
                         <span class="portal-stat-card__label" data-page-i18n="session_started">Session started</span>
-                        <span class="portal-stat-card__value">{{ session.started_at|date:"d M" }}</span>
+                        <span class="portal-stat-card__value" data-local-date="{{ session.started_at|date:'c' }}" data-local-format="day-month">{{ session.started_at|date:"d M" }}</span>
                     </div>
                 </div>
             </div>
 
             <div class="chat-layout">
                 <div class="portal-card ai-thread-card">
-                    <div class="portal-card__header">
-                        <div>
-                            <h2 data-page-i18n="conversation_title">Conversation</h2>
-                            <p data-page-i18n="conversation_text">The assistant uses a real AI backend and keeps the discussion history inside your existing AIChatSession.</p>
+                    <div class="portal-card__header ai-thread-card__header">
+                        <div class="ai-thread-header">
+                            <div class="ai-thread-heading">
+                                <h2 data-page-i18n="conversation_title">Conversation</h2>
+                            </div>
+                            <p class="ai-thread-subtitle">
+                                <span class="ai-thread-subtitle__icon" aria-hidden="true">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                                        <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/>
+                                        <path d="M12 8v4M12 16h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                    </svg>
+                                </span>
+                                <span data-page-i18n="conversation_text">The assistant uses a real AI backend and keeps the discussion history inside your existing AIChatSession.</span>
+                            </p>
                         </div>
+                        <form method="post" class="ai-thread-action-form ai-thread-action-form--corner">
+                            {% csrf_token %}
+                            <input type="hidden" name="action" value="clear">
+                            <button type="submit" class="ai-thread-action ai-thread-action--sweep" aria-label="Clear conversation">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <path d="M5 19h7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                    <path d="M13.5 6.5l4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                    <path d="M8 16.5l6.5-6.5 2.8 2.8-6.5 6.5H8v-2.8z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                                    <path d="M15.8 4.2l1.5-1.5a1.7 1.7 0 0 1 2.4 0l1.6 1.6a1.7 1.7 0 0 1 0 2.4l-1.5 1.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                                <span class="ai-visually-hidden" data-page-i18n="clear_button">Clear conversation</span>
+                            </button>
+                        </form>
                     </div>
 
                     <div class="chat-thread">
-                        {% if chat_messages %}
-                            {% for message in chat_messages %}
+                        {% if chat_messages_display %}
+                            {% for message in chat_messages_display %}
                                 <article class="chat-bubble chat-bubble--{{ message.role }}">
                                     <div class="chat-bubble__meta">
-                                        <span>{% if message.role == 'user' %}You{% else %}AI Assistant{% endif %}</span>
+                                        <span data-message-role="{{ message.role }}">{% if message.role == 'user' %}You{% else %}AI Assistant{% endif %}</span>
                                         <span>{{ forloop.counter }}</span>
                                     </div>
                                     <div class="chat-bubble__content">{{ message.content }}</div>
@@ -77,14 +100,22 @@
                         <button type="submit" class="btn btn-primary" data-page-i18n="send_button">Send message</button>
                     </form>
 
-                    <form method="post" style="margin-top: 14px;">
-                        {% csrf_token %}
-                        <input type="hidden" name="action" value="clear">
-                        <button type="submit" class="btn btn-outline" style="width: 100%;" data-page-i18n="clear_button">Clear conversation</button>
-                    </form>
-
-                    <div class="chat-sidebar-note" data-page-i18n="warning_note">
-                        For urgent symptoms such as chest pain, breathing difficulty, heavy bleeding, stroke signs, or seizures, seek emergency care immediately.
+                    <div class="chat-sidebar-note ai-tips-note" aria-live="polite">
+                        <div class="ai-tips-note__header">
+                            <span class="ai-tips-note__icon" aria-hidden="true">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                                    <path d="M12 3l7.5 4.2v9.6L12 21 4.5 16.8V7.2L12 3z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                                    <path d="M12 8v4M12 16h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                            </span>
+                            <strong data-page-i18n="tips_title">Smart care tips</strong>
+                        </div>
+                        <p class="ai-tips-note__text" data-ai-tip-text>
+                            For urgent symptoms such as chest pain, breathing difficulty, heavy bleeding, stroke signs, or seizures, seek emergency care immediately.
+                        </p>
+                        <div class="ai-tips-note__progress" aria-hidden="true">
+                            <span class="ai-tips-note__progress-bar" data-ai-tip-progress></span>
+                        </div>
                     </div>
                 </aside>
             </div>

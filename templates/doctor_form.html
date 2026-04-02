@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load crispy_forms_tags %}
+{% load crispy_forms_tags static %}
 
 {% block title %}Med Tech | Doctor Profile Form{% endblock %}
 
@@ -41,4 +41,8 @@
         </div>
     </div>
 </section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/doctor_form.js' %}"></script>
 {% endblock %}

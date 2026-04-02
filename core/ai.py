@@ -1,3 +1,6 @@
+import os
+from contextlib import contextmanager
+
 from django.conf import settings
 
 
@@ -12,6 +15,11 @@ class AIServiceError(Exception):
 DEVELOPER_PROMPT = """
 You are the Med Tech AI Assistant inside a Django medical platform demo.
 Provide calm, concise, general medical guidance for patients.
+Always answer in the same language as the user's latest message.
+Do not switch languages unless the user explicitly asks you to do so.
+Do not confuse Tajik with Uzbek. If the user writes in Tajik, answer in Tajik.
+If the user writes in Uzbek, answer in Uzbek. If you are unsure, keep the
+same wording style and script as the user's message instead of guessing.
 Do not claim to diagnose, prescribe, or replace a licensed clinician.
 If the user asks about politics, war, news, entertainment, coding, or any
 clearly non-medical topic, do not answer that topic. Briefly explain that you
@@ -26,6 +34,39 @@ When helpful, structure replies with:
 3. When to contact a doctor urgently
 Keep the tone supportive and practical.
 """.strip()
+
+
+_PROXY_ENV_KEYS = [
+    "HTTP_PROXY",
+    "HTTPS_PROXY",
+    "ALL_PROXY",
+    "http_proxy",
+    "https_proxy",
+    "all_proxy",
+]
+_BROKEN_LOCAL_PROXY_VALUES = {
+    "http://127.0.0.1:9",
+    "https://127.0.0.1:9",
+    "http://localhost:9",
+    "https://localhost:9",
+}
+
+
+@contextmanager
+def _without_broken_local_proxy():
+    removed = {}
+
+    for key in _PROXY_ENV_KEYS:
+        value = os.getenv(key)
+        if value and value.strip().lower() in _BROKEN_LOCAL_PROXY_VALUES:
+            removed[key] = value
+            os.environ.pop(key, None)
+
+    try:
+        yield
+    finally:
+        for key, value in removed.items():
+            os.environ[key] = value
 
 
 def _build_messages(history, limit):
@@ -64,11 +105,12 @@ def _generate_with_openai(history):
     except ImportError as exc:
         raise AIConfigurationError("The OpenAI SDK is not installed.") from exc
 
-    client = OpenAI(api_key=settings.OPENAI_API_KEY)
-    response = client.responses.create(
-        model=settings.OPENAI_MODEL,
-        input=[{"role": "developer", "content": DEVELOPER_PROMPT}] + _build_messages(history, settings.OPENAI_MAX_CHAT_HISTORY),
-    )
+    with _without_broken_local_proxy():
+        client = OpenAI(api_key=settings.OPENAI_API_KEY)
+        response = client.responses.create(
+            model=settings.OPENAI_MODEL,
+            input=[{"role": "developer", "content": DEVELOPER_PROMPT}] + _build_messages(history, settings.OPENAI_MAX_CHAT_HISTORY),
+        )
     return _extract_openai_response_text(response)
 
 
@@ -81,17 +123,18 @@ def _generate_with_xai(history):
     except ImportError as exc:
         raise AIConfigurationError("The OpenAI SDK is not installed for xAI fallback.") from exc
 
-    client = OpenAI(
-        api_key=settings.XAI_API_KEY,
-        base_url="https://api.x.ai/v1",
-    )
-    response = client.chat.completions.create(
-        model=settings.XAI_MODEL,
-        messages=[
-            {"role": "system", "content": DEVELOPER_PROMPT},
-            *_build_messages(history, settings.OPENAI_MAX_CHAT_HISTORY),
-        ],
-    )
+    with _without_broken_local_proxy():
+        client = OpenAI(
+            api_key=settings.XAI_API_KEY,
+            base_url="https://api.x.ai/v1",
+        )
+        response = client.chat.completions.create(
+            model=settings.XAI_MODEL,
+            messages=[
+                {"role": "system", "content": DEVELOPER_PROMPT},
+                *_build_messages(history, settings.OPENAI_MAX_CHAT_HISTORY),
+            ],
+        )
 
     if not response.choices:
         return ""
@@ -118,24 +161,24 @@ def _generate_with_gemini(history):
     except ImportError as exc:
         raise AIConfigurationError("The Google GenAI SDK is not installed.") from exc
 
-    client = genai.Client(api_key=settings.GEMINI_API_KEY)
-    conversation = []
-    for item in _build_messages(history, settings.OPENAI_MAX_CHAT_HISTORY):
-        role = "model" if item["role"] == "assistant" else "user"
-        conversation.append(
-            types.Content(
-                role=role,
-                parts=[types.Part(text=item["content"])],
+    with _without_broken_local_proxy():
+        client = genai.Client(api_key=settings.GEMINI_API_KEY)
+        conversation = []
+        for item in _build_messages(history, settings.OPENAI_MAX_CHAT_HISTORY):
+            role = "model" if item["role"] == "assistant" else "user"
+            conversation.append(
+                types.Content(
+                    role=role,
+                    parts=[types.Part(text=item["content"])],
+                )
             )
+        response = client.models.generate_content(
+            model=settings.GEMINI_MODEL,
+            contents=conversation,
+            config=types.GenerateContentConfig(
+                system_instruction=DEVELOPER_PROMPT,
+            ),
         )
-
-    response = client.models.generate_content(
-        model=settings.GEMINI_MODEL,
-        contents=conversation,
-        config=types.GenerateContentConfig(
-            system_instruction=DEVELOPER_PROMPT,
-        ),
-    )
 
     return (getattr(response, "text", "") or "").strip()
 

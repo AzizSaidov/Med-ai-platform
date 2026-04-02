@@ -14,7 +14,8 @@
             form_text: "Enter your email and we will send you a reset link.",
             email: "Email",
             submit: "Send reset link",
-            back_login: "Back to login"
+            back_login: "Back to login",
+            email_placeholder: "Enter your email",
         },
         ru: {
             kicker: "Восстановление пароля",
@@ -30,27 +31,26 @@
             form_text: "Введите email, и мы отправим вам ссылку для сброса.",
             email: "Электронная почта",
             submit: "Отправить ссылку",
-            back_login: "Назад ко входу"
-        }
+            back_login: "Назад ко входу",
+            email_placeholder: "Введите email",
+        },
     };
 
     function applyPasswordResetLanguage() {
-        const lang = document.documentElement.getAttribute('data-lang') || 'en';
+        const lang = document.documentElement.getAttribute("data-lang") || "en";
         const dict = pageTranslations[lang] || pageTranslations.en;
 
-        document.querySelectorAll('[data-page-i18n]').forEach(el => {
-            const key = el.getAttribute('data-page-i18n');
+        document.querySelectorAll("[data-page-i18n]").forEach((el) => {
+            const key = el.getAttribute("data-page-i18n");
             if (dict[key]) {
                 el.textContent = dict[key];
             }
         });
+
+        const email = document.getElementById("id_email");
+        if (email) email.placeholder = dict.email_placeholder;
     }
 
-    document.addEventListener('DOMContentLoaded', applyPasswordResetLanguage);
-
-    document.querySelectorAll('[data-lang-btn]').forEach(btn => {
-        btn.addEventListener('click', () => {
-            setTimeout(applyPasswordResetLanguage, 0);
-        });
-    });
+    document.addEventListener("DOMContentLoaded", applyPasswordResetLanguage);
+    document.addEventListener("app:languageChanged", applyPasswordResetLanguage);
 })();

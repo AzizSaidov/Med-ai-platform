@@ -11,7 +11,7 @@
             point3_title: "Continue your work",
             point3_text: "Return to Med Tech and keep using appointments, AI tools, and doctor search.",
             btn_login: "Go to login",
-            btn_home: "Go to home"
+            btn_home: "Go to home",
         },
         ru: {
             kicker: "Пароль обновлён",
@@ -20,31 +20,23 @@
             point1_title: "Используйте новый пароль",
             point1_text: "Вернитесь на страницу входа и войдите с паролем, который только что создали.",
             point2_title: "Храните его безопасно",
-            point2_text: "Не передавайте пароль другим и при необходимости сохраните его в надёжном месте.",
+            point2_text: "Не передавайте пароль другим и при необходимости храните его в надёжном месте.",
             point3_title: "Продолжайте работу",
             point3_text: "Вернитесь в Med Tech и продолжайте пользоваться записями, AI-инструментами и поиском врачей.",
-            btn_login: "Перейти ко входу",
-            btn_home: "На главную"
-        }
+            btn_login: "Ко входу",
+            btn_home: "На главную",
+        },
     };
 
-    function applyPasswordResetCompleteLanguage() {
-        const lang = document.documentElement.getAttribute('data-lang') || 'en';
+    function applyLanguage() {
+        const lang = document.documentElement.getAttribute("data-lang") || "en";
         const dict = pageTranslations[lang] || pageTranslations.en;
-
-        document.querySelectorAll('[data-page-i18n]').forEach(el => {
-            const key = el.getAttribute('data-page-i18n');
-            if (dict[key]) {
-                el.textContent = dict[key];
-            }
+        document.querySelectorAll("[data-page-i18n]").forEach((el) => {
+            const key = el.getAttribute("data-page-i18n");
+            if (dict[key]) el.textContent = dict[key];
         });
     }
 
-    document.addEventListener('DOMContentLoaded', applyPasswordResetCompleteLanguage);
-
-    document.querySelectorAll('[data-lang-btn]').forEach(btn => {
-        btn.addEventListener('click', () => {
-            setTimeout(applyPasswordResetCompleteLanguage, 0);
-        });
-    });
+    document.addEventListener("DOMContentLoaded", applyLanguage);
+    document.addEventListener("app:languageChanged", applyLanguage);
 })();

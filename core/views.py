@@ -4,6 +4,7 @@ from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import Group
+from django.core.exceptions import ValidationError
 from django.core.mail import send_mail
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse, reverse_lazy
@@ -20,7 +21,56 @@ from .forms import (
     LoginForm,
     RegisterForm,
 )
-from .models import AIChatSession, Appointment, DoctorProfile, User
+from .models import AIChatSession, Appointment, DoctorProfile, TelegramLinkCode, TelegramProfile, User
+
+
+def custom_permission_denied(request, exception):
+    return render(request, "403.html", status=403)
+
+
+def custom_page_not_found(request, exception):
+    return render(request, "404.html", status=404)
+
+
+def archive_elapsed_appointments():
+    elapsed_appointments = (
+        Appointment.objects.with_related()
+        .active()
+        .filter(is_archived=False, scheduled_at__lt=timezone.now())
+    )
+
+    for appointment in elapsed_appointments:
+        if appointment.should_be_archived:
+            appointment.archive()
+
+
+def get_ai_chat_display_messages(history):
+    grouped_messages = []
+    current_group = []
+
+    for message in history:
+        if message.get("role") == "user" and current_group:
+            grouped_messages.append(current_group)
+            current_group = [message]
+        else:
+            current_group.append(message)
+
+    if current_group:
+        grouped_messages.append(current_group)
+
+    display_messages = []
+    for group in reversed(grouped_messages):
+        display_messages.extend(group)
+
+    return display_messages
+
+
+def get_telegram_bot_public_url():
+    username = (settings.TELEGRAM_BOT_USERNAME or "").strip().lstrip("@")
+    if not username:
+        return None
+
+    return f"https://t.me/{username}"
 
 
 def get_doctor_profile_for_user(user):
@@ -30,14 +80,71 @@ def get_doctor_profile_for_user(user):
     return DoctorProfile.objects.select_related("user").filter(user=user).first()
 
 
+def get_telegram_connect_context(user, link_code=None):
+    telegram_profile = TelegramProfile.objects.filter(user=user).first()
+
+    if link_code is None:
+        link_code = (
+            TelegramLinkCode.objects.filter(user=user, is_used=False, expires_at__gte=timezone.now())
+            .order_by("-created_at")
+            .first()
+        )
+
+    deep_link = None
+    bot_public_url = get_telegram_bot_public_url()
+    if bot_public_url and link_code:
+        deep_link = f"{bot_public_url}?start=link_{link_code.code}"
+
+    return {
+        "telegram_profile": telegram_profile,
+        "telegram_link_code": link_code,
+        "telegram_deep_link": deep_link,
+        "telegram_bot_public_url": bot_public_url,
+        "telegram_role_label": "Admin" if user.is_superuser else "Doctor" if user.is_doctor else "Patient",
+    }
+
+
+def get_doctor_schedule_payload(doctor, exclude_appointment_id=None):
+    archive_elapsed_appointments()
+
+    appointments = Appointment.objects.visible().filter(doctor=doctor).order_by("scheduled_at")
+    if exclude_appointment_id:
+        appointments = appointments.exclude(pk=exclude_appointment_id)
+
+    booked_slots = [
+        {
+            "start": timezone.localtime(appointment.scheduled_at).isoformat(),
+            "duration_minutes": appointment.duration_minutes or doctor.slot_duration_minutes,
+        }
+        for appointment in appointments
+    ]
+
+    return {
+        "availableDays": doctor.get_available_day_indexes(),
+        "availableDaysLabel": doctor.get_available_days_display(),
+        "workdayStart": doctor.workday_start.strftime("%H:%M"),
+        "workdayEnd": doctor.workday_end.strftime("%H:%M"),
+        "slotDurationMinutes": doctor.slot_duration_minutes,
+        "bookedSlots": booked_slots,
+    }
+
+
 def get_user_appointments(user):
     if not getattr(user, "is_authenticated", False):
         return Appointment.objects.none()
 
-    appointments = Appointment.objects.with_related().active().filter(patient=user)
+    archive_elapsed_appointments()
+
+    if user.is_superuser:
+        return Appointment.objects.with_related().visible().order_by("-scheduled_at")
+
+    appointments = Appointment.objects.with_related().visible().filter(patient=user)
     doctor_profile = get_doctor_profile_for_user(user)
     if doctor_profile:
-        appointments = (appointments | Appointment.objects.with_related().active().filter(doctor=doctor_profile)).distinct()
+        appointments = (
+            appointments
+            | Appointment.objects.with_related().visible().filter(doctor=doctor_profile)
+        ).distinct()
 
     return appointments.order_by("-scheduled_at")
 
@@ -82,8 +189,11 @@ def send_confirmation_email(request, user):
     confirm_url = request.build_absolute_uri(reverse("confirm_email", args=[token]))
 
     send_mail(
-        subject="Confirm your MedTech account",
+        subject="Med Tech: подтвердите email | confirm your email",
         message=(
+            f"Здравствуйте, {user.username}!\n\n"
+            f"Пожалуйста, подтвердите ваш email по ссылке:\n{confirm_url}\n\n"
+            f"Ссылка действует 24 часа.\n\n"
             f"Hello, {user.username}!\n\n"
             f"Please confirm your email by opening this link:\n{confirm_url}\n\n"
             f"This link is valid for 24 hours."
@@ -176,6 +286,10 @@ def dashboard(request):
     )
 
 
+def about_page(request):
+    return render(request, "about.html")
+
+
 @login_required
 def doctors_map(request):
     doctors = (
@@ -249,7 +363,7 @@ def ai_chat(request):
             reply = "AI assistant is temporarily unavailable. Please try again in a moment."
             messages.warning(request, reply)
         except AIServiceError:
-            reply = "I can help only with health-related questions. Please ask about symptoms, wellness, appointments, or preparing for a doctor visit."
+            reply = "AI assistant is temporarily unavailable right now. Please try again in a moment."
             messages.error(request, reply)
 
         session.add_message("assistant", reply)
@@ -261,10 +375,60 @@ def ai_chat(request):
         {
             "form": form,
             "chat_messages": session.history,
+            "chat_messages_display": get_ai_chat_display_messages(session.history),
             "session": session,
             "available_ai_providers": get_available_ai_providers(),
         },
     )
+
+
+@login_required
+def telegram_connect(request):
+    context = get_telegram_connect_context(request.user)
+    telegram_profile = context["telegram_profile"]
+    link_code = context["telegram_link_code"]
+
+    if request.method == "POST":
+        action = request.POST.get("action")
+        if action == "disconnect":
+            TelegramProfile.objects.filter(user=request.user).delete()
+            TelegramLinkCode.objects.filter(user=request.user, is_used=False).delete()
+            messages.success(request, "Telegram connection removed.")
+            return redirect("telegram_connect")
+
+        link_code = TelegramLinkCode.create_for_user(request.user, lifetime_minutes=30)
+        messages.success(request, "New Telegram connection code generated.")
+        return redirect("telegram_connect")
+
+    if telegram_profile is None and link_code is None:
+        link_code = TelegramLinkCode.create_for_user(request.user, lifetime_minutes=30)
+        context = get_telegram_connect_context(request.user, link_code=link_code)
+
+    return render(request, "telegram_connect.html", context)
+
+
+def telegram_bot_redirect(request):
+    bot_public_url = get_telegram_bot_public_url()
+    if bot_public_url:
+        if getattr(request.user, "is_authenticated", False):
+            link_code = (
+                TelegramLinkCode.objects.filter(
+                    user=request.user,
+                    is_used=False,
+                    expires_at__gte=timezone.now(),
+                )
+                .order_by("-created_at")
+                .first()
+            )
+            if link_code:
+                return redirect(f"{bot_public_url}?start=link_{link_code.code}")
+
+        return redirect(bot_public_url)
+
+    messages.warning(request, "Telegram bot username is not configured yet.")
+    if request.user.is_authenticated:
+        return redirect("telegram_connect")
+    return redirect("login")
 
 
 @login_required
@@ -280,17 +444,25 @@ def book_appointment(request, doctor_id):
         return redirect("doctors_map")
 
     if request.method == "POST":
-        form = AppointmentForm(request.POST)
+        form = AppointmentForm(request.POST, doctor=doctor)
         if form.is_valid():
             appointment = form.save(commit=False)
             appointment.patient = request.user
             appointment.doctor = doctor
-            appointment.save()
 
-            messages.success(request, "Appointment booked successfully.")
-            return redirect("appointments")
+            try:
+                appointment.full_clean()
+                appointment.save()
+            except ValidationError as exc:
+                for field, messages_list in getattr(exc, "message_dict", {}).items():
+                    target_field = field if field in form.fields else None
+                    for message in messages_list:
+                        form.add_error(target_field, message)
+            else:
+                messages.success(request, "Appointment booked successfully.")
+                return redirect("appointments")
     else:
-        form = AppointmentForm()
+        form = AppointmentForm(doctor=doctor)
 
     return render(
         request,
@@ -298,6 +470,7 @@ def book_appointment(request, doctor_id):
         {
             "doctor": doctor,
             "form": form,
+            "schedule_payload": get_doctor_schedule_payload(doctor),
         },
     )
 
@@ -329,7 +502,9 @@ class AccessRedirectMixin(LoginRequiredMixin, UserPassesTestMixin):
 
 
 class AppointmentObjectMixin:
-    queryset = Appointment.objects.with_related().active()
+    def get_queryset(self):
+        archive_elapsed_appointments()
+        return Appointment.objects.with_related().visible()
 
 
 class AppointmentViewAccessMixin(AccessRedirectMixin, AppointmentObjectMixin):
@@ -406,9 +581,21 @@ class AppointmentUpdateView(AppointmentEditAccessMixin, UpdateView):
     form_class = AppointmentUpdateForm
     template_name = "appointment_form.html"
 
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["doctor"] = self.get_object().doctor
+        return kwargs
+
     def form_valid(self, form):
         messages.success(self.request, "Appointment updated successfully.")
         return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["schedule_payload"] = get_doctor_schedule_payload(
+            self.object.doctor, exclude_appointment_id=self.object.pk
+        )
+        return context
 
     def get_success_url(self):
         return reverse_lazy("appointment_detail", kwargs={"pk": self.object.pk})

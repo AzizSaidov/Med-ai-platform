@@ -12,7 +12,7 @@
                     <h2 data-page-i18n="appointment_delete_title">Cancel this appointment?</h2>
                     <p data-page-i18n="appointment_delete_text">You can cancel this appointment now or return to the details page.</p>
                 </div>
-                <span class="status-{{ object.status }}">{{ object.get_status_display }}</span>
+                <span class="status-{{ object.status }}" data-status="{{ object.status }}">{{ object.get_status_display }}</span>
             </div>
 
             <div class="detail-grid">
@@ -22,7 +22,7 @@
                 </div>
                 <div class="detail-item">
                     <span class="detail-item__label" data-page-i18n="common_date_time">Date and time</span>
-                    <div class="detail-item__value">{{ object.scheduled_at|date:"d M Y, H:i" }}</div>
+                    <div class="detail-item__value" data-local-date="{{ object.scheduled_at|date:'c' }}" data-local-format="datetime">{{ object.scheduled_at|date:"d M Y, H:i" }}</div>
                 </div>
             </div>
 

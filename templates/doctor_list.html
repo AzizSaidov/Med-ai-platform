@@ -73,7 +73,7 @@
                                             <p>{{ doctor.specialization }}</p>
                                         </div>
                                     </div>
-                                    <span class="status-{{ doctor.status }}">{{ doctor.get_status_display }}</span>
+                                    <span class="status-{{ doctor.status }}" data-status="{{ doctor.status }}">{{ doctor.get_status_display }}</span>
                                 </div>
 
                                 <div class="chip-row">

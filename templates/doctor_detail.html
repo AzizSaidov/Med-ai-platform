@@ -21,7 +21,7 @@
                 <div class="portal-stat-grid">
                     <div class="portal-stat-card">
                         <span class="portal-stat-card__label" data-page-i18n="common_status">Status</span>
-                        <span class="portal-stat-card__value">{{ doctor.get_status_display }}</span>
+                        <span class="portal-stat-card__value" data-status="{{ doctor.status }}">{{ doctor.get_status_display }}</span>
                     </div>
                     <div class="portal-stat-card">
                         <span class="portal-stat-card__label" data-page-i18n="common_experience">Experience</span>
@@ -36,7 +36,7 @@
                         <h2 data-page-i18n="doctor_detail_card_title">Professional details</h2>
                         <p data-page-i18n="doctor_detail_card_text">These details power the public doctors experience and keep your management flow aligned with the rest of the product.</p>
                     </div>
-                    <span class="status-{{ doctor.status }}">{{ doctor.get_status_display }}</span>
+                    <span class="status-{{ doctor.status }}" data-status="{{ doctor.status }}">{{ doctor.get_status_display }}</span>
                 </div>
 
                 <div class="detail-grid">
@@ -62,6 +62,18 @@
                             <div class="detail-item__value">${{ doctor.consultation_fee }}</div>
                         </div>
                     {% endif %}
+                    <div class="detail-item">
+                        <span class="detail-item__label" data-page-i18n="common_available_days">Available days</span>
+                        <div class="detail-item__value" data-weekdays="{{ doctor.available_days }}">{{ doctor.get_available_days_display }}</div>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-item__label" data-page-i18n="common_working_hours">Working hours</span>
+                        <div class="detail-item__value">{{ doctor.workday_start|time:"H:i" }} - {{ doctor.workday_end|time:"H:i" }}</div>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-item__label" data-page-i18n="common_slot_duration">Slot duration</span>
+                        <div class="detail-item__value">{{ doctor.slot_duration_minutes }} <span data-page-i18n="common_minutes">minutes</span></div>
+                    </div>
                     {% if doctor.phone %}
                         <div class="detail-item">
                             <span class="detail-item__label" data-page-i18n="common_phone">Phone</span>

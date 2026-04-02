@@ -1,7 +1,11 @@
 {% extends 'base.html' %}
-{% load crispy_forms_tags %}
+{% load crispy_forms_tags static %}
 
 {% block title %}Med Tech | Book Appointment{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/booking.css' %}">
+{% endblock %}
 
 {% block content %}
 <section class="portal-page">
@@ -19,6 +23,10 @@
                             <span class="portal-stat-card__label" data-page-i18n="common_specialization">Specialization</span>
                             <span class="portal-stat-card__value">{{ doctor.specialization }}</span>
                         </div>
+                        <div class="portal-stat-card">
+                            <span class="portal-stat-card__label" data-page-i18n="common_schedule">Schedule</span>
+                            <span class="portal-stat-card__value">{{ doctor.workday_start|time:"H:i" }} - {{ doctor.workday_end|time:"H:i" }}</span>
+                        </div>
                         {% if doctor.consultation_fee %}
                             <div class="portal-stat-card">
                                 <span class="portal-stat-card__label" data-page-i18n="doctor_detail_fee">Consultation fee</span>
@@ -33,12 +41,74 @@
                         <div>
                             <h2 data-page-i18n="book_card_title">Appointment request</h2>
                             <p data-page-i18n="book_card_text">Choose a future date and add any useful notes for the doctor.</p>
+                            <p class="text-muted" style="margin-top: 8px;">
+                                <span data-page-i18n="book_schedule_prefix">Available on</span>
+                                <span data-weekdays="{{ doctor.available_days }}">{{ doctor.get_available_days_display }}</span>
+                                <span data-page-i18n="book_schedule_from">from</span> {{ doctor.workday_start|time:"H:i" }}
+                                <span data-page-i18n="book_schedule_to">to</span> {{ doctor.workday_end|time:"H:i" }}.
+                                <span data-page-i18n="book_schedule_each">Each visit uses a</span> {{ doctor.slot_duration_minutes }} <span data-page-i18n="common_minutes">minutes</span>.
+                            </p>
                         </div>
                     </div>
 
-                    <form method="post" class="chat-form">
+                    <form method="post" class="chat-form schedule-form" data-schedule-form>
                         {% csrf_token %}
-                        {{ form|crispy }}
+                        {% if form.non_field_errors %}
+                            <div class="non-field-errors">{{ form.non_field_errors }}</div>
+                        {% endif %}
+
+                        <div class="schedule-picker" data-schedule-picker>
+                            <div class="schedule-picker__header">
+                                <div>
+                                    <span class="section-kicker" data-page-i18n="book_date_kicker">Date selection</span>
+                                    <h3 data-page-i18n="book_date_title">Pick a day that fits the doctor schedule.</h3>
+                                </div>
+                                <div class="schedule-summary-pill">
+                                    <span>{{ doctor.slot_duration_minutes }} min</span>
+                                </div>
+                            </div>
+
+                            <div class="schedule-date-presets" data-date-presets></div>
+
+                            <div class="schedule-field">
+                                <label for="{{ form.appointment_date.id_for_label }}" data-page-i18n="book_date_field">Appointment date</label>
+                                {{ form.appointment_date }}
+                                {% if form.appointment_date.errors %}
+                                    <div class="field-errors">{{ form.appointment_date.errors }}</div>
+                                {% endif %}
+                            </div>
+
+                            <div class="schedule-slot-box">
+                                <div class="schedule-slot-box__top">
+                                    <div>
+                                        <label for="{{ form.appointment_time.id_for_label }}" data-page-i18n="book_time_field">Time slot</label>
+                                        <p class="field-help" data-page-i18n="book_slot_hint">Only available slots are shown for the selected date.</p>
+                                    </div>
+                                    <div class="schedule-selected" data-selected-slot></div>
+                                </div>
+
+                                <div class="schedule-slots" data-slot-grid></div>
+
+                                <div class="schedule-native-select" data-native-select>
+                                    {{ form.appointment_time }}
+                                </div>
+
+                                <div class="schedule-empty" data-slot-empty hidden></div>
+
+                                {% if form.appointment_time.errors %}
+                                    <div class="field-errors">{{ form.appointment_time.errors }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="schedule-field">
+                            <label for="{{ form.notes.id_for_label }}" data-page-i18n="common_notes">Notes</label>
+                            {{ form.notes }}
+                            {% if form.notes.errors %}
+                                <div class="field-errors">{{ form.notes.errors }}</div>
+                            {% endif %}
+                        </div>
+
                         <div class="action-row">
                             <button type="submit" class="btn btn-primary" data-page-i18n="book_btn_confirm">Confirm booking</button>
                             <a href="{% url 'doctors_map' %}" class="btn btn-secondary" data-page-i18n="book_btn_back">Back to doctors</a>
@@ -57,7 +127,19 @@
                     </div>
                     <div class="panel-item">
                         <strong data-page-i18n="common_status">Status</strong>
-                        <p class="text-muted">{{ doctor.get_status_display }}</p>
+                        <p class="text-muted" data-status="{{ doctor.status }}">{{ doctor.get_status_display }}</p>
+                    </div>
+                    <div class="panel-item">
+                        <strong data-page-i18n="common_available_days">Available days</strong>
+                        <p class="text-muted" data-weekdays="{{ doctor.available_days }}">{{ doctor.get_available_days_display }}</p>
+                    </div>
+                    <div class="panel-item">
+                        <strong data-page-i18n="common_working_hours">Working hours</strong>
+                        <p class="text-muted">{{ doctor.workday_start|time:"H:i" }} - {{ doctor.workday_end|time:"H:i" }}</p>
+                    </div>
+                    <div class="panel-item">
+                        <strong data-page-i18n="common_slot_length">Slot length</strong>
+                        <p class="text-muted">{{ doctor.slot_duration_minutes }} <span data-page-i18n="common_minutes">minutes</span></p>
                     </div>
                     {% if doctor.address %}
                         <div class="panel-item">
@@ -76,4 +158,9 @@
         </div>
     </div>
 </section>
+{{ schedule_payload|json_script:"appointment-schedule-data" }}
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/booking.js' %}"></script>
 {% endblock %}

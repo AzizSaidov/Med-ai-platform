@@ -1,0 +1,172 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Med Tech | Telegram Connect{% endblock %}
+
+{% block content %}
+<section class="portal-page">
+    <div class="container">
+        <div class="portal-grid portal-grid--two">
+            <div class="portal-stack">
+                <div class="portal-hero">
+                    <div class="portal-hero__content">
+                        <span class="section-kicker" data-page-i18n="tg_kicker">Telegram bot</span>
+                        <h1 data-page-i18n="tg_title">Connect Telegram to your Med Tech account and manage quick actions from your phone.</h1>
+                        <p data-page-i18n="tg_text">The bot works as a mobile companion for the site: it shows appointments, the next visit, doctor catalog, and fast links to the right sections.</p>
+                        <div class="portal-hero__actions">
+                            {% if telegram_deep_link %}
+                                <a href="{{ telegram_deep_link }}" class="btn btn-primary" target="_blank" rel="noopener noreferrer" data-page-i18n="tg_open_with_code">Open bot with code</a>
+                            {% elif telegram_bot_public_url %}
+                                <a href="{{ telegram_bot_public_url }}" class="btn btn-primary" target="_blank" rel="noopener noreferrer" data-page-i18n="tg_open">Open bot</a>
+                            {% else %}
+                                <button type="button" class="btn btn-primary" disabled data-page-i18n="tg_missing_env">Add TELEGRAM_BOT_USERNAME to .env</button>
+                            {% endif %}
+
+                            <form method="post" style="display: inline;">
+                                {% csrf_token %}
+                                <input type="hidden" name="action" value="generate">
+                                <button type="submit" class="btn btn-secondary" data-page-i18n="tg_generate">Generate a new code</button>
+                            </form>
+
+                            {% if telegram_profile %}
+                                <form method="post" style="display: inline;">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="action" value="disconnect">
+                                    <button type="submit" class="btn btn-secondary" data-page-i18n="tg_disconnect">Disconnect Telegram</button>
+                                </form>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="portal-stat-grid">
+                        <div class="portal-stat-card">
+                            <span class="portal-stat-card__label" data-page-i18n="tg_site_account">Site account</span>
+                            <span class="portal-stat-card__value" style="font-size: 1.15rem;">{{ request.user.username }}</span>
+                        </div>
+                        <div class="portal-stat-card">
+                            <span class="portal-stat-card__label" data-page-i18n="tg_role">Role</span>
+                            <span class="portal-stat-card__value" style="font-size: 1.15rem;">
+                                {% if request.user.is_superuser %}
+                                    <span data-i18n="role_admin">Admin</span>
+                                {% elif request.user.is_doctor %}
+                                    <span data-i18n="role_doctor">Doctor</span>
+                                {% else %}
+                                    <span data-i18n="role_patient">Patient</span>
+                                {% endif %}
+                            </span>
+                        </div>
+                        <div class="portal-stat-card">
+                            <span class="portal-stat-card__label" data-page-i18n="tg_code">Code</span>
+                            <span class="portal-stat-card__value" style="font-size: 1.15rem;">
+                                {% if telegram_link_code %}{{ telegram_link_code.code }}{% else %}<span data-page-i18n="tg_create_code">Create a code</span>{% endif %}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="portal-card">
+                    <div class="portal-card__header">
+                        <div>
+                            <h2 data-page-i18n="tg_how_title">How to connect it correctly</h2>
+                            <p data-page-i18n="tg_how_text">A simple flow without confusion between the website account and Telegram.</p>
+                        </div>
+                    </div>
+
+                    <div class="panel-list">
+                        <div class="panel-item">
+                            <strong data-page-i18n="tg_step_1_title">1. Sign in to the exact Med Tech account you want to connect</strong>
+                            <p class="text-muted" data-page-i18n="tg_step_1_text">If the website is open under a doctor account, Telegram will connect to that doctor. If a patient account is open, it will connect to that patient.</p>
+                        </div>
+                        <div class="panel-item">
+                            <strong data-page-i18n="tg_step_2_title">2. Generate a code</strong>
+                            <p class="text-muted" data-page-i18n="tg_step_2_text">The code is one-time and is used only to safely link the current website account to Telegram.</p>
+                        </div>
+                        <div class="panel-item">
+                            <strong data-page-i18n="tg_step_3_title">3. Open the bot with the button above</strong>
+                            <p class="text-muted" data-page-i18n="tg_step_3_text">If a deep link is available, the code is passed automatically. This is the easiest and safest way.</p>
+                        </div>
+                        <div class="panel-item">
+                            <strong data-page-i18n="tg_step_4_title">4. Or send the code manually</strong>
+                            <p class="text-muted">
+                                {% if telegram_link_code %}
+                                    <span data-page-i18n="tg_manual_prefix">Manual command:</span> <code>/link {{ telegram_link_code.code }}</code>
+                                {% else %}
+                                    <span data-page-i18n="tg_manual_empty">Generate a code first, then send it in the format</span> <code>/link CODE</code>.
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="portal-card">
+                    <div class="portal-card__header">
+                        <div>
+                            <h2 data-page-i18n="tg_features_title">What the bot can do</h2>
+                            <p data-page-i18n="tg_features_text">After linking, the menu adapts to the role of the connected account.</p>
+                        </div>
+                    </div>
+
+                    <div class="chip-row">
+                        <span class="chip" data-page-i18n="tg_feature_1">My appointments / My visits</span>
+                        <span class="chip" data-page-i18n="tg_feature_2">Next visit / Next patient</span>
+                        <span class="chip" data-page-i18n="tg_feature_3">Doctor catalog</span>
+                        <span class="chip" data-page-i18n="tg_feature_4">Account status</span>
+                        <span class="chip" data-page-i18n="tg_feature_5">Quick link to the site and AI</span>
+                    </div>
+                </div>
+            </div>
+
+            <aside class="portal-sidebar-card">
+                <h3 data-page-i18n="tg_status_title">Connection status</h3>
+                {% if telegram_profile %}
+                    <div class="panel-list" style="margin-top: 18px;">
+                        <div class="panel-item">
+                            <strong data-page-i18n="tg_connected">Connected Telegram</strong>
+                            <p class="text-muted">
+                                {% if telegram_profile.telegram_username %}
+                                    @{{ telegram_profile.telegram_username }}
+                                {% else %}
+                                    <span data-i18n="common_hidden">hidden</span>
+                                {% endif %}
+                            </p>
+                        </div>
+                        <div class="panel-item">
+                            <strong data-i18n="common_chat_id">Chat ID</strong>
+                            <p class="text-muted">{{ telegram_profile.chat_id }}</p>
+                        </div>
+                        <div class="panel-item">
+                            <strong data-page-i18n="tg_linked_to">Linked to account</strong>
+                            <p class="text-muted">
+                                {{ request.user.username }}
+                                (
+                                {% if request.user.is_superuser %}
+                                    <span data-i18n="role_admin">Admin</span>
+                                {% elif request.user.is_doctor %}
+                                    <span data-i18n="role_doctor">Doctor</span>
+                                {% else %}
+                                    <span data-i18n="role_patient">Patient</span>
+                                {% endif %}
+                                )
+                            </p>
+                        </div>
+                        <div class="panel-item">
+                            <strong data-i18n="common_linked">Linked</strong>
+                            <p class="text-muted" data-local-date="{{ telegram_profile.linked_at|date:'c' }}" data-local-format="datetime">{{ telegram_profile.linked_at|date:"d M Y, H:i" }}</p>
+                        </div>
+                    </div>
+                {% else %}
+                    <p style="margin-top: 14px;" data-page-i18n="tg_status_empty">Telegram is not connected yet. Generate a code and open the bot to finish the link.</p>
+                {% endif %}
+
+                <div class="chat-sidebar-note" style="margin-top: 18px;" data-page-i18n="tg_note">
+                    If you need to reconnect another website account, first sign in under that account on the site, then generate a new code and open the bot again.
+                </div>
+            </aside>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/telegram_connect.js' %}"></script>
+{% endblock %}

@@ -1,76 +1,76 @@
 # Med Tech
 
-Med Tech is a Django healthcare platform built for Open Day presentation and portfolio use. It combines doctor discovery, appointment booking, role-based workflows, email-confirmed authentication, and an AI assistant inside one polished product flow.
+Med Tech is a polished Django medical platform built as a presentation-ready portfolio project. It combines doctor discovery, role-based dashboards, appointment booking by schedule, AI assistance, email flows, and Telegram integration inside one consistent product.
 
-## Overview
+## Features
 
-The project is designed to feel like a finished medical web product rather than a collection of unrelated demo pages. Patients can register, confirm their email, browse doctors, book appointments, manage their own visits, and use an AI assistant with stored chat history. Doctors get a dedicated profile management flow and appointment visibility tied to their role. Administrators keep full access.
-
-## Core Features
-
-- Custom user model
+- Custom user model with role-aware flows for `patient`, `doctor`, and `admin`
 - Registration, login, logout, and email confirmation via SMTP
-- Role-aware UI and backend permissions for `patient`, `doctor`, and `admin`
-- Doctor discovery page with interactive map and filtering
-- Doctor profile CRUD with improved single-profile flow for doctors
-- Appointment booking flow
-- Appointment CRUD with soft delete for cancellations
-- Appointment visibility scoped to the related patient or doctor
-- AI assistant powered by the OpenAI Responses API
-- Saved AI chat history using the existing `AIChatSession` model
-- Django forms and crispy-bootstrap5 integration
-- Django Filter integration for doctor search
-- Signals for AI session creation and appointment email notifications
-- Responsive custom UI across dashboard, doctors, appointments, AI, and auth pages
+- Doctor discovery with map markers and real clinic locations in Dushanbe
+- Doctor profile CRUD with a cleaner single-profile workflow
+- Appointment booking by working days, working hours, and available slots
+- Appointment soft delete for cancellations
+- Automatic cancellation notifications via Telegram first, with email fallback
+- Telegram bot with account linking, doctor directory, reminders, and quick actions
+- AI assistant with chat history stored in `AIChatSession`
+- Multi-provider AI fallback prepared for OpenAI, xAI/Grok, and Gemini
+- Custom Django admin in Med Tech style
+- Custom `403` and `404` pages in the same UI language as the main site
+- Responsive UI across auth, dashboard, doctors, appointments, AI, and admin pages
 
-## Tech Stack
+## Stack
 
 - Python 3.12
 - Django 5.2
-- PostgreSQL
+- SQLite
 - django-filter
 - django-crispy-forms
 - crispy-bootstrap5
-- Pillow
+- aiogram
+- OpenAI SDK
+- Google GenAI SDK
 - python-dotenv
-- OpenAI Python SDK
+- Pillow
 - HTML, CSS, JavaScript
+
+## Main Flows
+
+### Patient
+
+1. Register
+2. Confirm email
+3. Log in
+4. Browse doctors and clinics
+5. Book an appointment
+6. Manage or cancel appointments
+7. Use the AI assistant
+8. Connect Telegram for reminders and quick actions
+
+### Doctor
+
+1. Log in with a doctor account
+2. Create or manage a doctor profile
+3. Review doctor-related appointments
+4. Receive appointment reminders and cancellation notifications
+
+### Admin
+
+1. Access the custom Django admin panel
+2. Review all appointments on the site
+3. Manage doctor profiles across the platform
 
 ## Project Structure
 
 ```text
-config/        Django settings, root URLs, WSGI
-core/          Models, forms, views, filters, signals, access helpers, AI service
-templates/     Shared and page-specific Django templates
-static/        CSS and JavaScript assets
-media/         Uploaded avatars and doctor photos
-manage.py      Django management entry point
+config/          Django settings and root URLs
+core/            Models, views, forms, signals, filters, Telegram commands
+telegram_bot/    Bot logic, reminders, keyboards, Telegram services
+templates/       Shared templates, pages, custom admin, auth, error pages
+static/          CSS and JavaScript assets
+media/           Uploaded media files
+manage.py        Django entry point
+db.sqlite3       Local SQLite database
 ```
-
-## Main User Flows
-
-### Patient Flow
-
-1. Register an account
-2. Confirm email through the verification link
-3. Log in to the dashboard
-4. Browse doctors on the map
-5. Book an appointment
-6. View or cancel own appointments
-7. Use the AI assistant for general guidance
-
-### Doctor Flow
-
-1. Log in with a doctor-role account
-2. Create a doctor profile if one does not exist yet
-3. Update public profile details and map data
-4. Review appointments related to that doctor profile
-
-### Admin Flow
-
-1. Access all patient and doctor functionality
-2. Open the admin panel
-3. Review doctor management pages and platform flows
 
 ## Installation
 
@@ -113,59 +113,118 @@ python manage.py migrate
 python manage.py createsuperuser
 ```
 
-7. Run the development server:
+7. Run the project:
 
 ```bash
 python manage.py runserver
+python manage.py run_telegram_bot
 ```
 
 ## Environment Variables
 
-Create a `.env` file with the following values:
+Create `.env` in the project root and add:
 
 ```env
-SECRET_KEY=your-django-secret-key
+SECRET_KEY=your_django_secret_key
+DEBUG=True
 
-DB_NAME=your_database_name
-DB_USER=your_database_user
-DB_PASSWORD=your_database_password
-DB_HOST=localhost
-DB_PORT=5432
+EMAIL_HOST_USER=your_email@gmail.com
+EMAIL_HOST_PASSWORD=your_app_password
 
-EMAIL_HOST_USER=your_smtp_email
-EMAIL_HOST_PASSWORD=your_smtp_password
-
-OPENAI_API_KEY=your_openai_api_key
+OPENAI_API_KEY=your_openai_key
 OPENAI_MODEL=gpt-5-mini
+
+XAI_API_KEY=your_xai_key
+XAI_MODEL=grok-4-1-fast-reasoning
+
+GEMINI_API_KEY=your_gemini_key
+GEMINI_MODEL=gemini-2.5-flash
+
+AI_PROVIDER_ORDER=openai,xai,gemini
 OPENAI_MAX_CHAT_HISTORY=18
+
+TELEGRAM_BOT_TOKEN=your_bot_token
+TELEGRAM_BOT_USERNAME=your_bot_username_without_@
+TELEGRAM_REMINDER_INTERVAL_SECONDS=300
+
+SITE_URL=http://127.0.0.1:8000
 ```
 
-## How To Run
+## Telegram Bot
+
+The project includes a Telegram bot that works as a mobile companion to the site.
+
+Current bot capabilities:
+
+- account linking through the website
+- upcoming appointments
+- next appointment
+- doctor directory with inline buttons
+- automatic reminders for today’s appointments
+- cancellation notifications
+
+Run it with:
+
+```bash
+python manage.py run_telegram_bot
+```
+
+## Email Features
+
+- email confirmation after registration
+- appointment creation emails
+- cancellation fallback emails
+- password reset emails
+
+## AI Assistant
+
+The AI chat stores history in `AIChatSession` and is configured to try providers in the order defined by `AI_PROVIDER_ORDER`.
+
+Supported provider setup:
+
+- OpenAI
+- xAI / Grok
+- Gemini
+
+If one provider fails, the assistant tries the next one.
+
+## Demo Data
+
+You can seed demo doctors with Dushanbe clinic addresses using:
+
+```bash
+python manage.py seed_dushanbe_clinics
+```
+
+## Screenshots
+
+- Dashboard screenshot placeholder
+- Doctors page screenshot placeholder
+- Appointments page screenshot placeholder
+- AI assistant screenshot placeholder
+- Telegram bot screenshot placeholder
+- Admin panel screenshot placeholder
+
+## Notes
+
+- The project currently uses SQLite for local/demo usage.
+- Telegram reminders work automatically while the bot process is running.
+- Appointment cancellation uses soft delete instead of hard removal.
+- Custom `403` and `404` pages are included.
+- Before deployment, make sure at least one AI provider key is valid and active.
+
+## How To Run Before Demo
 
 ```bash
 python manage.py migrate
 python manage.py runserver
+python manage.py run_telegram_bot
 ```
 
-Open the app in the browser and go through the full flow:
+Then open the browser and test:
 
-- `register -> confirm email -> login -> dashboard -> doctors -> book -> appointments -> AI`
+- `register -> confirm email -> login`
+- `dashboard -> doctors -> booking -> appointments`
+- `AI assistant`
+- `Telegram linking and reminders`
 
-## Feature Notes
-
-- Email confirmation is required before login.
-- Appointment cancellation uses soft delete instead of hard removal.
-- Signals automatically create an AI chat session and send appointment confirmation email notifications.
-- Doctor profile actions are hidden from patients in the UI and protected in the backend.
-- The AI assistant stores conversation history in `AIChatSession.history`.
-
-
-## Future Improvements
-
-- Deployment configuration
-- Middleware-level access refinements
-- Telegram or aiogram integration
-
-## Demo Readiness
-
-This version is focused on looking clean, consistent, and presentation-ready for Open Day while preserving the existing project structure and already working Django logic.

@@ -1,0 +1,630 @@
+html[data-theme="light"] {
+    --med-admin-bg: #eef4fa;
+    --med-admin-page-top-glow: rgba(115, 185, 255, 0.14);
+    --med-admin-page-bottom: #e8f1f9;
+    --med-admin-surface: #ffffff;
+    --med-admin-surface-soft: #f5f9fd;
+    --med-admin-surface-muted: rgba(250, 252, 255, 0.96);
+    --med-admin-header-bg: rgba(255, 255, 255, 0.88);
+    --med-admin-breadcrumbs-bg: rgba(245, 249, 253, 0.95);
+    --med-admin-panel-bg: rgba(255, 255, 255, 0.94);
+    --med-admin-panel-strong-bg: rgba(247, 250, 253, 0.96);
+    --med-admin-field-bg: #ffffff;
+    --med-admin-row-stripe: rgba(8, 28, 53, 0.025);
+    --med-admin-row-hover: rgba(115, 185, 255, 0.10);
+    --med-admin-border: rgba(112, 145, 180, 0.18);
+    --med-admin-border-strong: rgba(112, 145, 180, 0.28);
+    --med-admin-text: #102033;
+    --med-admin-muted: #647d97;
+    --med-admin-primary: #2f7bd0;
+    --med-admin-primary-strong: #1f69bb;
+    --med-admin-accent: #0b84b7;
+    --med-admin-success: #0b8f67;
+    --med-admin-danger: #d24d4d;
+    --med-admin-shadow: 0 18px 42px rgba(13, 27, 46, 0.12);
+    --med-admin-radius: 20px;
+    --med-admin-hero-glow: rgba(115, 185, 255, 0.16);
+    --med-admin-hero-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(240, 247, 255, 0.94));
+    --med-admin-login-bg: linear-gradient(180deg, #eef4fa, #e8f1f9);
+}
+
+html[data-theme="dark"] {
+    --med-admin-bg: #07111c;
+    --med-admin-page-top-glow: rgba(115, 185, 255, 0.12);
+    --med-admin-page-bottom: #0b1626;
+    --med-admin-surface: #101d2d;
+    --med-admin-surface-soft: #162538;
+    --med-admin-surface-muted: rgba(16, 29, 45, 0.92);
+    --med-admin-header-bg: rgba(10, 18, 31, 0.88);
+    --med-admin-breadcrumbs-bg: rgba(16, 29, 45, 0.92);
+    --med-admin-panel-bg: rgba(16, 29, 45, 0.92);
+    --med-admin-panel-strong-bg: rgba(11, 20, 32, 0.84);
+    --med-admin-field-bg: rgba(9, 18, 31, 0.92);
+    --med-admin-row-stripe: rgba(255, 255, 255, 0.02);
+    --med-admin-row-hover: rgba(115, 185, 255, 0.08);
+    --med-admin-border: rgba(125, 165, 205, 0.18);
+    --med-admin-border-strong: rgba(125, 165, 205, 0.28);
+    --med-admin-text: #e8f1fa;
+    --med-admin-muted: #8eabc7;
+    --med-admin-primary: #73b9ff;
+    --med-admin-primary-strong: #4a9df4;
+    --med-admin-accent: #7dd3fc;
+    --med-admin-success: #65d6a6;
+    --med-admin-danger: #ff8d8d;
+    --med-admin-shadow: 0 18px 42px rgba(0, 0, 0, 0.28);
+    --med-admin-radius: 20px;
+    --med-admin-hero-glow: rgba(115, 185, 255, 0.18);
+    --med-admin-hero-bg: linear-gradient(180deg, rgba(20, 34, 52, 0.96), rgba(14, 26, 40, 0.94));
+    --med-admin-login-bg: linear-gradient(180deg, #07111c, #0b1626);
+}
+
+html[data-theme="auto"] {
+    --med-admin-bg: #eef4fa;
+    --med-admin-page-top-glow: rgba(115, 185, 255, 0.14);
+    --med-admin-page-bottom: #e8f1f9;
+    --med-admin-surface: #ffffff;
+    --med-admin-surface-soft: #f5f9fd;
+    --med-admin-surface-muted: rgba(255, 255, 255, 0.94);
+    --med-admin-header-bg: rgba(255, 255, 255, 0.88);
+    --med-admin-breadcrumbs-bg: rgba(245, 249, 253, 0.95);
+    --med-admin-panel-bg: rgba(255, 255, 255, 0.94);
+    --med-admin-panel-strong-bg: rgba(247, 250, 253, 0.96);
+    --med-admin-field-bg: #ffffff;
+    --med-admin-row-stripe: rgba(8, 28, 53, 0.025);
+    --med-admin-row-hover: rgba(115, 185, 255, 0.10);
+    --med-admin-border: rgba(112, 145, 180, 0.18);
+    --med-admin-border-strong: rgba(112, 145, 180, 0.28);
+    --med-admin-text: #102033;
+    --med-admin-muted: #647d97;
+    --med-admin-primary: #2f7bd0;
+    --med-admin-primary-strong: #1f69bb;
+    --med-admin-accent: #0b84b7;
+    --med-admin-success: #0b8f67;
+    --med-admin-danger: #d24d4d;
+    --med-admin-shadow: 0 18px 42px rgba(13, 27, 46, 0.12);
+    --med-admin-radius: 20px;
+    --med-admin-hero-glow: rgba(115, 185, 255, 0.16);
+    --med-admin-hero-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(240, 247, 255, 0.94));
+    --med-admin-login-bg: linear-gradient(180deg, #eef4fa, #e8f1f9);
+}
+
+@media (prefers-color-scheme: dark) {
+    html[data-theme="auto"] {
+        --med-admin-bg: #07111c;
+        --med-admin-page-top-glow: rgba(115, 185, 255, 0.12);
+        --med-admin-page-bottom: #0b1626;
+        --med-admin-surface: #101d2d;
+        --med-admin-surface-soft: #162538;
+        --med-admin-surface-muted: rgba(16, 29, 45, 0.92);
+        --med-admin-header-bg: rgba(10, 18, 31, 0.88);
+        --med-admin-breadcrumbs-bg: rgba(16, 29, 45, 0.92);
+        --med-admin-panel-bg: rgba(16, 29, 45, 0.92);
+        --med-admin-panel-strong-bg: rgba(11, 20, 32, 0.84);
+        --med-admin-field-bg: rgba(9, 18, 31, 0.92);
+        --med-admin-row-stripe: rgba(255, 255, 255, 0.02);
+        --med-admin-row-hover: rgba(115, 185, 255, 0.08);
+        --med-admin-border: rgba(125, 165, 205, 0.18);
+        --med-admin-border-strong: rgba(125, 165, 205, 0.28);
+        --med-admin-text: #e8f1fa;
+        --med-admin-muted: #8eabc7;
+        --med-admin-primary: #73b9ff;
+        --med-admin-primary-strong: #4a9df4;
+        --med-admin-accent: #7dd3fc;
+        --med-admin-success: #65d6a6;
+        --med-admin-danger: #ff8d8d;
+        --med-admin-shadow: 0 18px 42px rgba(0, 0, 0, 0.28);
+        --med-admin-radius: 20px;
+        --med-admin-hero-glow: rgba(115, 185, 255, 0.18);
+        --med-admin-hero-bg: linear-gradient(180deg, rgba(20, 34, 52, 0.96), rgba(14, 26, 40, 0.94));
+        --med-admin-login-bg: linear-gradient(180deg, #07111c, #0b1626);
+    }
+}
+
+body {
+    font-family: "DM Sans", system-ui, sans-serif;
+    background:
+        radial-gradient(circle at top right, var(--med-admin-page-top-glow), transparent 24%),
+        linear-gradient(180deg, var(--med-admin-bg), var(--med-admin-page-bottom) 42%, var(--med-admin-page-bottom));
+    color: var(--med-admin-text);
+}
+
+#header {
+    background: var(--med-admin-header-bg);
+    border-bottom: 1px solid var(--med-admin-border);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    color: var(--med-admin-text);
+    box-shadow: var(--med-admin-shadow);
+}
+
+#branding {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+}
+
+.medtech-admin-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+}
+
+.medtech-admin-brand__mark {
+    width: 40px;
+    height: 40px;
+    border-radius: 14px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    background: linear-gradient(145deg, var(--med-admin-primary-strong), #38bdf8);
+    box-shadow: 0 12px 26px rgba(74, 157, 244, 0.24);
+    flex-shrink: 0;
+}
+
+.medtech-admin-brand__copy {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.medtech-admin-brand__title {
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.1;
+}
+
+.medtech-admin-brand__subtitle {
+    color: var(--med-admin-muted);
+    font-size: 0.78rem;
+    white-space: nowrap;
+}
+
+#user-tools,
+#user-tools a,
+#logout-form button,
+.medtech-admin-link {
+    color: var(--med-admin-muted);
+}
+
+#user-tools a:hover,
+#logout-form button:hover,
+.medtech-admin-link:hover {
+    color: #fff;
+}
+
+div.breadcrumbs {
+    background: var(--med-admin-breadcrumbs-bg);
+    border-bottom: 1px solid var(--med-admin-border);
+    color: var(--med-admin-muted);
+}
+
+div.breadcrumbs a {
+    color: var(--med-admin-accent);
+}
+
+#content {
+    color: var(--med-admin-text);
+}
+
+.module,
+#content-related,
+.inline-group,
+.submit-row,
+.dashboard #content {
+    background: var(--med-admin-panel-bg);
+    border: 1px solid var(--med-admin-border);
+    border-radius: var(--med-admin-radius);
+    box-shadow: var(--med-admin-shadow);
+}
+
+.module h2,
+.module caption,
+.inline-group h2 {
+    background: transparent;
+    color: var(--med-admin-text);
+    border-bottom: 1px solid var(--med-admin-border);
+    font-family: "DM Serif Display", Georgia, serif;
+    font-size: 1.2rem;
+    letter-spacing: -0.01em;
+    padding: 16px 20px;
+}
+
+.aligned label,
+label,
+form .help,
+p.help,
+div.help,
+.helptext {
+    color: var(--med-admin-muted);
+}
+
+a,
+.object-tools a:link,
+.object-tools a:visited,
+tbody th a,
+thead th a,
+.selector-chosen h2 {
+    color: var(--med-admin-accent);
+}
+
+a:hover {
+    color: #fff;
+}
+
+table thead th {
+    background: color-mix(in srgb, var(--med-admin-primary) 12%, transparent);
+    color: var(--med-admin-text);
+    border-bottom: 1px solid var(--med-admin-border);
+}
+
+table tbody tr {
+    background: transparent;
+}
+
+table tbody tr:nth-child(odd) {
+    background: var(--med-admin-row-stripe);
+}
+
+table tbody tr:hover {
+    background: var(--med-admin-row-hover);
+}
+
+td,
+th {
+    border-color: var(--med-admin-border);
+}
+
+input,
+textarea,
+select,
+.vTextField,
+.vLargeTextField,
+.vURLField,
+.vIntegerField,
+.vDateField,
+.vTimeField,
+.vDateTimeField {
+    background: var(--med-admin-field-bg);
+    color: var(--med-admin-text);
+    border: 1px solid var(--med-admin-border-strong);
+    border-radius: 14px;
+    padding: 10px 12px;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    border-color: var(--med-admin-primary);
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(115, 185, 255, 0.14);
+}
+
+.button,
+input[type="submit"],
+input[type="button"],
+.submit-row input,
+a.button {
+    background: linear-gradient(145deg, var(--med-admin-primary-strong), #5fb9ff);
+    color: #06111d;
+    border: none;
+    border-radius: 999px;
+    font-weight: 700;
+    box-shadow: 0 12px 26px rgba(74, 157, 244, 0.22);
+}
+
+.button.default,
+input[type="submit"].default,
+.submit-row input.default {
+    background: linear-gradient(145deg, color-mix(in srgb, var(--med-admin-primary) 65%, white), var(--med-admin-primary));
+}
+
+.button:hover,
+input[type="submit"]:hover,
+input[type="button"]:hover,
+a.button:hover {
+    filter: brightness(1.04);
+}
+
+.button.deletelink,
+.deletelink,
+a.deletelink,
+input[type="submit"].deletelink {
+    background: rgba(239, 68, 68, 0.14);
+    color: #ffd2d2;
+    border: 1px solid rgba(255, 141, 141, 0.22);
+    box-shadow: none;
+}
+
+.dashboard .module table th {
+    width: auto;
+}
+
+.medtech-admin-hero {
+    margin-bottom: 26px;
+    padding: 28px;
+    border-radius: 28px;
+    border: 1px solid var(--med-admin-border);
+    background:
+        radial-gradient(circle at top left, var(--med-admin-hero-glow), transparent 30%),
+        var(--med-admin-hero-bg);
+    box-shadow: var(--med-admin-shadow);
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(240px, 0.8fr);
+    gap: 18px;
+}
+
+.medtech-admin-kicker {
+    display: inline-flex;
+    align-items: center;
+    min-height: 30px;
+    padding: 0 12px;
+    border-radius: 999px;
+    background: rgba(115, 185, 255, 0.12);
+    border: 1px solid rgba(115, 185, 255, 0.2);
+    color: var(--med-admin-accent);
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.medtech-admin-hero h1 {
+    margin-top: 16px;
+    font-family: "DM Serif Display", Georgia, serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+}
+
+.medtech-admin-hero p {
+    margin-top: 14px;
+    max-width: 720px;
+    color: var(--med-admin-muted);
+    line-height: 1.8;
+}
+
+.medtech-admin-hero__stats {
+    display: grid;
+    gap: 14px;
+}
+
+.medtech-admin-stat {
+    padding: 18px;
+    border-radius: 20px;
+    border: 1px solid var(--med-admin-border);
+    background: var(--med-admin-panel-strong-bg);
+}
+
+.medtech-admin-stat__label {
+    display: block;
+    color: var(--med-admin-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 0.74rem;
+    font-weight: 700;
+}
+
+.medtech-admin-stat__value {
+    display: block;
+    margin-top: 10px;
+    font-family: "DM Serif Display", Georgia, serif;
+    font-size: 1.9rem;
+    font-weight: 400;
+    color: var(--med-admin-primary);
+}
+
+.medtech-admin-section__head {
+    margin-bottom: 18px;
+}
+
+.medtech-admin-section__head h2 {
+    font-family: "DM Serif Display", Georgia, serif;
+    font-size: 1.6rem;
+    font-weight: 400;
+}
+
+.medtech-admin-section__head p {
+    margin-top: 8px;
+    color: var(--med-admin-muted);
+}
+
+.medtech-admin-apps {
+    display: grid;
+    gap: 18px;
+}
+
+.medtech-admin-app {
+    border: 1px solid var(--med-admin-border);
+    border-radius: 24px;
+    background: var(--med-admin-panel-bg);
+    box-shadow: var(--med-admin-shadow);
+    overflow: hidden;
+}
+
+.medtech-admin-app__head {
+    padding: 18px 22px;
+    border-bottom: 1px solid var(--med-admin-border);
+}
+
+.medtech-admin-app__head h3 {
+    font-family: "DM Serif Display", Georgia, serif;
+    font-size: 1.25rem;
+    font-weight: 400;
+}
+
+.medtech-admin-models {
+    display: grid;
+    gap: 0;
+}
+
+.medtech-admin-model {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    padding: 18px 22px;
+    border-top: 1px solid rgba(125, 165, 205, 0.12);
+    text-decoration: none;
+}
+
+.medtech-admin-model:first-child {
+    border-top: 0;
+}
+
+.medtech-admin-model strong {
+    display: block;
+    color: var(--med-admin-text);
+}
+
+.medtech-admin-model span {
+    display: block;
+    margin-top: 4px;
+    color: var(--med-admin-muted);
+    font-size: 0.9rem;
+}
+
+.medtech-admin-model:hover {
+    background: var(--med-admin-row-hover);
+}
+
+.medtech-admin-model__arrow {
+    color: var(--med-admin-primary);
+    font-size: 1.15rem;
+    flex-shrink: 0;
+}
+
+body.login {
+    background:
+        radial-gradient(circle at top left, var(--med-admin-page-top-glow), transparent 24%),
+        var(--med-admin-login-bg);
+}
+
+body.login #container {
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    width: 100%;
+    max-width: none;
+    min-width: 0;
+    margin: 0;
+    padding: 24px 16px;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+    overflow: visible;
+}
+
+body.login #content {
+    width: min(460px, calc(100vw - 32px));
+    max-width: 100%;
+    padding: 32px;
+    border-radius: 28px;
+    border: 1px solid var(--med-admin-border);
+    background: var(--med-admin-panel-bg);
+    box-shadow: var(--med-admin-shadow);
+    margin: 0;
+}
+
+body.login #content-main {
+    float: none;
+    width: 100%;
+}
+
+body.login #login-form {
+    display: grid;
+    gap: 16px;
+}
+
+body.login #header {
+    box-shadow: none;
+}
+
+body.login #header,
+body.login .breadcrumbs {
+    display: none;
+}
+
+body.login .submit-row {
+    padding: 0;
+    border: 0;
+    box-shadow: none;
+    background: transparent;
+    margin: 0;
+}
+
+body.login .submit-row input {
+    width: 100%;
+    min-height: 46px;
+}
+
+body.login .form-row {
+    padding: 0;
+    margin: 0;
+}
+
+body.login .form-row label {
+    display: block;
+    margin-bottom: 10px;
+    color: var(--med-admin-text);
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+body.login .password-reset-link {
+    text-align: left;
+    margin-top: -4px;
+}
+
+body.login .errornote,
+body.login ul.errorlist {
+    width: 100%;
+    margin: 0 0 16px;
+    padding: 14px 16px;
+    border-radius: 16px;
+    border: 1px solid rgba(239, 68, 68, 0.24);
+    background: rgba(239, 68, 68, 0.10);
+    color: #ffb4b4;
+    box-sizing: border-box;
+    line-height: 1.6;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+}
+
+body.login ul.errorlist {
+    list-style: none;
+}
+
+@media (max-width: 900px) {
+    .medtech-admin-hero {
+        grid-template-columns: 1fr;
+    }
+
+    .medtech-admin-brand__subtitle {
+        display: none;
+    }
+}
+
+@media (max-width: 640px) {
+    #header {
+        padding: 12px 14px;
+    }
+
+    .medtech-admin-brand__title {
+        font-size: 0.94rem;
+    }
+
+    #user-tools {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        justify-content: flex-end;
+    }
+
+    .medtech-admin-hero,
+    body.login #content {
+        padding: 22px;
+        border-radius: 22px;
+    }
+}

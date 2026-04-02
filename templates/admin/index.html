@@ -1,0 +1,59 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+
+{% block content %}
+<div class="medtech-admin-hero">
+    <div class="medtech-admin-hero__copy">
+        <span class="medtech-admin-kicker">Центр управления Med Tech</span>
+        <h1>Управляйте платформой Open Day из одного аккуратного рабочего пространства.</h1>
+        <p>
+            Просматривайте пользователей, профили врачей, записи, AI-сессии и Telegram-связки
+            без возврата к скучной стандартной Django-админке.
+        </p>
+    </div>
+    <div class="medtech-admin-hero__stats">
+        <div class="medtech-admin-stat">
+            <span class="medtech-admin-stat__label">Режим админа</span>
+            <strong class="medtech-admin-stat__value">Активен</strong>
+        </div>
+        <div class="medtech-admin-stat">
+            <span class="medtech-admin-stat__label">Платформа</span>
+            <strong class="medtech-admin-stat__value">Med Tech</strong>
+        </div>
+    </div>
+</div>
+
+<div class="medtech-admin-section">
+    <div class="medtech-admin-section__head">
+        <div>
+            <h2>Данные и сценарии</h2>
+            <p>Откройте любую модель ниже, чтобы управлять данными сайта, AI и Telegram-потока.</p>
+        </div>
+    </div>
+
+    {% if app_list %}
+        <div class="medtech-admin-apps">
+            {% for app in app_list %}
+                <section class="medtech-admin-app">
+                    <div class="medtech-admin-app__head">
+                        <h3>{{ app.name }}</h3>
+                    </div>
+                    <div class="medtech-admin-models">
+                        {% for model in app.models %}
+                            <a href="{{ model.admin_url }}" class="medtech-admin-model">
+                                <div>
+                                    <strong>{{ model.name }}</strong>
+                                    <span>{% if model.view_only %}Просмотр записей{% else %}Управление записями{% endif %}</span>
+                                </div>
+                                <span class="medtech-admin-model__arrow" aria-hidden="true">→</span>
+                            </a>
+                        {% endfor %}
+                    </div>
+                </section>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>{% translate "У вас нет прав на просмотр или изменение данных." %}</p>
+    {% endif %}
+</div>
+{% endblock %}

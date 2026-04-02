@@ -15,12 +15,13 @@
             new_password1: "New password",
             new_password2: "Confirm new password",
             submit: "Save new password",
-
             invalid_kicker: "Invalid Link",
             invalid_title: "This password reset link is no longer valid.",
             invalid_text: "The link may have expired or already been used. Please request a new password reset email.",
             invalid_btn_1: "Request a new link",
-            invalid_btn_2: "Back to login"
+            invalid_btn_2: "Back to login",
+            new_password1_placeholder: "Enter new password",
+            new_password2_placeholder: "Confirm new password",
         },
         ru: {
             kicker: "Новый пароль",
@@ -37,32 +38,33 @@
             new_password1: "Новый пароль",
             new_password2: "Подтвердите новый пароль",
             submit: "Сохранить новый пароль",
-
             invalid_kicker: "Недействительная ссылка",
             invalid_title: "Эта ссылка для сброса пароля больше недействительна.",
             invalid_text: "Ссылка могла истечь или уже быть использована. Пожалуйста, запросите новое письмо для сброса пароля.",
             invalid_btn_1: "Запросить новую ссылку",
-            invalid_btn_2: "Назад ко входу"
-        }
+            invalid_btn_2: "Назад ко входу",
+            new_password1_placeholder: "Введите новый пароль",
+            new_password2_placeholder: "Подтвердите новый пароль",
+        },
     };
 
     function applyPasswordResetConfirmLanguage() {
-        const lang = document.documentElement.getAttribute('data-lang') || 'en';
+        const lang = document.documentElement.getAttribute("data-lang") || "en";
         const dict = pageTranslations[lang] || pageTranslations.en;
 
-        document.querySelectorAll('[data-page-i18n]').forEach(el => {
-            const key = el.getAttribute('data-page-i18n');
+        document.querySelectorAll("[data-page-i18n]").forEach((el) => {
+            const key = el.getAttribute("data-page-i18n");
             if (dict[key]) {
                 el.textContent = dict[key];
             }
         });
+
+        const newPassword1 = document.getElementById("id_new_password1");
+        const newPassword2 = document.getElementById("id_new_password2");
+        if (newPassword1) newPassword1.placeholder = dict.new_password1_placeholder;
+        if (newPassword2) newPassword2.placeholder = dict.new_password2_placeholder;
     }
 
-    document.addEventListener('DOMContentLoaded', applyPasswordResetConfirmLanguage);
-
-    document.querySelectorAll('[data-lang-btn]').forEach(btn => {
-        btn.addEventListener('click', () => {
-            setTimeout(applyPasswordResetConfirmLanguage, 0);
-        });
-    });
+    document.addEventListener("DOMContentLoaded", applyPasswordResetConfirmLanguage);
+    document.addEventListener("app:languageChanged", applyPasswordResetConfirmLanguage);
 })();

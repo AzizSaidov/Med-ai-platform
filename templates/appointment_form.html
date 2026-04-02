@@ -1,7 +1,11 @@
 {% extends 'base.html' %}
-{% load crispy_forms_tags %}
+{% load static %}
 
 {% block title %}Med Tech | Edit Appointment{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/booking.css' %}">
+{% endblock %}
 
 {% block content %}
 <section class="portal-page">
@@ -18,6 +22,10 @@
                         <span class="portal-stat-card__label" data-page-i18n="common_doctor">Doctor</span>
                         <span class="portal-stat-card__value">{{ object.doctor_name }}</span>
                     </div>
+                    <div class="portal-stat-card">
+                        <span class="portal-stat-card__label" data-page-i18n="common_slot_length">Slot length</span>
+                        <span class="portal-stat-card__value">{{ object.doctor.slot_duration_minutes }} <span data-page-i18n="common_minutes">minutes</span></span>
+                    </div>
                 </div>
             </div>
 
@@ -26,12 +34,78 @@
                     <div>
                         <h2 data-page-i18n="appointment_form_card_title">Edit appointment</h2>
                         <p data-page-i18n="appointment_form_card_text">Update the booking details without breaking the existing appointment flow.</p>
+                        <p class="text-muted" style="margin-top: 8px;">
+                            <span data-weekdays="{{ object.doctor.available_days }}">{{ object.doctor.get_available_days_display }}</span> | {{ object.doctor.workday_start|time:"H:i" }} - {{ object.doctor.workday_end|time:"H:i" }}
+                        </p>
                     </div>
                 </div>
 
-                <form method="post" class="chat-form">
+                <form method="post" class="chat-form schedule-form" data-schedule-form>
                     {% csrf_token %}
-                    {{ form|crispy }}
+                    {% if form.non_field_errors %}
+                        <div class="non-field-errors">{{ form.non_field_errors }}</div>
+                    {% endif %}
+
+                    <div class="schedule-picker" data-schedule-picker>
+                        <div class="schedule-picker__header">
+                            <div>
+                                <span class="section-kicker" data-page-i18n="book_date_kicker">Date selection</span>
+                                <h3 data-page-i18n="appointment_slot_title">Move the appointment to another available slot.</h3>
+                            </div>
+                            <div class="schedule-summary-pill">
+                                <span>{{ object.doctor.slot_duration_minutes }} <span data-page-i18n="common_minutes">minutes</span></span>
+                            </div>
+                        </div>
+
+                        <div class="schedule-date-presets" data-date-presets></div>
+
+                        <div class="schedule-field">
+                            <label for="{{ form.appointment_date.id_for_label }}" data-page-i18n="book_date_field">Appointment date</label>
+                            {{ form.appointment_date }}
+                            {% if form.appointment_date.errors %}
+                                <div class="field-errors">{{ form.appointment_date.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="schedule-slot-box">
+                            <div class="schedule-slot-box__top">
+                                <div>
+                                    <label for="{{ form.appointment_time.id_for_label }}" data-page-i18n="book_time_field">Time slot</label>
+                                    <p class="field-help" data-page-i18n="book_slot_hint">Only available slots are shown for the selected date.</p>
+                                </div>
+                                <div class="schedule-selected" data-selected-slot></div>
+                            </div>
+
+                            <div class="schedule-slots" data-slot-grid></div>
+
+                            <div class="schedule-native-select" data-native-select>
+                                {{ form.appointment_time }}
+                            </div>
+
+                            <div class="schedule-empty" data-slot-empty hidden></div>
+
+                            {% if form.appointment_time.errors %}
+                                <div class="field-errors">{{ form.appointment_time.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="schedule-field">
+                        <label for="{{ form.notes.id_for_label }}" data-page-i18n="common_notes">Notes</label>
+                        {{ form.notes }}
+                        {% if form.notes.errors %}
+                            <div class="field-errors">{{ form.notes.errors }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="schedule-field">
+                        <label for="{{ form.status.id_for_label }}" data-page-i18n="common_status">Status</label>
+                        {{ form.status }}
+                        {% if form.status.errors %}
+                            <div class="field-errors">{{ form.status.errors }}</div>
+                        {% endif %}
+                    </div>
+
                     <div class="action-row">
                         <button type="submit" class="btn btn-primary" data-page-i18n="common_save_changes">Save changes</button>
                         <a href="{% url 'appointment_detail' object.pk %}" class="btn btn-secondary" data-page-i18n="appointment_form_btn_back">Back to details</a>
@@ -41,4 +115,9 @@
         </div>
     </div>
 </section>
+{{ schedule_payload|json_script:"appointment-schedule-data" }}
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/booking.js' %}"></script>
 {% endblock %}

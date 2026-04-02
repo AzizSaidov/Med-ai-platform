@@ -2,49 +2,41 @@
     const pageTranslations = {
         en: {
             kicker: "Email Sent",
-            title: "Password reset instructions have been sent.",
+            title: "Check your inbox for the reset link.",
             text: "If an account exists for the email you entered, you will receive a message with instructions to reset your password.",
-            point1_title: "Check your inbox",
-            point1_text: "Open your email and look for the message with the reset link.",
-            point2_title: "Check spam folder",
-            point2_text: "If you do not see the email, check spam or junk folders as well.",
+            point1_title: "Open your email",
+            point1_text: "Look for the password reset message sent from Med Tech.",
+            point2_title: "Check spam too",
+            point2_text: "If you do not see the message in your inbox, check spam or junk folders.",
             point3_title: "Use the link",
-            point3_text: "Follow the link in the email to set a new password securely.",
+            point3_text: "Open the reset link in the email to continue creating a new password.",
             btn_login: "Back to login",
-            btn_home: "Go to home"
+            btn_home: "Go to home",
         },
         ru: {
             kicker: "Письмо отправлено",
-            title: "Инструкция по сбросу пароля отправлена.",
+            title: "Проверьте почту для ссылки на сброс пароля.",
             text: "Если аккаунт с таким email существует, вы получите письмо с инструкцией по сбросу пароля.",
-            point1_title: "Проверьте входящие",
-            point1_text: "Откройте почту и найдите письмо со ссылкой для сброса.",
+            point1_title: "Откройте почту",
+            point1_text: "Найдите письмо для сброса пароля от Med Tech.",
             point2_title: "Проверьте спам",
-            point2_text: "Если письма не видно, проверьте папку спам или нежелательную почту.",
+            point2_text: "Если письма нет во входящих, проверьте папки спама и нежелательной почты.",
             point3_title: "Перейдите по ссылке",
-            point3_text: "Используйте ссылку из письма, чтобы безопасно задать новый пароль.",
+            point3_text: "Откройте ссылку из письма, чтобы создать новый пароль.",
             btn_login: "Назад ко входу",
-            btn_home: "На главную"
-        }
+            btn_home: "На главную",
+        },
     };
 
-    function applyPasswordResetDoneLanguage() {
-        const lang = document.documentElement.getAttribute('data-lang') || 'en';
+    function applyLanguage() {
+        const lang = document.documentElement.getAttribute("data-lang") || "en";
         const dict = pageTranslations[lang] || pageTranslations.en;
-
-        document.querySelectorAll('[data-page-i18n]').forEach(el => {
-            const key = el.getAttribute('data-page-i18n');
-            if (dict[key]) {
-                el.textContent = dict[key];
-            }
+        document.querySelectorAll("[data-page-i18n]").forEach((el) => {
+            const key = el.getAttribute("data-page-i18n");
+            if (dict[key]) el.textContent = dict[key];
         });
     }
 
-    document.addEventListener('DOMContentLoaded', applyPasswordResetDoneLanguage);
-
-    document.querySelectorAll('[data-lang-btn]').forEach(btn => {
-        btn.addEventListener('click', () => {
-            setTimeout(applyPasswordResetDoneLanguage, 0);
-        });
-    });
+    document.addEventListener("DOMContentLoaded", applyLanguage);
+    document.addEventListener("app:languageChanged", applyLanguage);
 })();

@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const translations = {
         en: {
             kicker: "AI Assistant",
@@ -8,33 +9,152 @@ document.addEventListener("DOMContentLoaded", () => {
             session_started: "Session started",
             conversation_title: "Conversation",
             conversation_text: "The assistant uses a real AI backend and keeps the discussion history inside your existing AIChatSession.",
+            role_user: "You",
+            role_assistant: "AI Assistant",
             empty_title: "No messages yet",
             empty_text: "Start the first conversation with a symptom question, appointment preparation request, or general care topic.",
             ask_title: "Ask the assistant",
             ask_text: "Use the assistant for general information and next-step guidance, not as a replacement for an in-person medical diagnosis.",
             providers_title: "Available providers",
+            message_label: "Message",
+            message_placeholder: "Ask about symptoms, preparing for a visit, or general care guidance...",
             send_button: "Send message",
             clear_button: "Clear conversation",
-            warning_note: "For urgent symptoms such as chest pain, breathing difficulty, heavy bleeding, stroke signs, or seizures, seek emergency care immediately."
+            tips_title: "Smart care tips",
+            tips: [
+                "For urgent symptoms such as chest pain, breathing difficulty, heavy bleeding, stroke signs, or seizures, seek emergency care immediately.",
+                "The assistant is best for general guidance, visit preparation, and simple symptom questions.",
+                "Add timing, severity, and recent changes to get a clearer and more useful answer.",
+                "For prescriptions, diagnosis, and urgent treatment decisions, contact a licensed clinician.",
+            ],
         },
         ru: {
-            kicker: "\u0418\u0418-\u043f\u043e\u043c\u043e\u0449\u043d\u0438\u043a",
-            title: "\u0412\u0430\u0448 \u043c\u0435\u0434\u0438\u0446\u0438\u043d\u0441\u043a\u0438\u0439 \u0447\u0430\u0442 \u0441 \u0438\u0441\u0442\u043e\u0440\u0438\u0435\u0439.",
-            text: "\u0417\u0430\u0434\u0430\u0432\u0430\u0439\u0442\u0435 \u0432\u043e\u043f\u0440\u043e\u0441\u044b \u043e \u0437\u0434\u043e\u0440\u043e\u0432\u044c\u0435, \u043f\u043e\u043b\u0443\u0447\u0430\u0439\u0442\u0435 \u043f\u043e\u0434\u0441\u043a\u0430\u0437\u043a\u0438 \u0438 \u0445\u0440\u0430\u043d\u0438\u0442\u0435 \u0438\u0441\u0442\u043e\u0440\u0438\u044e \u0434\u0438\u0430\u043b\u043e\u0433\u0430.",
-            messages_stored: "\u0421\u043e\u043e\u0431\u0449\u0435\u043d\u0438\u0439 \u0432 \u0438\u0441\u0442\u043e\u0440\u0438\u0438",
-            session_started: "\u0421\u0435\u0441\u0441\u0438\u044f \u0441",
-            conversation_title: "\u0414\u0438\u0430\u043b\u043e\u0433",
-            conversation_text: "\u0410\u0441\u0441\u0438\u0441\u0442\u0435\u043d\u0442 \u0438\u0441\u043f\u043e\u043b\u044c\u0437\u0443\u0435\u0442 \u0440\u0435\u0430\u043b\u044c\u043d\u044b\u0439 AI-\u0431\u044d\u043a\u0435\u043d\u0434 \u0438 \u0445\u0440\u0430\u043d\u0438\u0442 \u0438\u0441\u0442\u043e\u0440\u0438\u044e \u0432 AIChatSession.",
-            empty_title: "\u0421\u043e\u043e\u0431\u0449\u0435\u043d\u0438\u0439 \u043f\u043e\u043a\u0430 \u043d\u0435\u0442",
-            empty_text: "\u041d\u0430\u0447\u043d\u0438\u0442\u0435 \u0447\u0430\u0442 \u0441 \u0432\u043e\u043f\u0440\u043e\u0441\u0430 \u043e \u0441\u0438\u043c\u043f\u0442\u043e\u043c\u0430\u0445, \u0432\u0438\u0437\u0438\u0442\u0435 \u0438\u043b\u0438 \u0443\u0445\u043e\u0434\u0435.",
-            ask_title: "\u0421\u043f\u0440\u043e\u0441\u0438\u0442\u0435 \u0430\u0441\u0441\u0438\u0441\u0442\u0435\u043d\u0442\u0430",
-            ask_text: "\u0418\u0441\u043f\u043e\u043b\u044c\u0437\u0443\u0439\u0442\u0435 \u0435\u0433\u043e \u0434\u043b\u044f \u043e\u0431\u0449\u0435\u0439 \u0438\u043d\u0444\u043e\u0440\u043c\u0430\u0446\u0438\u0438 \u0438 \u043f\u043e\u0434\u0441\u043a\u0430\u0437\u043e\u043a \u043f\u043e \u0441\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u043c \u0448\u0430\u0433\u0430\u043c.",
-            providers_title: "\u0414\u043e\u0441\u0442\u0443\u043f\u043d\u044b\u0435 \u043f\u0440\u043e\u0432\u0430\u0439\u0434\u0435\u0440\u044b",
-            send_button: "\u041e\u0442\u043f\u0440\u0430\u0432\u0438\u0442\u044c",
-            clear_button: "\u041e\u0447\u0438\u0441\u0442\u0438\u0442\u044c \u0447\u0430\u0442",
-            warning_note: "\u041f\u0440\u0438 \u0431\u043e\u043b\u0438 \u0432 \u0433\u0440\u0443\u0434\u0438, \u0442\u0440\u0443\u0434\u043d\u043e\u043c \u0434\u044b\u0445\u0430\u043d\u0438\u0438, \u0441\u0438\u043b\u044c\u043d\u043e\u043c \u043a\u0440\u043e\u0432\u043e\u0442\u0435\u0447\u0435\u043d\u0438\u0438, \u043f\u0440\u0438\u0437\u043d\u0430\u043a\u0430\u0445 \u0438\u043d\u0441\u0443\u043b\u044c\u0442\u0430 \u0438\u043b\u0438 \u0441\u0443\u0434\u043e\u0440\u043e\u0433\u0430\u0445 \u043d\u0435\u043c\u0435\u0434\u043b\u0435\u043d\u043d\u043e \u043e\u0431\u0440\u0430\u0442\u0438\u0442\u0435\u0441\u044c \u0437\u0430 \u0441\u0440\u043e\u0447\u043d\u043e\u0439 \u043f\u043e\u043c\u043e\u0449\u044c\u044e."
-        }
+            kicker: "ИИ-помощник",
+            title: "Ваш медицинский чат с историей.",
+            text: "Задавайте вопросы о здоровье, получайте подсказки и храните историю диалога.",
+            messages_stored: "Сообщений в истории",
+            session_started: "Сессия с",
+            conversation_title: "Диалог",
+            conversation_text: "Ассистент использует реальный AI-бэкенд и хранит историю в AIChatSession.",
+            role_user: "Вы",
+            role_assistant: "AI помощник",
+            empty_title: "Сообщений пока нет",
+            empty_text: "Начните чат с вопроса о симптомах, визите или уходе.",
+            ask_title: "Спросите ассистента",
+            ask_text: "Используйте его для общей информации и подсказок по следующим шагам.",
+            providers_title: "Доступные провайдеры",
+            message_label: "Сообщение",
+            message_placeholder: "Спросите о симптомах, подготовке к визиту или об общих советах по уходу...",
+            send_button: "Отправить",
+            clear_button: "Очистить чат",
+            tips_title: "Полезные советы",
+            tips: [
+                "При боли в груди, трудном дыхании, сильном кровотечении, признаках инсульта или судорогах немедленно обратитесь за срочной помощью.",
+                "Ассистент лучше всего подходит для общих подсказок, подготовки к визиту и простых вопросов о симптомах.",
+                "Указывайте, когда начался симптом, насколько он сильный и что изменилось, чтобы ответ был точнее.",
+                "За диагнозом, рецептами и срочным лечением нужно обращаться к лицензированному врачу.",
+            ],
+        },
     };
+
+    let tipIndex = 0;
+    let tipTimer = null;
+
+    function animateThread() {
+        const bubbles = document.querySelectorAll(".chat-bubble");
+        if (!bubbles.length) {
+            return;
+        }
+
+        if (prefersReducedMotion) {
+            bubbles.forEach((bubble) => bubble.classList.add("is-visible"));
+            return;
+        }
+
+        bubbles.forEach((bubble, index) => {
+            window.setTimeout(() => {
+                bubble.classList.add("is-visible");
+            }, 90 * index);
+        });
+    }
+
+    function setupComposer() {
+        const form = document.querySelector(".ai-compose-form");
+        const textarea = form?.querySelector("textarea");
+        const submitButton = form?.querySelector("button[type='submit']");
+        const emptyCard = document.querySelector(".empty-card");
+
+        if (!form || !textarea || !submitButton) {
+            return;
+        }
+
+        const syncState = () => {
+            const hasValue = textarea.value.trim().length > 0;
+            form.classList.toggle("is-active", hasValue);
+            submitButton.classList.toggle("is-ready", hasValue);
+            if (emptyCard) {
+                emptyCard.classList.toggle("is-listening", hasValue);
+            }
+        };
+
+        syncState();
+        textarea.addEventListener("input", syncState);
+        textarea.addEventListener("focus", () => form.classList.add("is-focused"));
+        textarea.addEventListener("blur", () => form.classList.remove("is-focused"));
+        form.addEventListener("submit", () => {
+            form.classList.add("is-submitting");
+            submitButton.classList.add("is-sending");
+        });
+    }
+
+    function updateTip(lang, immediate = false) {
+        const tipNode = document.querySelector("[data-ai-tip-text]");
+        const progressNode = document.querySelector("[data-ai-tip-progress]");
+        if (!tipNode) {
+            return;
+        }
+
+        const dict = translations[lang] || translations.en;
+        const tips = dict.tips || translations.en.tips;
+        if (!tips.length) {
+            return;
+        }
+
+        if (progressNode) {
+            progressNode.style.animation = "none";
+            progressNode.offsetHeight;
+            progressNode.style.animation = "";
+        }
+
+        if (immediate) {
+            tipNode.textContent = tips[tipIndex % tips.length];
+            return;
+        }
+
+        tipNode.classList.add("is-switching");
+        window.setTimeout(() => {
+            tipNode.textContent = tips[tipIndex % tips.length];
+            tipNode.classList.remove("is-switching");
+        }, 180);
+    }
+
+    function startTipsRotation() {
+        if (tipTimer) {
+            window.clearInterval(tipTimer);
+        }
+
+        const lang = document.documentElement.getAttribute("data-lang") || "en";
+        tipIndex = 0;
+        updateTip(lang, true);
+
+        tipTimer = window.setInterval(() => {
+            const currentLang = document.documentElement.getAttribute("data-lang") || "en";
+            const dict = translations[currentLang] || translations.en;
+            const tips = dict.tips || translations.en.tips;
+            tipIndex = (tipIndex + 1) % tips.length;
+            updateTip(currentLang);
+        }, 5800);
+    }
 
     function applyAiChatLanguage() {
         const lang = document.documentElement.getAttribute("data-lang") || "en";
@@ -46,8 +166,28 @@ document.addEventListener("DOMContentLoaded", () => {
                 element.textContent = dict[key];
             }
         });
+
+        document.querySelectorAll("[data-message-role]").forEach((element) => {
+            const role = element.getAttribute("data-message-role");
+            element.textContent = role === "user" ? dict.role_user : dict.role_assistant;
+        });
+
+        const messageField = document.getElementById("id_message");
+        const messageLabel = document.querySelector("label[for='id_message']");
+        if (messageField) {
+            messageField.placeholder = dict.message_placeholder;
+        }
+        if (messageLabel) {
+            messageLabel.textContent = dict.message_label;
+        }
+
+        tipIndex = 0;
+        updateTip(lang, true);
     }
 
     applyAiChatLanguage();
+    startTipsRotation();
+    animateThread();
+    setupComposer();
     document.addEventListener("app:languageChanged", applyAiChatLanguage);
 });

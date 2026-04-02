@@ -11,17 +11,30 @@ document.addEventListener("DOMContentLoaded", () => {
         en: {
             site_subtitle: "Medical care workspace",
             nav_dashboard: "Dashboard",
+            nav_about: "About",
             nav_ai: "AI Assistant",
             nav_doctors: "Doctors",
             nav_appointments: "Appointments",
             nav_my_profile: "My Doctor Profile",
+            nav_my_profile_doctor: "Doctor Profile",
             nav_create_profile: "Create Doctor Profile",
+            nav_my_profile_short: "My Profile",
+            nav_create_profile_short: "Create Profile",
             nav_doctor_profiles: "Doctor Profiles",
+            nav_doctor_profiles_short: "Profiles",
             nav_admin: "Admin",
             nav_register: "Register",
             nav_tg: "Telegram",
             sign_in: "Sign In",
             sign_out: "Sign Out",
+            site_home: "Med Tech home",
+            theme_toggle: "Toggle theme",
+            nav_toggle: "Toggle navigation",
+            flash_success: "Success",
+            flash_error: "Action needed",
+            flash_warning: "Attention",
+            flash_notice: "Notice",
+            dismiss_message: "Dismiss message",
             footer_tagline: "Clear tools for patients and clinics.",
             footer_desc: "Doctor search, appointment management, and AI guidance in one medical platform.",
             footer_platform: "Platform",
@@ -42,11 +55,22 @@ document.addEventListener("DOMContentLoaded", () => {
             common_name: "Name",
             common_specialization: "Specialization",
             common_phone: "Phone",
+            common_email: "Email",
             common_address: "Address",
             common_notes: "Notes",
             common_doctor: "Doctor",
             common_patient: "Patient",
             common_date_time: "Date and time",
+            common_schedule: "Schedule",
+            common_available_days: "Available days",
+            common_working_hours: "Working hours",
+            common_slot_length: "Slot length",
+            common_slot_duration: "Slot duration",
+            common_minutes: "minutes",
+            common_live: "Live",
+            common_hidden: "hidden",
+            common_chat_id: "Chat ID",
+            common_linked: "Linked",
             common_edit: "Edit",
             common_create: "Create",
             common_save_changes: "Save changes",
@@ -117,31 +141,93 @@ document.addEventListener("DOMContentLoaded", () => {
             appointment_delete_text: "You can cancel this appointment now or return to the details page.",
             appointment_delete_confirm: "Yes, cancel appointment",
             appointment_delete_keep: "Keep appointment",
+            summary_item_tg_title: "Telegram bot",
+            summary_item_tg_text: "Connect your account and use quick actions from your phone.",
             book_kicker: "Booking flow",
             book_title_prefix: "Book a visit with",
             book_text: "Complete the form below to schedule a visit while keeping the existing booking flow simple and dependable.",
             book_card_title: "Appointment request",
             book_card_text: "Choose a future date and add any useful notes for the doctor.",
+            book_date_kicker: "Date selection",
+            book_date_title: "Pick a day that fits the doctor schedule.",
+            book_date_field: "Appointment date",
+            book_time_field: "Time slot",
+            book_slot_hint: "Only available slots are shown for the selected date.",
             book_btn_confirm: "Confirm booking",
             book_btn_back: "Back to doctors",
             book_sidebar_title: "Doctor snapshot",
             book_sidebar_text: "Use this summary to confirm you are booking the right specialist before submitting the appointment.",
-            book_about_doctor: "About this doctor"
+            book_about_doctor: "About this doctor",
+            book_schedule_prefix: "Available on",
+            book_schedule_from: "from",
+            book_schedule_to: "to",
+            book_schedule_each: "Each visit uses a",
+            appointment_slot_title: "Move the appointment to another available slot.",
+            about_kicker: "About Med Tech",
+            about_title: "A polished medical platform built as one consistent product.",
+            about_text: "The project brings together doctor discovery, schedule-based booking, AI support, and Telegram workflows inside one consistent experience.",
+            about_stat_users: "User flows",
+            about_stat_users_value: "Patient · doctor · admin",
+            about_stat_ai: "AI service",
+            about_stat_ai_value: "OpenAI · Grok · Gemini",
+            about_stat_booking: "Booking",
+            about_stat_booking_value: "Slots and doctor schedule",
+            about_section_product: "What the platform includes",
+            about_section_product_text: "The product already demonstrates the main user flow: registration, email confirmation, dashboard, doctors map, appointments, AI chat, and Telegram connection.",
+            about_feature_1: "Doctors and clinics map with live markers",
+            about_feature_2: "Booking by days, working hours, and free slots",
+            about_feature_3: "Different UI and permissions for patient, doctor, and admin",
+            about_feature_4: "AI assistant with saved conversation history and provider fallback",
+            about_feature_5: "Telegram bot for fast actions and reminders",
+            about_section_demo: "Why this project exists",
+            about_section_demo_text: "Med Tech was designed to feel like a finished product instead of a collection of disconnected pages.",
+            about_section_demo_note: "That means the backend flow matters, but the presentation, UX, and visual consistency matter just as much.",
+            about_section_stack: "Stack and integrations",
+            about_stack_1: "Django, CBV, Forms, Filters, Signals, Soft delete",
+            about_stack_2: "Custom templates, static files, responsive UI",
+            about_stack_3: "SMTP email confirmation and Telegram integration",
+            about_stack_4: "AI service with history stored in AIChatSession",
+            error_403_kicker: "Access denied",
+            error_403_title: "This area is not available for your account.",
+            error_403_text: "The page exists, but your current role does not have permission to open it. Return to a safe section of Med Tech and continue from there.",
+            error_403_tip: "Try a page that matches your role.",
+            error_404_kicker: "Page not found",
+            error_404_title: "The page you tried to open does not exist.",
+            error_404_text: "The link may be outdated, incomplete, or removed. You can return to the main Med Tech flow and continue from a valid section.",
+            error_404_tip: "Start again from the dashboard or the About page.",
+            error_code_label: "Error code",
+            error_tip_label: "Tip",
+            error_btn_home: "Go to dashboard",
+            error_btn_doctors: "Browse doctors",
+            error_btn_about: "Read about Med Tech"
         },
         ru: {
             site_subtitle: "\u041c\u0435\u0434\u0438\u0446\u0438\u043d\u0441\u043a\u043e\u0435 \u0440\u0430\u0431\u043e\u0447\u0435\u0435 \u043f\u0440\u043e\u0441\u0442\u0440\u0430\u043d\u0441\u0442\u0432\u043e",
             nav_dashboard: "\u0413\u043b\u0430\u0432\u043d\u0430\u044f",
+            nav_about: "\u041e \u043d\u0430\u0441",
             nav_ai: "\u0418\u0418-\u043f\u043e\u043c\u043e\u0449\u043d\u0438\u043a",
             nav_doctors: "\u0412\u0440\u0430\u0447\u0438",
             nav_appointments: "\u0417\u0430\u043f\u0438\u0441\u0438",
             nav_my_profile: "\u041c\u043e\u0439 \u043f\u0440\u043e\u0444\u0438\u043b\u044c \u0432\u0440\u0430\u0447\u0430",
+            nav_my_profile_doctor: "\u041f\u0440\u043e\u0444\u0438\u043b\u044c \u0432\u0440\u0430\u0447\u0430",
             nav_create_profile: "\u0421\u043e\u0437\u0434\u0430\u0442\u044c \u043f\u0440\u043e\u0444\u0438\u043b\u044c \u0432\u0440\u0430\u0447\u0430",
+            nav_my_profile_short: "\u041c\u043e\u0439 \u043f\u0440\u043e\u0444\u0438\u043b\u044c",
+            nav_create_profile_short: "\u0421\u043e\u0437\u0434\u0430\u0442\u044c \u043f\u0440\u043e\u0444\u0438\u043b\u044c",
             nav_doctor_profiles: "\u041f\u0440\u043e\u0444\u0438\u043b\u0438 \u0432\u0440\u0430\u0447\u0435\u0439",
+            nav_doctor_profiles_short: "\u041f\u0440\u043e\u0444\u0438\u043b\u0438",
             nav_admin: "\u0410\u0434\u043c\u0438\u043d",
             nav_register: "\u0420\u0435\u0433\u0438\u0441\u0442\u0440\u0430\u0446\u0438\u044f",
             nav_tg: "Telegram",
             sign_in: "\u0412\u043e\u0439\u0442\u0438",
             sign_out: "\u0412\u044b\u0439\u0442\u0438",
+            site_home: "\u0413\u043b\u0430\u0432\u043d\u0430\u044f Med Tech",
+            theme_toggle: "\u041f\u0435\u0440\u0435\u043a\u043b\u044e\u0447\u0438\u0442\u044c \u0442\u0435\u043c\u0443",
+            nav_toggle: "\u041f\u0435\u0440\u0435\u043a\u043b\u044e\u0447\u0438\u0442\u044c \u043c\u0435\u043d\u044e",
+            flash_success: "\u0423\u0441\u043f\u0435\u0445",
+            flash_error: "\u0422\u0440\u0435\u0431\u0443\u0435\u0442\u0441\u044f \u0434\u0435\u0439\u0441\u0442\u0432\u0438\u0435",
+            flash_warning: "\u0412\u043d\u0438\u043c\u0430\u043d\u0438\u0435",
+            flash_notice: "\u0423\u0432\u0435\u0434\u043e\u043c\u043b\u0435\u043d\u0438\u0435",
+            dismiss_message: "\u0417\u0430\u043a\u0440\u044b\u0442\u044c \u0441\u043e\u043e\u0431\u0449\u0435\u043d\u0438\u0435",
             footer_tagline: "\u041f\u043e\u043d\u044f\u0442\u043d\u044b\u0435 \u0438\u043d\u0441\u0442\u0440\u0443\u043c\u0435\u043d\u0442\u044b \u0434\u043b\u044f \u043f\u0430\u0446\u0438\u0435\u043d\u0442\u043e\u0432 \u0438 \u043a\u043b\u0438\u043d\u0438\u043a.",
             footer_desc: "\u041f\u043e\u0438\u0441\u043a \u0432\u0440\u0430\u0447\u0435\u0439, \u0443\u043f\u0440\u0430\u0432\u043b\u0435\u043d\u0438\u0435 \u0437\u0430\u043f\u0438\u0441\u044f\u043c\u0438 \u0438 \u0418\u0418-\u043f\u043e\u043c\u043e\u0449\u044c \u0432 \u043e\u0434\u043d\u043e\u0439 \u043c\u0435\u0434\u0438\u0446\u0438\u043d\u0441\u043a\u043e\u0439 \u043f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u0435.",
             footer_platform: "\u041f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u0430",
@@ -162,11 +248,22 @@ document.addEventListener("DOMContentLoaded", () => {
             common_name: "\u0418\u043c\u044f",
             common_specialization: "\u0421\u043f\u0435\u0446\u0438\u0430\u043b\u0438\u0437\u0430\u0446\u0438\u044f",
             common_phone: "\u0422\u0435\u043b\u0435\u0444\u043e\u043d",
+            common_email: "Email",
             common_address: "\u0410\u0434\u0440\u0435\u0441",
             common_notes: "\u0417\u0430\u043c\u0435\u0442\u043a\u0438",
             common_doctor: "\u0412\u0440\u0430\u0447",
             common_patient: "\u041f\u0430\u0446\u0438\u0435\u043d\u0442",
             common_date_time: "\u0414\u0430\u0442\u0430 \u0438 \u0432\u0440\u0435\u043c\u044f",
+            common_schedule: "\u0413\u0440\u0430\u0444\u0438\u043a",
+            common_available_days: "\u0414\u043e\u0441\u0442\u0443\u043f\u043d\u044b\u0435 \u0434\u043d\u0438",
+            common_working_hours: "\u0427\u0430\u0441\u044b \u0440\u0430\u0431\u043e\u0442\u044b",
+            common_slot_length: "\u0414\u043b\u0438\u043d\u0430 \u0441\u043b\u043e\u0442\u0430",
+            common_slot_duration: "\u0414\u043b\u0438\u0442\u0435\u043b\u044c\u043d\u043e\u0441\u0442\u044c \u0441\u043b\u043e\u0442\u0430",
+            common_minutes: "\u043c\u0438\u043d\u0443\u0442",
+            common_live: "\u0412 \u044d\u0444\u0438\u0440\u0435",
+            common_hidden: "\u0441\u043a\u0440\u044b\u0442",
+            common_chat_id: "Chat ID",
+            common_linked: "\u041f\u0440\u0438\u0432\u044f\u0437\u0430\u043d",
             common_edit: "\u0418\u0437\u043c\u0435\u043d\u0438\u0442\u044c",
             common_create: "\u0421\u043e\u0437\u0434\u0430\u0442\u044c",
             common_save_changes: "\u0421\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u0438\u0437\u043c\u0435\u043d\u0435\u043d\u0438\u044f",
@@ -237,17 +334,100 @@ document.addEventListener("DOMContentLoaded", () => {
             appointment_delete_text: "\u0412\u044b \u043c\u043e\u0436\u0435\u0442\u0435 \u043e\u0442\u043c\u0435\u043d\u0438\u0442\u044c \u044d\u0442\u0443 \u0437\u0430\u043f\u0438\u0441\u044c \u0438\u043b\u0438 \u0432\u0435\u0440\u043d\u0443\u0442\u044c\u0441\u044f \u043a \u0435\u0451 \u0434\u0435\u0442\u0430\u043b\u044f\u043c.",
             appointment_delete_confirm: "\u0414\u0430, \u043e\u0442\u043c\u0435\u043d\u0438\u0442\u044c \u0437\u0430\u043f\u0438\u0441\u044c",
             appointment_delete_keep: "\u041e\u0441\u0442\u0430\u0432\u0438\u0442\u044c \u0437\u0430\u043f\u0438\u0441\u044c",
+            summary_item_tg_title: "Telegram \u0431\u043e\u0442",
+            summary_item_tg_text: "\u041f\u043e\u0434\u043a\u043b\u044e\u0447\u0438 \u0430\u043a\u043a\u0430\u0443\u043d\u0442 \u0438 \u0438\u0441\u043f\u043e\u043b\u044c\u0437\u0443\u0439 \u0431\u044b\u0441\u0442\u0440\u044b\u0435 \u0434\u0435\u0439\u0441\u0442\u0432\u0438\u044f \u0441 \u0442\u0435\u043b\u0435\u0444\u043e\u043d\u0430.",
             book_kicker: "\u0417\u0430\u043f\u0438\u0441\u044c \u043d\u0430 \u043f\u0440\u0438\u0451\u043c",
             book_title_prefix: "\u0417\u0430\u043f\u0438\u0441\u0430\u0442\u044c\u0441\u044f \u043a",
             book_text: "\u0417\u0430\u043f\u043e\u043b\u043d\u0438\u0442\u0435 \u0444\u043e\u0440\u043c\u0443 \u043d\u0438\u0436\u0435, \u0447\u0442\u043e\u0431\u044b \u043e\u0441\u0442\u0430\u0432\u0438\u0442\u044c \u0437\u0430\u043f\u0438\u0441\u044c \u0431\u0435\u0437 \u043b\u043e\u043c\u043a\u0438 \u0442\u0435\u043a\u0443\u0449\u0435\u0433\u043e booking-flow.",
             book_card_title: "\u0417\u0430\u043f\u0440\u043e\u0441 \u043d\u0430 \u0437\u0430\u043f\u0438\u0441\u044c",
             book_card_text: "\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0431\u0443\u0434\u0443\u0449\u0443\u044e \u0434\u0430\u0442\u0443 \u0438 \u0434\u043e\u0431\u0430\u0432\u044c\u0442\u0435 \u043d\u0443\u0436\u043d\u044b\u0435 \u0437\u0430\u043c\u0435\u0442\u043a\u0438 \u0434\u043b\u044f \u0432\u0440\u0430\u0447\u0430.",
+            book_date_kicker: "\u0412\u044b\u0431\u043e\u0440 \u0434\u0430\u0442\u044b",
+            book_date_title: "\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0434\u0435\u043d\u044c, \u043a\u043e\u0442\u043e\u0440\u044b\u0439 \u043f\u043e\u0434\u0445\u043e\u0434\u0438\u0442 \u043f\u043e \u0433\u0440\u0430\u0444\u0438\u043a\u0443 \u0432\u0440\u0430\u0447\u0430.",
+            book_date_field: "\u0414\u0430\u0442\u0430 \u043f\u0440\u0438\u0451\u043c\u0430",
+            book_time_field: "\u0412\u0440\u0435\u043c\u044f \u043f\u0440\u0438\u0451\u043c\u0430",
+            book_slot_hint: "\u0414\u043b\u044f \u0432\u044b\u0431\u0440\u0430\u043d\u043d\u043e\u0439 \u0434\u0430\u0442\u044b \u043f\u043e\u043a\u0430\u0437\u044b\u0432\u0430\u044e\u0442\u0441\u044f \u0442\u043e\u043b\u044c\u043a\u043e \u0441\u0432\u043e\u0431\u043e\u0434\u043d\u044b\u0435 \u0441\u043b\u043e\u0442\u044b.",
             book_btn_confirm: "\u041f\u043e\u0434\u0442\u0432\u0435\u0440\u0434\u0438\u0442\u044c \u0437\u0430\u043f\u0438\u0441\u044c",
             book_btn_back: "\u041d\u0430\u0437\u0430\u0434 \u043a \u0432\u0440\u0430\u0447\u0430\u043c",
             book_sidebar_title: "\u041a\u0440\u0430\u0442\u043a\u043e \u043e \u0432\u0440\u0430\u0447\u0435",
             book_sidebar_text: "\u0418\u0441\u043f\u043e\u043b\u044c\u0437\u0443\u0439\u0442\u0435 \u044d\u0442\u043e \u0440\u0435\u0437\u044e\u043c\u0435, \u0447\u0442\u043e\u0431\u044b \u0443\u0431\u0435\u0434\u0438\u0442\u044c\u0441\u044f, \u0447\u0442\u043e \u0432\u044b \u0432\u044b\u0431\u0440\u0430\u043b\u0438 \u043d\u0443\u0436\u043d\u043e\u0433\u043e \u0441\u043f\u0435\u0446\u0438\u0430\u043b\u0438\u0441\u0442\u0430.",
-            book_about_doctor: "\u041e\u0431 \u044d\u0442\u043e\u043c \u0432\u0440\u0430\u0447\u0435"
+            book_about_doctor: "\u041e\u0431 \u044d\u0442\u043e\u043c \u0432\u0440\u0430\u0447\u0435",
+            book_schedule_prefix: "\u0414\u043e\u0441\u0442\u0443\u043f\u0435\u043d \u0432",
+            book_schedule_from: "\u0441",
+            book_schedule_to: "\u0434\u043e",
+            book_schedule_each: "\u041a\u0430\u0436\u0434\u044b\u0439 \u043f\u0440\u0438\u0451\u043c \u0437\u0430\u043d\u0438\u043c\u0430\u0435\u0442",
+            appointment_slot_title: "\u041f\u0435\u0440\u0435\u043d\u0435\u0441\u0438\u0442\u0435 \u0437\u0430\u043f\u0438\u0441\u044c \u043d\u0430 \u0434\u0440\u0443\u0433\u043e\u0439 \u0441\u0432\u043e\u0431\u043e\u0434\u043d\u044b\u0439 \u0441\u043b\u043e\u0442.",
+            about_kicker: "\u041e Med Tech",
+            about_title: "\u0426\u0435\u043b\u044c\u043d\u0430\u044f \u043c\u0435\u0434\u0438\u0446\u0438\u043d\u0441\u043a\u0430\u044f \u043f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u0430, \u0441\u043e\u0431\u0440\u0430\u043d\u043d\u0430\u044f \u043a\u0430\u043a \u0435\u0434\u0438\u043d\u044b\u0439 \u043f\u0440\u043e\u0434\u0443\u043a\u0442.",
+            about_text: "\u041f\u0440\u043e\u0435\u043a\u0442 \u043e\u0431\u044a\u0435\u0434\u0438\u043d\u044f\u0435\u0442 \u043f\u043e\u0438\u0441\u043a \u0432\u0440\u0430\u0447\u0435\u0439, \u0437\u0430\u043f\u0438\u0441\u044c \u043f\u043e \u0433\u0440\u0430\u0444\u0438\u043a\u0443, AI-\u043f\u043e\u043c\u043e\u0449\u044c \u0438 Telegram-\u0441\u0446\u0435\u043d\u0430\u0440\u0438\u0438 \u0432 \u043e\u0434\u043d\u043e\u043c \u0430\u043a\u043a\u0443\u0440\u0430\u0442\u043d\u043e\u043c \u0438\u043d\u0442\u0435\u0440\u0444\u0435\u0439\u0441\u0435.",
+            about_stat_users: "\u0421\u0446\u0435\u043d\u0430\u0440\u0438\u0438",
+            about_stat_users_value: "\u041f\u0430\u0446\u0438\u0435\u043d\u0442 \u00b7 \u0432\u0440\u0430\u0447 \u00b7 \u0430\u0434\u043c\u0438\u043d",
+            about_stat_ai: "AI-\u0441\u0435\u0440\u0432\u0438\u0441",
+            about_stat_ai_value: "OpenAI \u00b7 Grok \u00b7 Gemini",
+            about_stat_booking: "\u0417\u0430\u043f\u0438\u0441\u044c",
+            about_stat_booking_value: "\u0421\u043b\u043e\u0442\u044b \u0438 \u0433\u0440\u0430\u0444\u0438\u043a \u0432\u0440\u0430\u0447\u0430",
+            about_section_product: "\u0427\u0442\u043e \u0432\u0445\u043e\u0434\u0438\u0442 \u0432 \u043f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u0443",
+            about_section_product_text: "\u041f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u0430 \u0443\u0436\u0435 \u043f\u043e\u043a\u0430\u0437\u044b\u0432\u0430\u0435\u0442 \u043e\u0441\u043d\u043e\u0432\u043d\u043e\u0439 user flow: \u0440\u0435\u0433\u0438\u0441\u0442\u0440\u0430\u0446\u0438\u044f, \u043f\u043e\u0434\u0442\u0432\u0435\u0440\u0436\u0434\u0435\u043d\u0438\u0435 email, dashboard, \u043a\u0430\u0440\u0442\u0430 \u0432\u0440\u0430\u0447\u0435\u0439, \u0437\u0430\u043f\u0438\u0441\u0438, AI-\u0447\u0430\u0442 \u0438 Telegram-\u0441\u0432\u044f\u0437\u043a\u0443.",
+            about_feature_1: "\u041a\u0430\u0440\u0442\u0430 \u0432\u0440\u0430\u0447\u0435\u0439 \u0438 \u043a\u043b\u0438\u043d\u0438\u043a \u0441 \u0436\u0438\u0432\u044b\u043c\u0438 \u043c\u0435\u0442\u043a\u0430\u043c\u0438",
+            about_feature_2: "\u0417\u0430\u043f\u0438\u0441\u044c \u043f\u043e \u0434\u043d\u044f\u043c, \u0447\u0430\u0441\u0430\u043c \u0438 \u0441\u0432\u043e\u0431\u043e\u0434\u043d\u044b\u043c \u0441\u043b\u043e\u0442\u0430\u043c",
+            about_feature_3: "\u0420\u0430\u0437\u043d\u044b\u0439 UI \u0438 \u0434\u043e\u0441\u0442\u0443\u043f \u0434\u043b\u044f patient, doctor \u0438 admin",
+            about_feature_4: "\u0418\u0418-\u043f\u043e\u043c\u043e\u0449\u043d\u0438\u043a \u0441 \u0438\u0441\u0442\u043e\u0440\u0438\u0435\u0439 \u0434\u0438\u0430\u043b\u043e\u0433\u0430 \u0438 fallback \u043f\u0440\u043e\u0432\u0430\u0439\u0434\u0435\u0440\u043e\u0432",
+            about_feature_5: "Telegram-\u0431\u043e\u0442 \u0434\u043b\u044f \u0431\u044b\u0441\u0442\u0440\u044b\u0445 \u0434\u0435\u0439\u0441\u0442\u0432\u0438\u0439 \u0438 \u043d\u0430\u043f\u043e\u043c\u0438\u043d\u0430\u043d\u0438\u0439",
+            about_section_demo: "\u0417\u0430\u0447\u0435\u043c \u044d\u0442\u043e\u0442 \u043f\u0440\u043e\u0435\u043a\u0442",
+            about_section_demo_text: "Med Tech \u0441\u043f\u0440\u043e\u0435\u043a\u0442\u0438\u0440\u043e\u0432\u0430\u043d \u0442\u0430\u043a, \u0447\u0442\u043e\u0431\u044b \u043e\u0449\u0443\u0449\u0430\u0442\u044c\u0441\u044f \u043a\u0430\u043a \u0437\u0430\u043a\u043e\u043d\u0447\u0435\u043d\u043d\u044b\u0439 \u043f\u0440\u043e\u0434\u0443\u043a\u0442, \u0430 \u043d\u0435 \u043a\u0430\u043a \u043d\u0430\u0431\u043e\u0440 \u0440\u0430\u0437\u0440\u043e\u0437\u043d\u0435\u043d\u043d\u044b\u0445 \u0441\u0442\u0440\u0430\u043d\u0438\u0446.",
+            about_section_demo_note: "\u0417\u0434\u0435\u0441\u044c \u0432\u0430\u0436\u043d\u044b \u043d\u0435 \u0442\u043e\u043b\u044c\u043a\u043e backend-\u0441\u0432\u044f\u0437\u0438 \u0438 CRUD, \u043d\u043e \u0438 \u0432\u0438\u0437\u0443\u0430\u043b, UX \u0438 \u0447\u0438\u0441\u0442\u0430\u044f \u043f\u0440\u0435\u0437\u0435\u043d\u0442\u0430\u0446\u0438\u044f.",
+            about_section_stack: "\u0421\u0442\u0435\u043a \u0438 \u0438\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0438\u0438",
+            about_stack_1: "Django, CBV, Forms, Filters, Signals, Soft delete",
+            about_stack_2: "\u041a\u0430\u0441\u0442\u043e\u043c\u043d\u044b\u0435 templates, static files, responsive UI",
+            about_stack_3: "SMTP email confirmation \u0438 Telegram integration",
+            about_stack_4: "AI-\u0441\u0435\u0440\u0432\u0438\u0441 \u0441 \u0441\u043e\u0445\u0440\u0430\u043d\u0435\u043d\u0438\u0435\u043c history \u0432 AIChatSession",
+            error_403_kicker: "\u0414\u043e\u0441\u0442\u0443\u043f \u0437\u0430\u043a\u0440\u044b\u0442",
+            error_403_title: "\u042d\u0442\u0430 \u0437\u043e\u043d\u0430 \u043d\u0435\u0434\u043e\u0441\u0442\u0443\u043f\u043d\u0430 \u0434\u043b\u044f \u0432\u0430\u0448\u0435\u0439 \u0443\u0447\u0451\u0442\u043d\u043e\u0439 \u0437\u0430\u043f\u0438\u0441\u0438.",
+            error_403_text: "\u0421\u0442\u0440\u0430\u043d\u0438\u0446\u0430 \u0441\u0443\u0449\u0435\u0441\u0442\u0432\u0443\u0435\u0442, \u043d\u043e \u0442\u0435\u043a\u0443\u0449\u0430\u044f \u0440\u043e\u043b\u044c \u043d\u0435 \u0438\u043c\u0435\u0435\u0442 \u043f\u0440\u0430\u0432 \u0434\u043b\u044f \u0435\u0451 \u043e\u0442\u043a\u0440\u044b\u0442\u0438\u044f. \u0412\u0435\u0440\u043d\u0438\u0441\u044c \u0432 \u0431\u0435\u0437\u043e\u043f\u0430\u0441\u043d\u044b\u0439 \u0440\u0430\u0437\u0434\u0435\u043b Med Tech \u0438 \u043f\u0440\u043e\u0434\u043e\u043b\u0436\u0438 \u0440\u0430\u0431\u043e\u0442\u0443 \u0442\u0430\u043c.",
+            error_403_tip: "\u041f\u043e\u043f\u0440\u043e\u0431\u0443\u0439 \u043e\u0442\u043a\u0440\u044b\u0442\u044c \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0443, \u043a\u043e\u0442\u043e\u0440\u0430\u044f \u043f\u043e\u0434\u0445\u043e\u0434\u0438\u0442 \u0442\u0432\u043e\u0435\u0439 \u0440\u043e\u043b\u0438.",
+            error_404_kicker: "\u0421\u0442\u0440\u0430\u043d\u0438\u0446\u0430 \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u0430",
+            error_404_title: "\u0421\u0442\u0440\u0430\u043d\u0438\u0446\u0430, \u043a\u043e\u0442\u043e\u0440\u0443\u044e \u0442\u044b \u043e\u0442\u043a\u0440\u044b\u043b, \u043d\u0435 \u0441\u0443\u0449\u0435\u0441\u0442\u0432\u0443\u0435\u0442.",
+            error_404_text: "\u0421\u0441\u044b\u043b\u043a\u0430 \u043c\u043e\u0433\u043b\u0430 \u0443\u0441\u0442\u0430\u0440\u0435\u0442\u044c, \u0431\u044b\u0442\u044c \u043d\u0435\u043f\u043e\u043b\u043d\u043e\u0439 \u0438\u043b\u0438 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0443 \u0443\u0436\u0435 \u0443\u0431\u0440\u0430\u043b\u0438. \u0422\u044b \u043c\u043e\u0436\u0435\u0448\u044c \u0432\u0435\u0440\u043d\u0443\u0442\u044c\u0441\u044f \u0432 \u043e\u0441\u043d\u043e\u0432\u043d\u043e\u0439 flow Med Tech \u0438 \u043f\u0440\u043e\u0434\u043e\u043b\u0436\u0438\u0442\u044c \u043e\u0442\u0442\u0443\u0434\u0430.",
+            error_404_tip: "\u041d\u0430\u0447\u043d\u0438 \u0437\u0430\u043d\u043e\u0432\u043e \u0441 \u0433\u043b\u0430\u0432\u043d\u043e\u0439 \u0438\u043b\u0438 \u0441\u043e \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u044b \u00ab\u041e \u043d\u0430\u0441\u00bb.",
+            error_code_label: "\u041a\u043e\u0434 \u043e\u0448\u0438\u0431\u043a\u0438",
+            error_tip_label: "\u041f\u043e\u0434\u0441\u043a\u0430\u0437\u043a\u0430",
+            error_btn_home: "\u041d\u0430 \u0433\u043b\u0430\u0432\u043d\u0443\u044e",
+            error_btn_doctors: "\u041a \u0432\u0440\u0430\u0447\u0430\u043c",
+            error_btn_about: "\u0427\u0438\u0442\u0430\u0442\u044c \u043e Med Tech"
         }
+    };
+
+    const weekdayLabels = {
+        en: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+        ru: [
+            "\u041f\u043e\u043d\u0435\u0434\u0435\u043b\u044c\u043d\u0438\u043a",
+            "\u0412\u0442\u043e\u0440\u043d\u0438\u043a",
+            "\u0421\u0440\u0435\u0434\u0430",
+            "\u0427\u0435\u0442\u0432\u0435\u0440\u0433",
+            "\u041f\u044f\u0442\u043d\u0438\u0446\u0430",
+            "\u0421\u0443\u0431\u0431\u043e\u0442\u0430",
+            "\u0412\u043e\u0441\u043a\u0440\u0435\u0441\u0435\u043d\u044c\u0435"
+        ],
+    };
+
+    const statusLabels = {
+        en: {
+            pending: "Pending",
+            confirmed: "Confirmed",
+            completed: "Completed",
+            cancelled: "Cancelled",
+            online: "Online",
+            busy: "Busy",
+            offline: "Offline",
+        },
+        ru: {
+            pending: "\u0412 \u043e\u0436\u0438\u0434\u0430\u043d\u0438\u0438",
+            confirmed: "\u041f\u043e\u0434\u0442\u0432\u0435\u0440\u0436\u0434\u0435\u043d\u043e",
+            completed: "\u0417\u0430\u0432\u0435\u0440\u0448\u0435\u043d\u043e",
+            cancelled: "\u041e\u0442\u043c\u0435\u043d\u0435\u043d\u043e",
+            online: "\u041e\u043d\u043b\u0430\u0439\u043d",
+            busy: "\u0417\u0430\u043d\u044f\u0442",
+            offline: "\u041d\u0435 \u0432 \u0441\u0435\u0442\u0438",
+        },
     };
 
     function currentLanguage() {
@@ -282,11 +462,76 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
 
+        document.querySelectorAll("[data-i18n-aria-label]").forEach((element) => {
+            const key = element.dataset.i18nAriaLabel;
+            if (dict[key]) {
+                element.setAttribute("aria-label", dict[key]);
+            }
+        });
+
         langButtons.forEach((button) => {
             button.classList.toggle("active", button.dataset.langBtn === lang);
         });
 
+        applyLocalizedDynamicContent(lang);
+
         document.dispatchEvent(new CustomEvent("app:languageChanged", { detail: { lang } }));
+    }
+
+    function formatLocalDateValue(value, format, lang) {
+        if (!value) {
+            return "";
+        }
+
+        const date = new Date(value);
+        if (Number.isNaN(date.getTime())) {
+            return value;
+        }
+
+        const locale = lang === "ru" ? "ru-RU" : "en-US";
+        const optionsMap = {
+            "day-month": { day: "2-digit", month: "short" },
+            "month-year": { month: "short", year: "numeric" },
+            "time": { hour: "2-digit", minute: "2-digit" },
+            "datetime": { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" },
+        };
+
+        const options = optionsMap[format] || optionsMap.datetime;
+        return new Intl.DateTimeFormat(locale, options).format(date);
+    }
+
+    function applyLocalizedDynamicContent(lang) {
+        const weekdayDict = weekdayLabels[lang] || weekdayLabels.en;
+        const statusDict = statusLabels[lang] || statusLabels.en;
+
+        document.querySelectorAll("[data-weekdays]").forEach((element) => {
+            const raw = element.dataset.weekdays || "";
+            const labels = raw
+                .split(",")
+                .map((item) => item.trim())
+                .filter(Boolean)
+                .map((item) => weekdayDict[Number.parseInt(item, 10)])
+                .filter(Boolean);
+
+            if (labels.length) {
+                element.textContent = labels.join(", ");
+            }
+        });
+
+        document.querySelectorAll("[data-local-date]").forEach((element) => {
+            element.textContent = formatLocalDateValue(
+                element.dataset.localDate,
+                element.dataset.localFormat,
+                lang
+            );
+        });
+
+        document.querySelectorAll("[data-status]").forEach((element) => {
+            const key = element.dataset.status;
+            if (statusDict[key]) {
+                element.textContent = statusDict[key];
+            }
+        });
     }
 
     function applyTheme(theme) {
@@ -431,7 +676,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     window.addEventListener("scroll", handleHeaderScroll, { passive: true });
     window.addEventListener("resize", () => {
-        if (window.innerWidth > 1100) {
+        if (window.innerWidth > 1380) {
             closeNavPanel();
         }
     });

@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Med Tech | About{% endblock %}
+
+{% block content %}
+<section class="portal-page">
+    <div class="container">
+        <div class="portal-stack">
+            <div class="portal-hero">
+                <div class="portal-hero__content">
+                    <span class="section-kicker" data-page-i18n="about_kicker">About Med Tech</span>
+                    <h1 data-page-i18n="about_title">A polished medical platform built as one consistent product.</h1>
+                    <p data-page-i18n="about_text">The project brings together doctor discovery, schedule-based booking, AI support, and Telegram workflows inside one consistent experience.</p>
+                </div>
+
+                <div class="portal-stat-grid">
+                    <div class="portal-stat-card">
+                        <span class="portal-stat-card__label" data-page-i18n="about_stat_users">User flows</span>
+                        <span class="portal-stat-card__value" data-page-i18n="about_stat_users_value">Patient · doctor · admin</span>
+                    </div>
+                    <div class="portal-stat-card">
+                        <span class="portal-stat-card__label" data-page-i18n="about_stat_ai">AI service</span>
+                        <span class="portal-stat-card__value" data-page-i18n="about_stat_ai_value">OpenAI · Grok · Gemini</span>
+                    </div>
+                    <div class="portal-stat-card">
+                        <span class="portal-stat-card__label" data-page-i18n="about_stat_booking">Booking</span>
+                        <span class="portal-stat-card__value" data-page-i18n="about_stat_booking_value">Slots and doctor schedule</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="portal-grid portal-grid--two">
+                <div class="portal-card">
+                    <div class="portal-card__header">
+                        <div>
+                            <h2 data-page-i18n="about_section_product">What the platform includes</h2>
+                            <p data-page-i18n="about_section_product_text">The product already demonstrates the main user flow: registration, email confirmation, dashboard, doctors map, appointments, AI chat, and Telegram connection.</p>
+                        </div>
+                    </div>
+
+                    <div class="panel-list">
+                        <div class="panel-item"><strong data-page-i18n="about_feature_1">Doctors and clinics map with live markers</strong></div>
+                        <div class="panel-item"><strong data-page-i18n="about_feature_2">Booking by days, working hours, and free slots</strong></div>
+                        <div class="panel-item"><strong data-page-i18n="about_feature_3">Different UI and permissions for patient, doctor, and admin</strong></div>
+                        <div class="panel-item"><strong data-page-i18n="about_feature_4">AI assistant with saved conversation history and provider fallback</strong></div>
+                        <div class="panel-item"><strong data-page-i18n="about_feature_5">Telegram bot for fast actions and reminders</strong></div>
+                    </div>
+                </div>
+
+                <aside class="portal-sidebar-card">
+                    <h3 data-page-i18n="about_section_demo">Why this project exists</h3>
+                    <p data-page-i18n="about_section_demo_text">Med Tech was designed to feel like a finished product instead of a collection of disconnected pages.</p>
+                    <div class="page-note" style="margin-top: 18px;">
+                        <span data-page-i18n="about_section_demo_note">That means the backend flow matters, but the presentation, UX, and visual consistency matter just as much.</span>
+                    </div>
+
+                    <h3 style="margin-top: 26px;" data-page-i18n="about_section_stack">Stack and integrations</h3>
+                    <div class="panel-list" style="margin-top: 14px;">
+                        <div class="panel-item"><strong data-page-i18n="about_stack_1">Django, CBV, Forms, Filters, Signals, Soft delete</strong></div>
+                        <div class="panel-item"><strong data-page-i18n="about_stack_2">Custom templates, static files, responsive UI</strong></div>
+                        <div class="panel-item"><strong data-page-i18n="about_stack_3">SMTP email confirmation and Telegram integration</strong></div>
+                        <div class="panel-item"><strong data-page-i18n="about_stack_4">AI service with history stored in AIChatSession</strong></div>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
