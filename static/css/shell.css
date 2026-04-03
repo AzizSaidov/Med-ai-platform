@@ -578,6 +578,199 @@ label {
     color: var(--text);
 }
 
+.about-page .portal-hero {
+    position: relative;
+    overflow: hidden;
+}
+
+.about-page .portal-hero::after {
+    content: "";
+    position: absolute;
+    inset: auto -80px -90px auto;
+    width: 240px;
+    height: 240px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(123, 173, 243, 0.22), rgba(123, 173, 243, 0));
+    pointer-events: none;
+}
+
+.about-hero__content {
+    position: relative;
+    z-index: 1;
+}
+
+.about-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 22px;
+}
+
+.about-pill {
+    display: inline-flex;
+    align-items: center;
+    min-height: 32px;
+    padding: 0 14px;
+    border-radius: var(--radius-full);
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+.about-actions {
+    position: relative;
+    z-index: 1;
+}
+
+.about-stat-grid {
+    position: relative;
+    z-index: 1;
+}
+
+.about-spotlight {
+    padding: 20px;
+    border-radius: 24px;
+    background: linear-gradient(180deg, rgba(118, 153, 214, 0.12), var(--surface-soft));
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-xs);
+}
+
+.about-spotlight__label {
+    display: inline-flex;
+    margin-bottom: 10px;
+    font-size: 0.76rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+}
+
+.about-spotlight strong {
+    display: block;
+    font-family: "DM Serif Display", Georgia, serif;
+    font-size: 1.3rem;
+    line-height: 1.2;
+    color: var(--text);
+}
+
+.about-spotlight p {
+    margin-top: 10px;
+    color: var(--text-muted);
+    line-height: 1.7;
+}
+
+.about-feature-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.about-feature-card {
+    padding: 18px;
+    border-radius: 22px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    box-shadow: var(--shadow-xs);
+}
+
+.about-feature-card__num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 34px;
+    height: 34px;
+    margin-bottom: 14px;
+    border-radius: 12px;
+    background: var(--primary-soft);
+    color: var(--primary);
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+}
+
+.about-feature-card h3 {
+    font-family: "DM Serif Display", Georgia, serif;
+    font-size: 1.15rem;
+    line-height: 1.2;
+    font-weight: 400;
+}
+
+.about-feature-card p {
+    margin-top: 10px;
+    color: var(--text-muted);
+    line-height: 1.7;
+}
+
+.about-sidebar {
+    position: relative;
+    overflow: hidden;
+    background: var(--surface);
+}
+
+.about-sidebar::before {
+    content: "";
+    position: absolute;
+    inset: -120px auto auto -100px;
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(122, 198, 168, 0.18), rgba(122, 198, 168, 0));
+    pointer-events: none;
+}
+
+.about-sidebar > * {
+    position: relative;
+    z-index: 1;
+}
+
+.about-quote {
+    margin-top: 22px;
+    padding: 18px 20px;
+    border-radius: 22px;
+    border: 1px solid var(--border);
+    background: var(--surface-soft);
+}
+
+.about-quote__mark {
+    display: block;
+    font-family: "DM Serif Display", Georgia, serif;
+    font-size: 2rem;
+    line-height: 1;
+    color: var(--primary);
+}
+
+.about-quote p {
+    margin-top: 8px;
+    color: var(--text);
+    line-height: 1.75;
+}
+
+.about-page .portal-stat-card {
+    background: var(--surface);
+}
+
+html[data-theme="dark"] .about-page .portal-stat-card {
+    background: linear-gradient(180deg, rgba(20, 27, 47, 0.96), rgba(26, 35, 60, 0.92));
+}
+
+html[data-theme="dark"] .about-page .about-spotlight {
+    background: linear-gradient(180deg, rgba(118, 153, 214, 0.14), rgba(18, 24, 42, 0.92));
+}
+
+html[data-theme="dark"] .about-page .about-feature-card {
+    background: linear-gradient(180deg, rgba(20, 27, 47, 0.96), rgba(26, 35, 60, 0.92));
+}
+
+html[data-theme="dark"] .about-page .about-sidebar {
+    background: linear-gradient(180deg, rgba(20, 27, 47, 0.96), rgba(16, 21, 37, 0.95));
+}
+
+html[data-theme="dark"] .about-page .about-quote {
+    background: rgba(127, 169, 231, 0.10);
+}
+
 .portal-card,
 .portal-panel {
     border-radius: 28px;

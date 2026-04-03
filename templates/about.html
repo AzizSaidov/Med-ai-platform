@@ -4,28 +4,35 @@
 {% block title %}Med Tech | About{% endblock %}
 
 {% block content %}
-<section class="portal-page">
+<section class="portal-page about-page">
     <div class="container">
         <div class="portal-stack">
-            <div class="portal-hero">
-                <div class="portal-hero__content">
+            <div class="portal-hero about-hero">
+                <div class="portal-hero__content about-hero__content">
                     <span class="section-kicker" data-page-i18n="about_kicker">About Med Tech</span>
-                    <h1 data-page-i18n="about_title">A polished medical platform built as one consistent product.</h1>
-                    <p data-page-i18n="about_text">The project brings together doctor discovery, schedule-based booking, AI support, and Telegram workflows inside one consistent experience.</p>
+                    <h1 data-page-i18n="about_title">A calm clinic page for patients and doctors.</h1>
+                    <p data-page-i18n="about_text">Everything important lives in one place: doctors, appointments, reminders, and help.</p>
+
+                    <div class="portal-hero__actions about-actions">
+                        <a href="{% url 'doctors_map' %}" class="btn btn-primary btn-lg" data-page-i18n="nav_doctors">Explore doctors</a>
+                        <a href="{% url 'appointments' %}" class="btn btn-secondary btn-lg" data-page-i18n="nav_appointments">View appointments</a>
+                        <a href="{% url 'ai_chat' %}" class="btn btn-outline btn-lg" data-page-i18n="nav_ai">Open AI assistant</a>
+                    </div>
                 </div>
 
-                <div class="portal-stat-grid">
+                <div class="portal-stat-grid about-stat-grid">
                     <div class="portal-stat-card">
-                        <span class="portal-stat-card__label" data-page-i18n="about_stat_users">User flows</span>
+                        <span class="portal-stat-card__label" data-page-i18n="about_stat_users">Who uses it</span>
                         <span class="portal-stat-card__value" data-page-i18n="about_stat_users_value">Patient · doctor · admin</span>
                     </div>
                     <div class="portal-stat-card">
-                        <span class="portal-stat-card__label" data-page-i18n="about_stat_ai">AI service</span>
-                        <span class="portal-stat-card__value" data-page-i18n="about_stat_ai_value">OpenAI · Grok · Gemini</span>
-                    </div>
-                    <div class="portal-stat-card">
                         <span class="portal-stat-card__label" data-page-i18n="about_stat_booking">Booking</span>
-                        <span class="portal-stat-card__value" data-page-i18n="about_stat_booking_value">Slots and doctor schedule</span>
+                        <span class="portal-stat-card__value" data-page-i18n="about_stat_booking_value">Schedule and slots</span>
+                    </div>
+                    <div class="about-spotlight">
+                        <span class="about-spotlight__label" data-page-i18n="about_spotlight_label">Why it feels calm</span>
+                        <strong data-page-i18n="about_spotlight_title">One clinic route. Clear roles. Fast actions.</strong>
+                        <p data-page-i18n="about_spotlight_text">Only the steps clinics need stay on screen.</p>
                     </div>
                 </div>
             </div>
@@ -35,32 +42,47 @@
                     <div class="portal-card__header">
                         <div>
                             <h2 data-page-i18n="about_section_product">What the platform includes</h2>
-                            <p data-page-i18n="about_section_product_text">The product already demonstrates the main user flow: registration, email confirmation, dashboard, doctors map, appointments, AI chat, and Telegram connection.</p>
+                            <p data-page-i18n="about_section_product_text">Doctors, bookings, reminders, and support work together.</p>
                         </div>
                     </div>
 
-                    <div class="panel-list">
-                        <div class="panel-item"><strong data-page-i18n="about_feature_1">Doctors and clinics map with live markers</strong></div>
-                        <div class="panel-item"><strong data-page-i18n="about_feature_2">Booking by days, working hours, and free slots</strong></div>
-                        <div class="panel-item"><strong data-page-i18n="about_feature_3">Different UI and permissions for patient, doctor, and admin</strong></div>
-                        <div class="panel-item"><strong data-page-i18n="about_feature_4">AI assistant with saved conversation history and provider fallback</strong></div>
-                        <div class="panel-item"><strong data-page-i18n="about_feature_5">Telegram bot for fast actions and reminders</strong></div>
+                    <div class="about-feature-grid">
+                        <article class="about-feature-card">
+                            <span class="about-feature-card__num">01</span>
+                            <h3 data-page-i18n="about_feature_1">Doctors map with live markers</h3>
+                            <p data-page-i18n="about_feature_1_text">Find specialists and clinics fast.</p>
+                        </article>
+                        <article class="about-feature-card">
+                            <span class="about-feature-card__num">02</span>
+                            <h3 data-page-i18n="about_feature_2">Booking by schedule and slots</h3>
+                            <p data-page-i18n="about_feature_2_text">Only valid times appear.</p>
+                        </article>
+                        <article class="about-feature-card">
+                            <span class="about-feature-card__num">03</span>
+                            <h3 data-page-i18n="about_feature_3">Separate views for each role</h3>
+                            <p data-page-i18n="about_feature_3_text">Patient, doctor, and admin see only what they need.</p>
+                        </article>
+                        <article class="about-feature-card">
+                            <span class="about-feature-card__num">04</span>
+                            <h3 data-page-i18n="about_feature_4">Support chat with saved history</h3>
+                            <p data-page-i18n="about_feature_4_text">Conversations stay tied to the account.</p>
+                        </article>
                     </div>
                 </div>
 
-                <aside class="portal-sidebar-card">
-                    <h3 data-page-i18n="about_section_demo">Why this project exists</h3>
-                    <p data-page-i18n="about_section_demo_text">Med Tech was designed to feel like a finished product instead of a collection of disconnected pages.</p>
+                <aside class="portal-sidebar-card about-sidebar">
+                    <h3 data-page-i18n="about_section_demo">Why clinics can use it</h3>
+                    <p data-page-i18n="about_section_demo_text">One place for the full patient journey.</p>
                     <div class="page-note" style="margin-top: 18px;">
-                        <span data-page-i18n="about_section_demo_note">That means the backend flow matters, but the presentation, UX, and visual consistency matter just as much.</span>
+                        <span data-page-i18n="about_section_demo_note">Simple, practical, and easy to trust.</span>
                     </div>
 
-                    <h3 style="margin-top: 26px;" data-page-i18n="about_section_stack">Stack and integrations</h3>
+                    <h3 style="margin-top: 26px;" data-page-i18n="about_section_stack">What clinics get</h3>
                     <div class="panel-list" style="margin-top: 14px;">
-                        <div class="panel-item"><strong data-page-i18n="about_stack_1">Django, CBV, Forms, Filters, Signals, Soft delete</strong></div>
-                        <div class="panel-item"><strong data-page-i18n="about_stack_2">Custom templates, static files, responsive UI</strong></div>
-                        <div class="panel-item"><strong data-page-i18n="about_stack_3">SMTP email confirmation and Telegram integration</strong></div>
-                        <div class="panel-item"><strong data-page-i18n="about_stack_4">AI service with history stored in AIChatSession</strong></div>
+                        <div class="panel-item"><strong data-page-i18n="about_stack_1">Doctors</strong></div>
+                        <div class="panel-item"><strong data-page-i18n="about_stack_2">Appointments</strong></div>
+                        <div class="panel-item"><strong data-page-i18n="about_stack_3">Reminders</strong></div>
+                        <div class="panel-item"><strong data-page-i18n="about_stack_4">Support</strong></div>
                     </div>
                 </aside>
             </div>
@@ -68,3 +90,4 @@
     </div>
 </section>
 {% endblock %}
+
